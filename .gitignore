@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+.env
+.env.production
+yarn-error.log

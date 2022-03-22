@@ -38,8 +38,9 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - Profile belongs to auth.users
 - Post
 - Comment belongs to Post and Profile
-- UpVote belongs to Post
-- DownVole belongs to Post
+- Vote belongs to Post (can have a direction of UP/DOWN)
+
+- direction enum is "UP" or "DOWN"
 
 See: `./data/db/schema.sql`
 

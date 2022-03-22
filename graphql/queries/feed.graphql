@@ -2,9 +2,17 @@
 query {
   feed: postCollection {
     edges {
-      node {
+      post: node {
         id
-        commentCollection {
+        title
+        url
+        upVotes: voteCollection(filter: { direction: { eq: "UP" } }) {
+          totalCount
+        }
+        downVotes: voteCollection(filter: { direction: { eq: "DOWN" } }) {
+          totalCount
+        }
+        comments: commentCollection {
           edges {
             node {
               id
@@ -17,12 +25,6 @@ query {
             }
           }
           commentCount: totalCount
-        }
-        upVoteCollection {
-          upVoteCount: totalCount
-        }
-        downVoteCollection {
-          downVoteCount: totalCount
         }
       }
     }

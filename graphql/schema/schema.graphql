@@ -199,15 +199,6 @@ type Mutation {
     atMost: Int! = 1
   ): VoteDeleteResponse!
 
-  # Deletes zero or more records from the collection
-  deleteFromschema_migrationsCollection(
-    # Restricts the mutation's impact to records matching the critera
-    filter: schema_migrationsFilter
-
-    # The maximum number of records in the collection permitted to be affected
-    atMost: Int! = 1
-  ): schema_migrationsDeleteResponse!
-
   # Adds one or more `CommentInsertResponse` records to the collection
   insertIntoCommentCollection(
     objects: [CommentInsertInput!]!
@@ -223,11 +214,6 @@ type Mutation {
 
   # Adds one or more `VoteInsertResponse` records to the collection
   insertIntoVoteCollection(objects: [VoteInsertInput!]!): VoteInsertResponse
-
-  # Adds one or more `schema_migrationsInsertResponse` records to the collection
-  insertIntoschema_migrationsCollection(
-    objects: [schema_migrationsInsertInput!]!
-  ): schema_migrationsInsertResponse
 
   # Updates zero or more records in the collection
   updateCommentCollection(
@@ -276,18 +262,6 @@ type Mutation {
     # The maximum number of records in the collection permitted to be affected
     atMost: Int! = 1
   ): VoteUpdateResponse!
-
-  # Updates zero or more records in the collection
-  updateschema_migrationsCollection(
-    # Fields that are set will be updated for all records matching the `filter`
-    set: schema_migrationsUpdateInput!
-
-    # Restricts the mutation's impact to records matching the critera
-    filter: schema_migrationsFilter
-
-    # The maximum number of records in the collection permitted to be affected
-    atMost: Int! = 1
-  ): schema_migrationsUpdateResponse!
 }
 
 # Defines a per-field sorting order
@@ -623,27 +597,6 @@ type Query {
     orderBy: [ProfileOrderBy!]
   ): ProfileConnection
 
-  # A pagable collection of type `schema_migrations`
-  schema_migrationsCollection(
-    # Query the first `n` records in the collection
-    first: Int
-
-    # Query the last `n` records in the collection
-    last: Int
-
-    # Query values in the collection before the provided cursor
-    before: Cursor
-
-    # Query values in the collection after the provided cursor
-    after: Cursor
-
-    # Filters to apply to the results set when querying from the collection
-    filter: schema_migrationsFilter
-
-    # Sort order to apply to the collection
-    orderBy: [schema_migrationsOrderBy!]
-  ): schema_migrationsConnection
-
   # A pagable collection of type `Vote`
   voteCollection(
     # Query the first `n` records in the collection
@@ -664,6 +617,11 @@ type Query {
     # Sort order to apply to the collection
     orderBy: [VoteOrderBy!]
   ): VoteConnection
+}
+
+type SchemaMigrationsInsertResponse {
+  # Count of the records impacted by the mutation
+  affectedCount: Int!
 }
 
 # Boolean expression comparing fields on type "String"
@@ -776,58 +734,4 @@ type VoteUpdateResponse {
 
   # Array of records impacted by the mutation
   records: [Vote!]!
-}
-
-type schema_migrations {
-  version: String!
-}
-
-type schema_migrationsConnection {
-  edges: [schema_migrationsEdge!]!
-  pageInfo: PageInfo!
-}
-
-type schema_migrationsDeleteResponse {
-  # Count of the records impacted by the mutation
-  affectedCount: Int!
-
-  # Array of records impacted by the mutation
-  records: [schema_migrations!]!
-}
-
-type schema_migrationsEdge {
-  cursor: String!
-  node: schema_migrations
-}
-
-input schema_migrationsFilter {
-  version: StringFilter
-}
-
-input schema_migrationsInsertInput {
-  version: String
-}
-
-type schema_migrationsInsertResponse {
-  # Count of the records impacted by the mutation
-  affectedCount: Int!
-
-  # Array of records impacted by the mutation
-  records: [schema_migrations!]!
-}
-
-input schema_migrationsOrderBy {
-  version: OrderByDirection
-}
-
-input schema_migrationsUpdateInput {
-  version: String
-}
-
-type schema_migrationsUpdateResponse {
-  # Count of the records impacted by the mutation
-  affectedCount: Int!
-
-  # Array of records impacted by the mutation
-  records: [schema_migrations!]!
 }

@@ -56,7 +56,9 @@ See: `./data/db/schema.sql`
 
 ## Seed Data
 
-> TODO
+A data file for all Supabase Blog posts from the RSS feed can be found in `./data/seed/blog_posts.csv` and can be loaded.
+
+Note: Assumes a known `profileId` currently.
 
 ## GraphQL Schema
 

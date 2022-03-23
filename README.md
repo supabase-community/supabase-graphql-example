@@ -1,4 +1,4 @@
-# Supabase pg_graphql Example App
+# Supabase PG GraphQL Example App
 
 A basic HackerNews-like clone where posts can be submitted with url links and then up and down voted.
 
@@ -12,10 +12,16 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ### Frontend
 
-- Next.js
-- TypeScript
-- graphql-code-generator gql-tag-operations-preset
-- urql
+- [Next.js](https://nextjs.org) - React Framework
+- [TypeScript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
+- [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
+- [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset) - This code gen preset generates typings for your inline gql function usages, without having to manually specify import statements for the documents
+- [urql](https://formidable.com/open-source/urql/) - A highly customizable and versatile GraphQL client
+
+### Backend
+
+- [Supabase](https://supabase.com) - Create a backend in less than 2 minutes. Start your project with a Postgres Database, Authentication, instant APIs, Realtime subscriptions and Storage.
+- [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org). The extension keeps schema generation, query parsing, and resolvers all neatly contained on your database server requiring no external services.
 
 ### Functionality
 
@@ -119,7 +125,7 @@ query {
 
 ## Read More
 
-- [ph_graphql](https://supabase.github.io/pg_graphql)
+- [pg_graphql](https://supabase.github.io/pg_graphql)
 - [pg_graphql Configuration](https://supabase.github.io/pg_graphql/configuration)
 
 ## Troubleshooting

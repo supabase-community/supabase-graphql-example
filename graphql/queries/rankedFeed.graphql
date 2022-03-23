@@ -1,6 +1,10 @@
 query {
   rankedFeed: postCollection(
-    orderBy: [{ voteRank: AscNullsFirst }, { voteTotal: DescNullsFirst }]
+    orderBy: [
+      { voteRank: AscNullsFirst }
+      { score: DescNullsFirst }
+      { createdAt: DescNullsFirst }
+    ]
   ) {
     edges {
       post: node {
@@ -10,6 +14,8 @@ query {
         upVoteTotal
         downVoteTotal
         voteTotal
+        voteDelta
+        score
         voteRank
         comments: commentCollection {
           edges {

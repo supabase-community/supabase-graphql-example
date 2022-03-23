@@ -75,22 +75,28 @@ Content-Type: application/json
 apiKey: <supabase_anon_key>
 ```
 
-### Feed with comments and vote counts
+### Ranked Feed
 
 ```gql
 query {
-  feed: postCollection {
+  rankedFeed: postCollection(
+    orderBy: [
+      { voteRank: AscNullsFirst }
+      { score: DescNullsFirst }
+      { createdAt: DescNullsFirst }
+    ]
+  ) {
     edges {
       post: node {
         id
         title
         url
-        upVotes: voteCollection(filter: { direction: { eq: "UP" } }) {
-          totalCount
-        }
-        downVotes: voteCollection(filter: { direction: { eq: "DOWN" } }) {
-          totalCount
-        }
+        upVoteTotal
+        downVoteTotal
+        voteTotal
+        voteDelta
+        score
+        voteRank
         comments: commentCollection {
           edges {
             node {
@@ -109,4 +115,23 @@ query {
     }
   }
 }
+```
+
+## Read More
+
+- [ph_graphql](https://supabase.github.io/pg_graphql)
+- [pg_graphql Configuration](https://supabase.github.io/pg_graphql/configuration)
+
+## Troubleshooting
+
+1. `dbmate` can create `schema_migrations` tables in schemas. To make sure they are not included in your GraphQL Schema:
+
+```sql
+revoke select on table public.schema_migrations from anon, authenticated;
+```
+
+2. To [enable inflection](https://supabase.github.io/pg_graphql/configuration/#inflection)
+
+```sql
+comment on schema public is e'@graphql({"inflect_names": true})';
 ```

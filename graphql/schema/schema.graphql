@@ -290,6 +290,8 @@ type Post {
   downVoteTotal: Int!
   voteTotal: Int!
   voteRank: Int!
+  score: Float!
+  voteDelta: Int!
   commentCollection(
     # Query the first `n` records in the collection
     first: Int
@@ -363,6 +365,8 @@ input PostFilter {
   downVoteTotal: IntFilter
   voteTotal: IntFilter
   voteRank: IntFilter
+  score: FloatFilter
+  voteDelta: IntFilter
 }
 
 input PostInsertInput {
@@ -375,6 +379,8 @@ input PostInsertInput {
   downVoteTotal: Int
   voteTotal: Int
   voteRank: Int
+  score: Float
+  voteDelta: Int
 }
 
 type PostInsertResponse {
@@ -396,6 +402,8 @@ input PostOrderBy {
   downVoteTotal: OrderByDirection
   voteTotal: OrderByDirection
   voteRank: OrderByDirection
+  score: OrderByDirection
+  voteDelta: OrderByDirection
 }
 
 input PostUpdateInput {
@@ -408,6 +416,8 @@ input PostUpdateInput {
   downVoteTotal: Int
   voteTotal: Int
   voteRank: Int
+  score: Float
+  voteDelta: Int
 }
 
 type PostUpdateResponse {

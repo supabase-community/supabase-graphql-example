@@ -1,64 +1,58 @@
-create or replace function public.update_vote_counts()
-returns trigger as $$
-begin
+CREATE OR REPLACE FUNCTION public.update_vote_counts()
+RETURNS trigger as $$
+BEGIN
 
-WITH u AS (
-	SELECT
-		v. "postId",
-		coalesce(count(*),
-			0) AS total
-	FROM
-		public. "Vote" v
-	WHERE
-		v.direction = 'UP'
-	GROUP BY
-		v. "postId"
-),
-d AS (
-	SELECT
-		v. "postId",
-		coalesce(count(*),
-			0) AS total
-	FROM
-		public. "Vote" v
-	WHERE
-		v.direction = 'DOWN'
-	GROUP BY
-		v. "postId"
-),
-t AS (
-	SELECT
-		p.id,
-		coalesce(u.total,
-			0) AS "upVoteTotal",
-		coalesce(d.total,
-			0) AS "downVoteTotal",
-		coalesce(u.total,
-			0) - coalesce(d.total,
-			0) AS "voteTotal"
-	FROM
-		public. "Post" p
-	LEFT JOIN u ON p.id = u. "postId"
-	LEFT JOIN d ON p.id = d. "postId"
-),
-r AS (
-	SELECT
-		*,
-		DENSE_RANK() OVER (ORDER BY t. "voteTotal" DESC) AS "voteRank"
-	FROM
-		t
+WITH r AS (
+SELECT
+	"postId",
+	count(1) "voteTotal",
+	count(1) FILTER (WHERE direction = 'UP') "upVoteTotal",
+	count(1) FILTER (WHERE direction = 'DOWN') "downVoteTotal",
+	coalesce(sum(
+			CASE WHEN direction = 'UP' THEN
+				1
+			WHEN direction = 'DOWN' THEN
+				- 1
+			ELSE
+				0
+			END), 0) "voteDelta",
+	abs(sum(
+		CASE WHEN direction = 'UP' THEN
+			1
+		WHEN direction = 'DOWN' THEN
+			- 1
+		ELSE
+			0
+		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8) AS "score",
+	dense_rank() OVER (ORDER BY sum( CASE WHEN direction = 'UP' THEN
+			1
+		WHEN direction = 'DOWN' THEN
+			- 1
+		ELSE
+			0
+		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8 DESC) "voteRank"
+FROM
+	"Vote"
+GROUP BY
+	"postId"
 )
+
 UPDATE
 	public. "Post"
 SET
 	"upVoteTotal" = r. "upVoteTotal",
 	"downVoteTotal" = r. "downVoteTotal",
 	"voteTotal" = r. "voteTotal",
-	"voteRank" = r. "voteRank"
+  "voteDelta" = r. "voteDelta",
+	"voteRank" = r. "voteRank",
+  "score" = r. "score"
 FROM
 	r
 WHERE
-	r.id = public. "Post".idend;
+	r."postId" = public. "Post".id;
+
+RETURN new;
+END;
 $$ language plpgsql security definer;
 
 CREATE TRIGGER on_vote_created AFTER INSERT ON public."Vote" FOR EACH ROW EXECUTE FUNCTION public.update_vote_counts();

@@ -29,9 +29,12 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ## Installation
 
-### manage Schema with dbmate
+### Manage Schema with dbmate
 
 1. `brew install dbmate`
+2. Setup `.env` with `DATABASE_URL`
+
+> TODO
 
 ## Schema (Public)
 
@@ -42,9 +45,18 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 - direction enum is "UP" or "DOWN"
 
+### Constraints
+
+- Post `url` is unique
+- Vote is unique per Profile, Post (ie, you cannot vote more than once -- up or down)
+
 See: `./data/db/schema.sql`
 
 > Note: The schema includes the entire Supabase schema with auth, storage, functions, etc.
+
+## Seed Data
+
+> TODO
 
 ## GraphQL Schema
 
@@ -61,14 +73,23 @@ Content-Type: application/json
 apiKey: <supabase_anon_key>
 ```
 
+### Feed with comments and vote counts
+
 ```gql
-# Your GraphQL query or mutation goes here
 query {
-  postCollection {
+  feed: postCollection {
     edges {
-      node {
+      post: node {
         id
-        commentCollection {
+        title
+        url
+        upVotes: voteCollection(filter: { direction: { eq: "UP" } }) {
+          totalCount
+        }
+        downVotes: voteCollection(filter: { direction: { eq: "DOWN" } }) {
+          totalCount
+        }
+        comments: commentCollection {
           edges {
             node {
               id
@@ -81,12 +102,6 @@ query {
             }
           }
           commentCount: totalCount
-        }
-        upVoteCollection {
-          upVoteCount: totalCount
-        }
-        downVoteCollection {
-          downVoteCount: totalCount
         }
       }
     }

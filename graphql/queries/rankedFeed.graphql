@@ -1,0 +1,31 @@
+query {
+  rankedFeed: postCollection(
+    orderBy: [{ voteRank: AscNullsFirst }, { voteTotal: DescNullsFirst }]
+  ) {
+    edges {
+      post: node {
+        id
+        title
+        url
+        upVoteTotal
+        downVoteTotal
+        voteTotal
+        voteRank
+        comments: commentCollection {
+          edges {
+            node {
+              id
+              message
+              profile {
+                id
+                username
+                avatarUrl
+              }
+            }
+          }
+          commentCount: totalCount
+        }
+      }
+    }
+  }
+}

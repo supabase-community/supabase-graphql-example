@@ -286,6 +286,10 @@ type Post {
   title: String!
   url: String!
   profileId: UUID!
+  upVoteTotal: Int!
+  downVoteTotal: Int!
+  voteTotal: Int!
+  voteRank: Int!
   commentCollection(
     # Query the first `n` records in the collection
     first: Int
@@ -355,6 +359,10 @@ input PostFilter {
   title: StringFilter
   url: StringFilter
   profileId: UUIDFilter
+  upVoteTotal: IntFilter
+  downVoteTotal: IntFilter
+  voteTotal: IntFilter
+  voteRank: IntFilter
 }
 
 input PostInsertInput {
@@ -363,6 +371,10 @@ input PostInsertInput {
   title: String
   url: String
   profileId: UUID
+  upVoteTotal: Int
+  downVoteTotal: Int
+  voteTotal: Int
+  voteRank: Int
 }
 
 type PostInsertResponse {
@@ -380,6 +392,10 @@ input PostOrderBy {
   title: OrderByDirection
   url: OrderByDirection
   profileId: OrderByDirection
+  upVoteTotal: OrderByDirection
+  downVoteTotal: OrderByDirection
+  voteTotal: OrderByDirection
+  voteRank: OrderByDirection
 }
 
 input PostUpdateInput {
@@ -388,6 +404,10 @@ input PostUpdateInput {
   title: String
   url: String
   profileId: UUID
+  upVoteTotal: Int
+  downVoteTotal: Int
+  voteTotal: Int
+  voteRank: Int
 }
 
 type PostUpdateResponse {

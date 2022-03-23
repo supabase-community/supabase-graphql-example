@@ -461,6 +461,76 @@ $$;
 
 
 --
+-- Name: update_vote_counts(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_vote_counts() RETURNS trigger
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+BEGIN
+	WITH u AS (
+		SELECT
+			v. "postId",
+			coalesce(count(*),
+				0) AS total
+		FROM
+			public. "Vote" v
+		WHERE
+			v.direction = 'UP'
+		GROUP BY
+			v. "postId"
+),
+d AS (
+	SELECT
+		v. "postId",
+		coalesce(count(*),
+			0) AS total
+	FROM
+		public. "Vote" v
+	WHERE
+		v.direction = 'DOWN'
+	GROUP BY
+		v. "postId"
+),
+t AS (
+	SELECT
+		p.id,
+		coalesce(u.total,
+			0) AS "upVoteTotal",
+		coalesce(d.total,
+			0) AS "downVoteTotal",
+		coalesce(u.total,
+			0) - coalesce(d.total,
+			0) AS "voteTotal"
+	FROM
+		public. "Post" p
+	LEFT JOIN u ON p.id = u. "postId"
+	LEFT JOIN d ON p.id = d. "postId"
+),
+r AS (
+	SELECT
+		*,
+		DENSE_RANK() OVER (ORDER BY t. "voteTotal" DESC) AS "voteRank"
+	FROM
+		t
+)
+UPDATE
+	public. "Post"
+SET
+	"upVoteTotal" = r. "upVoteTotal",
+	"downVoteTotal" = r. "downVoteTotal",
+	"voteTotal" = r. "voteTotal",
+	"voteRank" = r. "voteRank"
+FROM
+	r
+WHERE
+	r.id = public. "Post".id;
+  RETURN new;
+END;
+$$;
+
+
+--
 -- Name: apply_rls(jsonb, integer); Type: FUNCTION; Schema: realtime; Owner: -
 --
 
@@ -1261,7 +1331,11 @@ CREATE TABLE public."Post" (
     "updatedAt" timestamp with time zone,
     title text NOT NULL,
     url text NOT NULL,
-    "profileId" uuid NOT NULL
+    "profileId" uuid NOT NULL,
+    "upVoteTotal" integer DEFAULT 0 NOT NULL,
+    "downVoteTotal" integer DEFAULT 0 NOT NULL,
+    "voteTotal" integer DEFAULT 0 NOT NULL,
+    "voteRank" integer DEFAULT 1 NOT NULL
 );
 
 
@@ -1690,6 +1764,20 @@ CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_patter
 --
 
 CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+
+--
+-- Name: Vote on_vote_created; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER on_vote_created AFTER INSERT ON public."Vote" FOR EACH ROW EXECUTE FUNCTION public.update_vote_counts();
+
+
+--
+-- Name: Vote on_vote_deleted; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER on_vote_deleted AFTER DELETE ON public."Vote" FOR EACH ROW EXECUTE FUNCTION public.update_vote_counts();
 
 
 --

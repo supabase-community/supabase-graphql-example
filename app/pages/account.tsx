@@ -11,9 +11,7 @@ const UserProfileQuery = gql(/* GraphQL */ `
     profileCollection(filter: { id: { eq: $profileId } }) {
       edges {
         node {
-          id
-          username
-          website
+          ...AccountProfileFragment
         }
       }
     }

@@ -1,10 +1,11 @@
 import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Auth, Loading } from "@supabase/ui";
+import { Auth, Button } from "@supabase/ui";
+import { CombinedError, useMutation, useQuery } from "urql";
+import { Input } from "@supabase/ui";
 import { useSupabaseClient } from "../lib/supabase";
 import { DocumentType, gql } from "../gql";
-import { CombinedError, useMutation, useQuery } from "urql";
 
 const UserProfileQuery = gql(/* GraphQL */ `
   query UserProfileQuery($profileId: UUID!) {
@@ -100,55 +101,45 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
   const errorState = extractExpectedGraphQLErrors(updateProfileMutation.error);
 
   return (
-    <>
-      <div className="form-widget">
-        <div>
-          <label htmlFor="username">Name</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="website">Website</label>
-          <input
-            id="website"
-            type="website"
-            value={website || ""}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <button
-            className="button block primary"
-            onClick={() =>
-              updateProfile({
-                userId: props.profile.id,
-                newUsername: username,
-                newWebsite: website,
-              })
-            }
-            disabled={updateProfileMutation.fetching}
-          >
-            {updateProfileMutation.fetching ? "Loading ..." : "Update"}
-          </button>
-        </div>
-
-        <div>{errorState}</div>
-
-        <div>
-          <button
-            className="button block"
-            onClick={() => supabaseClient.auth.signOut()}
-          >
-            Sign Out
-          </button>
-        </div>
+    <section className="container px-5 py-24 mx-auto">
+      <div>
+        <label htmlFor="username" className="text-blue-600">
+          Name
+        </label>
+        <Input
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </div>
-    </>
+      <div>
+        <label htmlFor="website">Website</label>
+        <Input
+          id="website"
+          type="website"
+          value={website || ""}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <Button
+          onClick={() =>
+            updateProfile({
+              userId: props.profile.id,
+              newUsername: username,
+              newWebsite: website,
+            })
+          }
+          disabled={updateProfileMutation.fetching}
+        >
+          {updateProfileMutation.fetching ? "Loading ..." : "Update"}
+        </Button>
+      </div>
+
+      <div>{errorState}</div>
+    </section>
   );
 }
 

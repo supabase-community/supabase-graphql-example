@@ -40,7 +40,8 @@ const FeedQuery = gql(/* GraphQL */ `
 `);
 
 const Home: NextPage = () => {
-  const [data] = useQuery({ query: FeedQuery });
+  const [feedQuery] = useQuery({ query: FeedQuery });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -51,7 +52,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <pre>
-          <code>{JSON.stringify(data?.data, null, 2)}</code>
+          <code>{JSON.stringify(feedQuery?.data, null, 2)}</code>
         </pre>
       </main>
 

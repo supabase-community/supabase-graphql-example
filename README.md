@@ -35,18 +35,39 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - Delete Comment
 - Upvote/Downvote Post
 
-## Installation
+## QuickStart
 
-```bask
+```bash
 yarn
-yarn codegen:watch
+yarn codegen
 yarn workspace app dev
 ```
 
-### Manage Schema with dbmate
+## Development
+
+1. Fetch latest GraphQL Schema
+
+```bash
+yarn codegen:fetch
+```
+
+2. Generate Types and Watch for Changes
+
+```bash
+yarn codegen:watch
+```
+
+3. Run server
+
+```bash
+yarn workspace app dev
+```
+
+#### Manage Schema with dbmate
 
 1. `brew install dbmate`
 2. Setup `.env` with `DATABASE_URL`
+3. Dump Schema
 
 ```
 cd data
@@ -73,7 +94,7 @@ See: `./data/db/schema.sql`
 
 ## Seed Data
 
-A data file for all Supabase Blog posts from the RSS feed can be found in `./data/seed/blog_posts.csv` and can be loaded.
+A data file for all Supabase Blog posts from the RSS feed can be found in `./data/seed/blog_posts.csv` and can be loaded. Another file for `comments` is available as well.
 
 Note: Assumes a known `profileId` currently.
 
@@ -88,8 +109,10 @@ Use: `https://mvrfvzcivgabojxddwtk.supabase.co/rest/v1/rpc/graphql`
 Note: Needs headers
 
 ```
+
 Content-Type: application/json
 apiKey: <supabase_anon_key>
+
 ```
 
 ### Ranked Feed

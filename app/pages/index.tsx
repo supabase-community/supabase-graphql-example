@@ -1,38 +1,30 @@
+import { Button } from "@supabase/ui";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useQuery } from "urql";
 import { gql } from "../gql";
+import { FeedItem } from "../lib/feed-item";
 import styles from "../styles/Home.module.css";
 
 const FeedQuery = gql(/* GraphQL */ `
   query FeedQuery {
-    feed: postCollection {
+    feed: postCollection(
+      orderBy: [
+        { voteRank: AscNullsFirst }
+        { score: DescNullsFirst }
+        { createdAt: DescNullsFirst }
+      ]
+      first: 15
+    ) {
+      pageInfo {
+        hasNextPage
+      }
       edges {
-        post: node {
+        cursor
+        node {
           id
-          title
-          url
-          upVotes: voteCollection(filter: { direction: { eq: "UP" } }) {
-            totalCount
-          }
-          downVotes: voteCollection(filter: { direction: { eq: "DOWN" } }) {
-            totalCount
-          }
-          comments: commentCollection {
-            edges {
-              node {
-                id
-                message
-                profile {
-                  id
-                  username
-                  avatarUrl
-                }
-              }
-            }
-            commentCount: totalCount
-          }
+          ...FeedItem_PostFragment
         }
       }
     }
@@ -40,7 +32,7 @@ const FeedQuery = gql(/* GraphQL */ `
 `);
 
 const Home: NextPage = () => {
-  const [feedQuery] = useQuery({ query: FeedQuery });
+  const [feedQuery, loadMore] = useQuery({ query: FeedQuery });
 
   return (
     <div className={styles.container}>
@@ -51,9 +43,20 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <pre>
-          <code>{JSON.stringify(feedQuery?.data, null, 2)}</code>
-        </pre>
+        <section className="text-gray-600 body-font overflow-hidden">
+          <div className="container px-5 py-24 mx-auto">
+            <div className="-my-8 divide-y-2 divide-gray-100">
+              {feedQuery?.data?.feed?.edges.map((edge) => (
+                <FeedItem post={edge.node!} key={edge.cursor} />
+              ))}
+            </div>
+          </div>
+          {feedQuery.data?.feed?.pageInfo.hasNextPage ? (
+            <div className="flex justify-center content-center">
+              <Button>Load more.</Button>
+            </div>
+          ) : null}
+        </section>
       </main>
 
       <footer className={styles.footer}>

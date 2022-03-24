@@ -1,4 +1,5 @@
-import react from "react";
+import React from "react";
+
 export function CalendarIcon(props: { className?: string }) {
   return (
     <svg

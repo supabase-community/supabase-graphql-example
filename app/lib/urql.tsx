@@ -2,7 +2,7 @@ import React from "react";
 import { createClient, Provider } from "urql";
 import { useSupabaseClient } from "./supabase";
 
-export function UrqlProvider(props: { children: React.ReactElement }) {
+export function UrqlProvider(props: { children: React.ReactNode }) {
   const supabaseClient = useSupabaseClient();
 
   function getHeaders(): Record<string, string> {

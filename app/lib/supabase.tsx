@@ -4,7 +4,7 @@ import { Auth } from "@supabase/ui";
 
 const SupabaseClientContext = React.createContext<SupabaseClient | null>(null);
 
-export function SupabaseProvider(props: { children: React.ReactElement }) {
+export function SupabaseProvider(props: { children: React.ReactNode }) {
   const [client] = React.useState(() =>
     createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

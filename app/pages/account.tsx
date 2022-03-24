@@ -6,6 +6,8 @@ import { CombinedError, useMutation, useQuery } from "urql";
 import { Input } from "@supabase/ui";
 import { useSupabaseClient } from "../lib/supabase";
 import { DocumentType, gql } from "../gql";
+import { Container } from "../lib/container";
+import { MainSection } from "../lib/main-section";
 
 const UserProfileQuery = gql(/* GraphQL */ `
   query UserProfileQuery($profileId: UUID!) {
@@ -91,7 +93,6 @@ function extractExpectedGraphQLErrors(
 }
 
 function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
-  const supabaseClient = useSupabaseClient();
   const [username, setUsername] = React.useState(props.profile.username ?? "");
   const [website, setWebsite] = React.useState(props.profile.website ?? "");
   const [updateProfileMutation, updateProfile] = useMutation(
@@ -101,45 +102,49 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
   const errorState = extractExpectedGraphQLErrors(updateProfileMutation.error);
 
   return (
-    <section className="container px-5 py-24 mx-auto">
-      <div>
-        <label htmlFor="username" className="text-blue-600">
-          Name
-        </label>
-        <Input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <Input
-          id="website"
-          type="website"
-          value={website || ""}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
+    <Container>
+      <MainSection>
+        <section className="container px-5 py-24 mx-auto max-w-md">
+          <div>
+            <label htmlFor="username" className="text-blue-600">
+              Name
+            </label>
+            <Input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="website">Website</label>
+            <Input
+              id="website"
+              type="website"
+              value={website || ""}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
+          </div>
 
-      <div>
-        <Button
-          onClick={() =>
-            updateProfile({
-              userId: props.profile.id,
-              newUsername: username,
-              newWebsite: website,
-            })
-          }
-          disabled={updateProfileMutation.fetching}
-        >
-          {updateProfileMutation.fetching ? "Loading ..." : "Update"}
-        </Button>
-      </div>
+          <div>
+            <Button
+              onClick={() =>
+                updateProfile({
+                  userId: props.profile.id,
+                  newUsername: username,
+                  newWebsite: website,
+                })
+              }
+              disabled={updateProfileMutation.fetching}
+            >
+              {updateProfileMutation.fetching ? "Loading ..." : "Update"}
+            </Button>
+          </div>
 
-      <div>{errorState}</div>
-    </section>
+          <div>{errorState}</div>
+        </section>
+      </MainSection>
+    </Container>
   );
 }
 

@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { Auth, Input, Button } from "@supabase/ui";
 import { gql } from "../gql";
 import { useMutation } from "urql";
+import { Container } from "../lib/container";
+import { MainSection } from "../lib/main-section";
 
 const CreatePostMutation = gql(/* GraphQL */ `
   mutation createPostMutation($input: PostInsertInput!) {
@@ -42,32 +44,36 @@ const Submit: NextPage = () => {
   }
 
   return (
-    <form>
-      <Input
-        placeholder="Title"
-        value={title}
-        onChange={(ev) => setTitle(ev.target.value)}
-      />
-      <Input
-        placeholder="URL"
-        value={url}
-        onChange={(ev) => setUrl(ev.target.value)}
-      />
-      <Button
-        onClick={() => {
-          createPost({
-            input: {
-              url,
-              title,
-              profileId: session.user!.id,
-              score: 1,
-            },
-          });
-        }}
-      >
-        Submit
-      </Button>
-    </form>
+    <Container>
+      <MainSection>
+        <form className="container px-5 py-24 mx-auto max-w-md">
+          <Input
+            placeholder="Title"
+            value={title}
+            onChange={(ev) => setTitle(ev.target.value)}
+          />
+          <Input
+            placeholder="URL"
+            value={url}
+            onChange={(ev) => setUrl(ev.target.value)}
+          />
+          <Button
+            onClick={() => {
+              createPost({
+                input: {
+                  url,
+                  title,
+                  profileId: session.user!.id,
+                  score: 1,
+                },
+              });
+            }}
+          >
+            Submit
+          </Button>
+        </form>
+      </MainSection>
+    </Container>
   );
 };
 

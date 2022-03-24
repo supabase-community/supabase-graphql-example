@@ -37,12 +37,21 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ## Installation
 
+```bask
+yarn
+yarn codegen:watch
+yarn workspace app dev
+```
+
 ### Manage Schema with dbmate
 
 1. `brew install dbmate`
 2. Setup `.env` with `DATABASE_URL`
 
-> TODO
+```
+cd data
+dbmate dump
+```
 
 ## Schema (Public)
 

@@ -290,7 +290,7 @@ type Post {
   downVoteTotal: Int!
   voteTotal: Int!
   voteRank: Int!
-  score: Float!
+  score: Float
   voteDelta: Int!
   commentCollection(
     # Query the first `n` records in the collection

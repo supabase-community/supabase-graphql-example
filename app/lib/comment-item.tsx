@@ -24,16 +24,16 @@ export function CommentItem(props: {
   comment: DocumentType<typeof CommentItem_CommentFragment>;
 }) {
   const createdAt = React.useMemo(
-    () =>
-      timeAgo.format(
-        props.comment.createdAt ? new Date(props.comment.createdAt) : new Date()
-      ),
+    () => timeAgo.format(new Date(props.comment.createdAt)),
     [props.comment.createdAt]
   );
   return (
-    <div className="py-8 flex flex-wrap md:flex-nowrap">
+    <div className="py-8">
+      <div>
+        <span>{props.comment.profile?.username} </span>
+        <span>{createdAt}</span>
+      </div>
       <div className="flex-1 md:flex-grow">{props.comment.message}</div>
-      {createdAt}
     </div>
   );
 }

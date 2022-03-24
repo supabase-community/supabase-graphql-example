@@ -3,6 +3,8 @@ import type { NextPage } from "next";
 import { Auth } from "@supabase/ui";
 import { useSupabaseClient } from "../lib/supabase";
 import { useRouter } from "next/router";
+import { Container } from "../lib/container";
+import { MainSection } from "../lib/main-section";
 
 const LogIn: NextPage = () => {
   const { user } = Auth.useUser();
@@ -19,7 +21,15 @@ const LogIn: NextPage = () => {
     return null;
   }
 
-  return <Auth supabaseClient={supabaseClient} providers={["github"]} />;
+  return (
+    <Container>
+      <MainSection>
+        <div className="m-width-md">
+          <Auth supabaseClient={supabaseClient} providers={["github"]} />
+        </div>
+      </MainSection>
+    </Container>
+  );
 };
 
 export default LogIn;

@@ -434,6 +434,7 @@ type Profile {
   username: String
   avatarUrl: String
   website: String
+  bio: String
   commentCollection(
     # Query the first `n` records in the collection
     first: Int
@@ -520,6 +521,7 @@ input ProfileFilter {
   username: StringFilter
   avatarUrl: StringFilter
   website: StringFilter
+  bio: StringFilter
 }
 
 input ProfileInsertInput {
@@ -528,6 +530,7 @@ input ProfileInsertInput {
   username: String
   avatarUrl: String
   website: String
+  bio: String
 }
 
 type ProfileInsertResponse {
@@ -544,6 +547,7 @@ input ProfileOrderBy {
   username: OrderByDirection
   avatarUrl: OrderByDirection
   website: OrderByDirection
+  bio: OrderByDirection
 }
 
 input ProfileUpdateInput {
@@ -552,6 +556,7 @@ input ProfileUpdateInput {
   username: String
   avatarUrl: String
   website: String
+  bio: String
 }
 
 type ProfileUpdateResponse {

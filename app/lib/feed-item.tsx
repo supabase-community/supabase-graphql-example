@@ -30,7 +30,7 @@ export function FeedItem(props: {
     [props.post.createdAt]
   );
   return (
-    <div className="py-8 flex flex-wrap md:flex-nowrap">
+    <div className="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
       <div className="flex-1 md:flex-grow">
         <Link href={props.post.url}>
           <a>
@@ -40,7 +40,7 @@ export function FeedItem(props: {
           </a>
         </Link>
 
-        <div className="flex items-center flex-wrap pb-4 mb-4 border-gray-100 mt-auto w-full">
+        <div className="flex items-center flex-wrap pb-4 border-gray-100 mt-auto w-full">
           <span className="text-gray-400 mr-3 inline-flex items-center  text-sm pr-3 py-1 border-r-2 border-gray-200">
             <PointIcon className="w-4 h-4 mr-1" />
             {props.post.score}{" "}

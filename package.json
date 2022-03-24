@@ -1,0 +1,23 @@
+{
+  "name": "pg-graphql-example",
+  "workspaces": [
+    "app"
+  ],
+  "private": true,
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/gql-tag-operations-preset": "1.3.0",
+    "graphql": "16.3.0",
+    "husky": "7.0.4",
+    "lint-staged": "12.3.7",
+    "prettier": "2.6.0"
+  },
+  "lint-staged": {
+    "*.{js,css,md,ts,tsx}": "prettier --write"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen:watch": "yarn run codegen -- --watch"
+  }
+}

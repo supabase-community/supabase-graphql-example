@@ -3,3 +3,4 @@
 .env
 .env.production
 yarn-error.log
+node_modules

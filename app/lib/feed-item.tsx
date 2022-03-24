@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { DocumentType, gql } from "../gql";
-import { CalendarIcon, CommentIcon, PointIcon } from "./icons";
+import { CalendarIcon, CommentIcon, PointIcon, UserIcon } from "./icons";
 import { timeAgo } from "./time-ago";
 
 const FeedItem_PostFragment = gql(/* GraphQL */ `
@@ -52,6 +52,12 @@ export function FeedItem(props: {
               {props.post.commentCollection?.totalCount === 1
                 ? "comment"
                 : "comments"}
+            </a>
+          </Link>
+          <Link href={`/profile/${props.post.profile?.id}`}>
+            <a className="text-gray-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
+              <UserIcon className="w-4 h-4 mr-1" />
+              {props.post.profile?.username}
             </a>
           </Link>
           <Link href={`/item/${props.post.id}`}>

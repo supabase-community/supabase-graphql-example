@@ -50,3 +50,21 @@ export function PointIcon(props: { className?: string }) {
     </svg>
   );
 }
+
+export function UserIcon(props: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="w-4 h-4 mr-1"
+      stroke="currentColor"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      {...props}
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx={12} cy={7} r={4} />
+    </svg>
+  );
+}

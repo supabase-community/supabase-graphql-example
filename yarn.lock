@@ -882,10 +882,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
-"@graphql-yoga/render-graphiql@0.1.0-beta.2":
-  version "0.1.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@graphql-yoga/render-graphiql/-/render-graphiql-0.1.0-beta.2.tgz#4023d7b4f03853f575b49c28b2ed8f93956c838f"
-  integrity sha512-cq2YXgvdEyzARbgDTH9LLX29rm+BQKp77CTCP+E7nJl77ibE3FxX37TA7fWJy56CouYngRzVIGLRwaUonaL+8w==
+"@graphql-yoga/render-graphiql@0.2.0-canary-32120c3.0":
+  version "0.2.0-canary-32120c3.0"
+  resolved "https://registry.yarnpkg.com/@graphql-yoga/render-graphiql/-/render-graphiql-0.2.0-canary-32120c3.0.tgz#97636d7b4aabf11276db5c414d5566e37ea9cee1"
+  integrity sha512-g67LngcYM75o2uknTkZ+FGl17rJGUL+nrhFgh4WZVcnxopSK6Bl8o83MXz6rbnYpwUzADbwejp1SHIto8O77Dw==
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"

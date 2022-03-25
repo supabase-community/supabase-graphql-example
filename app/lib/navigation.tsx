@@ -1,6 +1,8 @@
 import { Auth } from "@supabase/ui";
 import Link from "next/link";
 import React from "react";
+import { ActiveLink } from "./active-link";
+import { SupabaseIcon } from "./icons";
 
 export function Navigation() {
   const user = Auth.useUser();
@@ -9,31 +11,23 @@ export function Navigation() {
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <Link href="/">
           <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
+            <SupabaseIcon height={24} />
             <span className="ml-3 text-xl">supanews</span>
           </a>
         </Link>
         <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
-          <Link href="/newest">
-            <a className="mr-5 hover:text-gray-900">new</a>
-          </Link>
-          <Link href="/comments">
-            <a className="mr-5 hover:text-gray-900">comments</a>
-          </Link>
-          <Link href="/submit">
-            <a className="mr-5 hover:text-gray-900">submit</a>
-          </Link>
+          <ActiveLink href="/" activeClassName="text-black">
+            <a className="mr-5 hover:text-gray-900 text-gray-400">feed</a>
+          </ActiveLink>
+          <ActiveLink href="/newest" activeClassName="text-black">
+            <a className="mr-5 hover:text-gray-900 text-gray-400">new</a>
+          </ActiveLink>
+          <ActiveLink href="/comments" activeClassName="text-black">
+            <a className="mr-5 hover:text-gray-900 text-gray-400">comments</a>
+          </ActiveLink>
+          <ActiveLink href="/submit" activeClassName="text-black">
+            <a className="mr-5 hover:text-gray-900 text-gray-400">submit</a>
+          </ActiveLink>
         </nav>
         {user.user === null ? (
           <Link href="login">
@@ -54,15 +48,13 @@ export function Navigation() {
           </Link>
         ) : (
           <>
-            <Link href="/account">
-              <a className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+            <ActiveLink href="/account" activeClassName="text-black ">
+              <a className="inline-flex items-center mt-4 md:mt-0 md:mr-5">
                 account
               </a>
-            </Link>
+            </ActiveLink>
             <Link href="/logout">
-              <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-                logout
-              </button>
+              <a className="inline-flex items-center mt-4 md:mt-0">logout</a>
             </Link>
           </>
         )}

@@ -17,6 +17,7 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
 - [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset) - This code gen preset generates typings for your inline gql function usages, without having to manually specify import statements for the documents
 - [urql](https://formidable.com/open-source/urql/) - A highly customizable and versatile GraphQL client
+- [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
 
 ### Backend
 

@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 AS $function$
 begin
   insert into public."Profile" (id, "avatarUrl", username)
-  values (new.id, new.raw_user_meta_data->>'avatar_url', split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
+  values (new.id, 'https://www.gravatar.com/avatar/' || md5(new.email) || '?d=mp', split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
   return new;
 end;
 $function$

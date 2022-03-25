@@ -82,14 +82,16 @@ function VoteButtons(props: {
     <div className="flex flex-col self-center mr-3 pb-8">
       <button
         onClick={async () => {
-          if (props.post.upVoteByViewer?.totalCount === 0) {
+          if (!user) {
+            router.push("/login");
+          } else if (props.post.upVoteByViewer?.totalCount === 0) {
             await deleteVote({
               postId: props.post.id,
-              profileId: user!.id,
+              profileId: user.id,
             });
             vote({
               postId: props.post.id,
-              profileId: user!.id,
+              profileId: user.id,
               voteDirection: "UP",
             });
           }
@@ -101,14 +103,16 @@ function VoteButtons(props: {
       </button>
       <button
         onClick={async () => {
-          if (props.post.downVoteByViewer?.totalCount === 0) {
+          if (!user) {
+            router.push("/login");
+          } else if (props.post.downVoteByViewer?.totalCount === 0) {
             await deleteVote({
               postId: props.post.id,
-              profileId: user!.id,
+              profileId: user.id,
             });
             vote({
               postId: props.post.id,
-              profileId: user!.id,
+              profileId: user.id,
               voteDirection: "DOWN",
             });
           }

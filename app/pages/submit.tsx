@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Auth, Input, Button } from "@supabase/ui";
 import { gql } from "../gql";
-import { useMutation } from "urql";
+import { CombinedError, useMutation } from "urql";
 import { Container } from "../lib/container";
 import { MainSection } from "../lib/main-section";
 
@@ -17,6 +17,22 @@ const CreatePostMutation = gql(/* GraphQL */ `
     }
   }
 `);
+
+function extractExpectedGraphQLErrors(
+  error: CombinedError | undefined
+): null | string {
+  if (error === undefined) {
+    return null;
+  }
+
+  for (const graphQLError of error.graphQLErrors) {
+    if (graphQLError.message.includes("Post_url_key")) {
+      return "This news has already been submitted.";
+    }
+  }
+
+  return null;
+}
 
 const Submit: NextPage = () => {
   const session = Auth.useUser();
@@ -43,34 +59,46 @@ const Submit: NextPage = () => {
     return null;
   }
 
+  const error = extractExpectedGraphQLErrors(createPostMutation.error);
+
   return (
     <Container>
       <MainSection>
         <form className="container px-5 py-24 mx-auto max-w-md">
-          <Input
-            placeholder="Title"
-            value={title}
-            onChange={(ev) => setTitle(ev.target.value)}
-          />
-          <Input
-            placeholder="URL"
-            value={url}
-            onChange={(ev) => setUrl(ev.target.value)}
-          />
-          <Button
-            onClick={() => {
-              createPost({
-                input: {
-                  url,
-                  title,
-                  profileId: session.user!.id,
-                  score: 1,
-                },
-              });
-            }}
-          >
-            Submit
-          </Button>
+          <h1 className="font-semibold text-xl tracking-tight mb-5">Submit</h1>
+          <div className="mb-4">
+            <Input
+              placeholder="Title"
+              value={title}
+              onChange={(ev) => setTitle(ev.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              placeholder="URL"
+              value={url}
+              onChange={(ev) => setUrl(ev.target.value)}
+            />
+          </div>
+          <div className="mb-4 min-h-1">{error}</div>
+          {createPostMutation.fetching ? (
+            <Button type="outline">Loading...</Button>
+          ) : (
+            <Button
+              onClick={() => {
+                createPost({
+                  input: {
+                    url,
+                    title,
+                    profileId: session.user!.id,
+                    score: 1,
+                  },
+                });
+              }}
+            >
+              Submit
+            </Button>
+          )}
         </form>
       </MainSection>
     </Container>

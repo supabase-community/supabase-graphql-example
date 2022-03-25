@@ -37,11 +37,27 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ## QuickStart
 
+### Setup env vars
+
+- `cp app/.env.example app/.env`
+- Fill in your url and anon key from the Supabase Dashboard: https://app.supabase.io/project/_/settings/api
+
+### Install dependencies, GraphQL codegen, run app
+
 ```bash
 yarn
 yarn codegen
 yarn workspace app dev
 ```
+
+### Deploy to Vercel
+
+Provide the following settings to deploy a production build to Vercel:
+
+- BUILD COMMAND: `yarn codegen && yarn workspace app build`
+- OUTPUT DIRECTORY: `./app/.next`
+- INSTALL COMMAND: `yarn`
+- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace app dev --port $PORT`
 
 ## Development
 

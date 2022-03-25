@@ -12,10 +12,12 @@ const {
   printSchema,
 } = require("graphql");
 
+const supagradient = gradient(["#00CB8A", "#78E0B8"]);
+
 function fetchGraphQLSchema(url, options) {
   options = options || {}; // eslint-disable-line no-param-reassign
 
-  const bar = new ProgressBar("🔦 Introspecting schema [:bar]", 24);
+  const bar = new ProgressBar("🔦  Introspecting schema [:bar]", 24);
 
   const id = setInterval(function () {
     bar.tick();
@@ -51,8 +53,8 @@ const filePath = path.join(__dirname, "../graphql/schema/", "schema.graphql");
 console.log();
 
 console.log(
-  gradient.retro(
-    `🗞  Fetching GraphQL Schema from ${process.env.SUPABASE_URL} ...`
+  supagradient(
+    `🗞   Fetching GraphQL Schema from ${process.env.SUPABASE_URL} ...`
   )
 );
 
@@ -60,6 +62,8 @@ fetchGraphQLSchema(`${process.env.SUPABASE_URL}/rest/v1/rpc/graphql`, {
   readable: true,
 }).then((schema) => {
   fs.writeFileSync(filePath, schema, "utf-8");
-  console.log(gradient.morning(`✨  Saved to ${filePath}`));
-  console.log('💡  Be sure to run "yarn run codegen" to genrate latest types.');
+  console.log(supagradient(`✨  Saved to ${filePath}`));
+  console.log(
+    '💡  Be sure to run "yarn run codegen" to generate latest types.'
+  );
 });

@@ -129,7 +129,7 @@ const FeedItem_PostFragment = gql(/* GraphQL */ `
     id
     title
     url
-    score
+    voteTotal
     createdAt
     commentCollection {
       totalCount
@@ -166,10 +166,8 @@ export function FeedItem(props: {
         <div className="flex items-center flex-wrap pb-4 border-gray-100 mt-auto w-full">
           <span className="text-gray-400 mr-3 inline-flex items-center  text-sm pr-3 py-1 border-r-2 border-gray-200">
             <PointIcon className="w-4 h-4 mr-1" />
-            {props.post.score}{" "}
-            {props.post.commentCollection?.totalCount === 1
-              ? "point"
-              : "points"}
+            {props.post.voteTotal}{" "}
+            {props.post.voteTotal === 1 ? "point" : "points"}
           </span>
           <Link href={`/item/${props.post.id}`}>
             <a className="text-gray-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">

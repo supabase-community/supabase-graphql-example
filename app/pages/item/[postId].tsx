@@ -112,16 +112,18 @@ const Item: NextPage = () => {
               <title>supanews | {post.node?.title}</title>
               <meta name="description" content={post.node?.url} />
             </Head>
-            <section className="text-gray-600 body-font overflow-hidden">
+            <section className="text-gray-600 body-font overflow-hidden w-full">
               <div className="container px-5 py-24 mx-auto">
                 <FeedItem post={post.node} key={post.cursor} />
 
-                <PostCommentForm postId={post.node.id} />
+                <div className="max-w-md">
+                  <PostCommentForm postId={post.node.id} />
 
-                <div className="mt-10">
-                  {post.node?.comments?.edges.map((edge) => (
-                    <CommentItem comment={edge.node!} key={edge.cursor} />
-                  ))}
+                  <div className="mt-10">
+                    {post.node?.comments?.edges.map((edge) => (
+                      <CommentItem comment={edge.node!} key={edge.cursor} />
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

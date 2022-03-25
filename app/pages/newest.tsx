@@ -43,7 +43,7 @@ const Newest: NextPage = () => {
       </Head>
 
       <MainSection>
-        <section className="text-gray-600 body-font overflow-hidden">
+        <section className="text-gray-600 body-font overflow-hidden w-full">
           <div className="container px-5 py-24 mx-auto">
             <div className="-my-8">
               {newestQuery?.data?.feed?.edges.map((edge) => (

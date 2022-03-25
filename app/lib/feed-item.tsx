@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useMutation } from "urql";
+import { Modal } from "@supabase/ui";
 
 import { DocumentType, gql } from "../gql";
 import {
@@ -11,6 +12,7 @@ import {
   ChevronUpIcon,
   CommentIcon,
   PointIcon,
+  TrashIcon,
   UserIcon,
 } from "./icons";
 import { timeAgo } from "./time-ago";
@@ -137,12 +139,14 @@ const FeedItem_PostFragment = gql(/* GraphQL */ `
       username
     }
     ...VoteButtons_PostFragment
+    ...DeleteButton_PostFragment
   }
 `);
 
 export function FeedItem(props: {
   post: DocumentType<typeof FeedItem_PostFragment>;
 }) {
+  const { user } = Auth.useUser();
   const createdAt = React.useMemo(
     () => timeAgo.format(new Date(props.post.createdAt)),
     [props.post.createdAt]
@@ -188,8 +192,65 @@ export function FeedItem(props: {
               {createdAt}
             </a>
           </Link>
+          {user?.id && props.post.profile?.id === user?.id ? (
+            <DeleteButton post={props.post} />
+          ) : null}
         </div>
       </div>
     </div>
   );
 }
+
+const DeleteButton_DeletePostMutation = gql(/* GraphQL */ `
+  mutation DeleteButton_DeletePostMutation($postId: BigInt!) {
+    deleteFromPostCollection(atMost: 1, filter: { id: { eq: $postId } }) {
+      affectedCount
+    }
+  }
+`);
+
+const DeleteButton_PostFragment = gql(/* GraphQL */ `
+  fragment DeleteButton_PostFragment on Post {
+    id
+  }
+`);
+
+const DeleteButton = (props: {
+  post: DocumentType<typeof DeleteButton_PostFragment>;
+}) => {
+  const router = useRouter();
+  const [show, setShow] = React.useState(false);
+  const [deletePostMutation, deletePost] = useMutation(
+    DeleteButton_DeletePostMutation
+  );
+
+  React.useEffect(() => {
+    if (deletePostMutation.data) {
+      router.push("/");
+    }
+  }, [deletePostMutation.data, deletePostMutation.error]);
+
+  return (
+    <>
+      <button
+        className="text-gray-400 inline-flex items-center text-sm pl-3 ml-3 border-l-2 border-gray-200"
+        onClick={() => setShow(true)}
+      >
+        <TrashIcon className="w-4 h-4 mr-1" />
+        Delete
+      </button>
+      <Modal
+        title="Do you want to delete your post?"
+        visible={show}
+        onCancel={() => setShow(false)}
+        onConfirm={() => {
+          deletePost({
+            postId: props.post.id,
+          });
+        }}
+      >
+        Deleting your post can not be reverted
+      </Modal>
+    </>
+  );
+};

@@ -28,9 +28,11 @@ export function CommentItem(props: {
     [props.comment.createdAt]
   );
   return (
-    <div className="py-8">
-      <div>
-        <span>{props.comment.profile?.username} </span>
+    <div className="pb-4">
+      <div className="text-sm">
+        <Link href={`/profile/${props.comment.profile?.id}`}>
+          <a className="font-bold">{props.comment.profile?.username} </a>
+        </Link>
         <span>{createdAt}</span>
       </div>
       <div className="flex-1 md:flex-grow">{props.comment.message}</div>

@@ -53,17 +53,19 @@ function PostCommentForm(props: { postId: string }) {
   const [postCommentMutation, postComment] = useMutation(PostCommentMutation);
   const [message, setMessage] = React.useState("");
   const { user } = Auth.useUser();
+  const router = useRouter();
 
   React.useEffect(() => {
     if (postCommentMutation.data) {
-      alert(" DONE");
+      router.reload();
     }
   }, [postCommentMutation.data]);
 
   return (
     <form>
-      Write comment
+      <div className="mb-2 font-bold">Write comment</div>
       <textarea
+        className="w-full border-solid  border-2 border-gray-100 rounded-sm"
         value={message}
         onChange={(ev) => setMessage(ev.target.value)}
       />
@@ -113,9 +115,11 @@ const Item: NextPage = () => {
 
                 <PostCommentForm postId={post.node.id} />
 
-                {post.node?.comments?.edges.map((edge) => (
-                  <CommentItem comment={edge.node!} key={edge.cursor} />
-                ))}
+                <div className="mt-10">
+                  {post.node?.comments?.edges.map((edge) => (
+                    <CommentItem comment={edge.node!} key={edge.cursor} />
+                  ))}
+                </div>
               </div>
             </section>
           </>

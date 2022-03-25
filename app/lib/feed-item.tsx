@@ -1,5 +1,8 @@
+import { Auth } from "@supabase/ui";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { useMutation } from "urql";
 
 import { DocumentType, gql } from "../gql";
 import {
@@ -11,6 +14,113 @@ import {
   UserIcon,
 } from "./icons";
 import { timeAgo } from "./time-ago";
+
+const VoteButtons_PostFragment = gql(/* GraphQL */ `
+  fragment VoteButtons_PostFragment on Post {
+    id
+    upVoteByViewer: voteCollection(
+      filter: { profileId: { eq: $profileId }, direction: { eq: "UP" } }
+    ) {
+      totalCount
+    }
+    downVoteByViewer: voteCollection(
+      filter: { profileId: { eq: $profileId }, direction: { eq: "DOWN" } }
+    ) {
+      totalCount
+    }
+  }
+`);
+
+const VoteButtons_DeleteVoteMutation = gql(/* GraphQL */ `
+  mutation VoteButtons_DeleteVoteMutation($postId: BigInt!, $profileId: UUID!) {
+    deleteFromVoteCollection(
+      filter: { postId: { eq: $postId }, profileId: { eq: $profileId } }
+    ) {
+      __typename
+    }
+  }
+`);
+
+const VoteButtons_VoteMutation = gql(/* GraphQL */ `
+  mutation VoteButtons_VoteMutation(
+    $postId: BigInt!
+    $profileId: UUID!
+    $voteDirection: String!
+  ) {
+    insertIntoVoteCollection(
+      objects: [
+        { postId: $postId, profileId: $profileId, direction: $voteDirection }
+      ]
+    ) {
+      __typename
+      affectedCount
+      records {
+        id
+        direction
+      }
+    }
+  }
+`);
+
+function VoteButtons(props: {
+  post: DocumentType<typeof VoteButtons_PostFragment>;
+}) {
+  const router = useRouter();
+  const { user } = Auth.useUser();
+  const [, deleteVote] = useMutation(VoteButtons_DeleteVoteMutation);
+  const [voteMutation, vote] = useMutation(VoteButtons_VoteMutation);
+
+  React.useEffect(() => {
+    if (voteMutation.data) {
+      router.reload();
+    }
+  }, [voteMutation.data]);
+
+  return (
+    <div className="flex flex-col self-center mr-3 pb-8">
+      <button
+        onClick={async () => {
+          if (props.post.upVoteByViewer?.totalCount === 0) {
+            await deleteVote({
+              postId: props.post.id,
+              profileId: user!.id,
+            });
+            vote({
+              postId: props.post.id,
+              profileId: user!.id,
+              voteDirection: "UP",
+            });
+          }
+        }}
+      >
+        <ChevronUpIcon
+          strokeWidth={props.post.upVoteByViewer?.totalCount !== 0 ? "4" : "2"}
+        />
+      </button>
+      <button
+        onClick={async () => {
+          if (props.post.downVoteByViewer?.totalCount === 0) {
+            await deleteVote({
+              postId: props.post.id,
+              profileId: user!.id,
+            });
+            vote({
+              postId: props.post.id,
+              profileId: user!.id,
+              voteDirection: "DOWN",
+            });
+          }
+        }}
+      >
+        <ChevronDownIcon
+          strokeWidth={
+            props.post.downVoteByViewer?.totalCount !== 0 ? "4" : "2"
+          }
+        />
+      </button>
+    </div>
+  );
+}
 
 const FeedItem_PostFragment = gql(/* GraphQL */ `
   fragment FeedItem_PostFragment on Post {
@@ -26,16 +136,7 @@ const FeedItem_PostFragment = gql(/* GraphQL */ `
       id
       username
     }
-    upVoteByViewer: voteCollection(
-      filter: { profileId: { eq: $profileId }, direction: { eq: "UP" } }
-    ) {
-      totalCount
-    }
-    downVoteByViewer: voteCollection(
-      filter: { profileId: { eq: $profileId }, direction: { eq: "DOWN" } }
-    ) {
-      totalCount
-    }
+    ...VoteButtons_PostFragment
   }
 `);
 
@@ -48,22 +149,7 @@ export function FeedItem(props: {
   );
   return (
     <div className="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
-      <div className="flex flex-col self-center mr-3 pb-8">
-        <button>
-          <ChevronUpIcon
-            strokeWidth={
-              props.post.upVoteByViewer?.totalCount !== 0 ? "4" : "2"
-            }
-          />
-        </button>
-        <button>
-          <ChevronDownIcon
-            strokeWidth={
-              props.post.downVoteByViewer?.totalCount !== 0 ? "4" : "2"
-            }
-          />
-        </button>
-      </div>
+      <VoteButtons post={props.post} />
       <div className="flex-1 md:flex-grow">
         <Link href={props.post.url}>
           <a>

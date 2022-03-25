@@ -1,0 +1,12 @@
+overwrite: true
+schema: "./graphql/schema/schema.graphql"
+documents:
+  - "app/**/*.tsx"
+  - "!app/gql/**/*"
+generates:
+  ./app/gql/:
+    preset: gql-tag-operations-preset
+
+hooks:
+  afterOneFileWrite:
+    - prettier --write

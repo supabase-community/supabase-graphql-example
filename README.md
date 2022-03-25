@@ -34,6 +34,9 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - Create Comment
 - Delete Comment
 - Upvote/Downvote Post
+- View Profile (Account)
+- View Profile (Public)
+- Pagination (Posts, Comments)
 
 ## QuickStart
 
@@ -104,7 +107,7 @@ dbmate dump
 - Post `url` is unique
 - Vote is unique per Profile, Post (ie, you cannot vote more than once -- up or down)
 
-See: `./data/db/schema.sql`
+See: [`./data/db/schema.sql`](./data/db/schema.sql)
 
 > Note: The schema includes the entire Supabase schema with auth, storage, functions, etc.
 
@@ -116,9 +119,11 @@ Note: Assumes a known `profileId` currently.
 
 ## GraphQL Schema
 
-See: `./graphql/schema/schema.graphql`
+See: [`./graphql/schema/schema.graphql`](./graphql/schema/schema.graphql)
 
 ## Example Query
+
+See: [`./graphql/queries/`](./graphql/queries/)
 
 Use: `https://mvrfvzcivgabojxddwtk.supabase.co/rest/v1/rpc/graphql`
 
@@ -172,6 +177,10 @@ query {
   }
 }
 ```
+
+# Row Level Security Matrix (RLS)
+
+See: [Row Level Security Matrix (RLS)](./data/supabase/rls-policies.md)
 
 ## Read More
 

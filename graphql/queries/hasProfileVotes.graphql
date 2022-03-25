@@ -1,0 +1,26 @@
+query {
+  post: postCollection(filter: { id: { eq: 22 } }, first: 1) {
+    edges {
+      post: node {
+        id
+        title
+        upVoteCount: voteCollection(
+          filter: {
+            profileId: { eq: "3e223118-04b2-4faa-8ed9-d3995fc50975" }
+            direction: { eq: "UP" }
+          }
+        ) {
+          totalCount
+        }
+        downVoteCount: voteCollection(
+          filter: {
+            profileId: { eq: "3e223118-04b2-4faa-8ed9-d3995fc50975" }
+            direction: { eq: "DOWN" }
+          }
+        ) {
+          totalCount
+        }
+      }
+    }
+  }
+}

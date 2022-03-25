@@ -4,7 +4,7 @@ BEGIN
 
 WITH r AS (
 SELECT
-	"postId",
+	coalesce("Vote"."postId", "Post".id) AS "postId",
 	count(1) "voteTotal",
 	count(1) FILTER (WHERE direction = 'UP') "upVoteTotal",
 	count(1) FILTER (WHERE direction = 'DOWN') "downVoteTotal",
@@ -16,25 +16,30 @@ SELECT
 			ELSE
 				0
 			END), 0) "voteDelta",
-	abs(sum(
+	sum(
 		CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
 			- 1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8) AS "score",
-	dense_rank() OVER (ORDER BY sum( CASE WHEN direction = 'UP' THEN
+		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 AS "score",
+	rank() OVER (ORDER BY coalesce(sum( CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
 			- 1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8 DESC) "voteRank"
+		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8, '-infinity')
+		DESC,
+		"Post"."createdAt" DESC,
+		"Post".title ASC) "voteRank"
 FROM
 	"Vote"
+	RIGHT JOIN "Post" ON "Vote"."postId" = "Post".id
 GROUP BY
-	"postId"
+	"Post".id,
+	"Vote"."postId"
 )
 
 UPDATE

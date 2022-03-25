@@ -50,6 +50,15 @@ yarn codegen
 yarn workspace app dev
 ```
 
+### Deploy to Vercel
+
+Provide the following settings to deploy a production build to Vercel:
+
+- BUILD COMMAND: `yarn codegen && yarn workspace app build`
+- OUTPUT DIRECTORY: `./app/.next`
+- INSTALL COMMAND: `yarn`
+- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace app dev --port $PORT`
+
 ## Development
 
 1. Fetch latest GraphQL Schema

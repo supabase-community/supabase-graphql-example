@@ -38,9 +38,7 @@ const About: NextPage = () => {
               </ul>
               <h3 className="text-lg py-6">Frontend</h3>
               <ul>
-                <li>
-                  [Next.js](https://nextjs.org) <li></li>React Framework
-                </li>
+                <li>[Next.js](https://nextjs.org) React Framework</li>
                 <li>
                   [TypeScript](https://www.typescriptlang.org) TypeScript is a
                   strongly typed programming language that builds on JavaScript,
@@ -48,35 +46,35 @@ const About: NextPage = () => {
                 </li>
                 <li>
                   [graphql-code-generator](https://www.graphql-code-generator.com){" "}
-                  <li></li>Generate code from your GraphQL schema and operations
-                  with a simple CLI
+                  Generate code from your GraphQL schema and operations with a
+                  simple CLI
                 </li>
                 <li>
                   [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset){" "}
-                  <li></li>This code gen preset generates typings for your
-                  inline gql function usages, without having to manually specify
-                  import statements for the documents
+                  This code gen preset generates typings for your inline gql
+                  function usages, without having to manually specify import
+                  statements for the documents
                 </li>
                 <li>
-                  [urql](https://formidable.com/open-source/urql/) <li></li>A
-                  highly customizable and versatile GraphQL client
+                  [urql](https://formidable.com/open-source/urql/) A highly
+                  customizable and versatile GraphQL client
                 </li>
                 <li>
-                  [Gravatar](https://en.gravatar.com) <li></li>Default avatar
-                  profile images from Gravatar
+                  [Gravatar](https://en.gravatar.com) Default avatar profile
+                  images from Gravatar
                 </li>
               </ul>
               <h3 className="text-lg py-6">Backend</h3>
               <ul>
                 <li>
-                  [Supabase](https://supabase.com) <li></li>Create a backend in
-                  less than 2 minutes. Start your project with a Postgres
-                  Database, Authentication, instant APIs, Realtime subscriptions
-                  and Storage.
+                  [Supabase](https://supabase.com) Create a backend in less than
+                  2 minutes. Start your project with a Postgres Database,
+                  Authentication, instant APIs, Realtime subscriptions and
+                  Storage.
                 </li>
                 <li>
                   [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql){" "}
-                  <li></li>A native [PostgreSQL
+                  A native [PostgreSQL
                   extension](https://supabase.github.io/pg_graphql/) adding
                   [GraphQL support](https://graphql.org). The extension keeps
                   schema generation, query parsing, and resolvers all neatly
@@ -88,14 +86,13 @@ const About: NextPage = () => {
                   Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates)
                   and [Postgres
                   Functions](https://supabase.com/docs/guides/database/functions){" "}
-                  <li></li>When votes are in, use triggers to invoke a Postgres
-                  function that calculates a post score to rank the feed
+                  When votes are in, use triggers to invoke a Postgres function
+                  that calculates a post score to rank the feed
                 </li>
                 <li>
                   [Postgres Enumerated
                   Types](https://www.postgresql.org/docs/14/datatype-enum.html){" "}
-                  <li></li>Enums help defined the direction of a vote: UP or
-                  DOWN.
+                  Enums help defined the direction of a vote: UP or DOWN.
                 </li>
               </ul>
               <h3 className="text-lg py-6">Functionality</h3>

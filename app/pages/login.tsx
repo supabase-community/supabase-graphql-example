@@ -24,7 +24,9 @@ const LogIn: NextPage = () => {
   return (
     <Container>
       <MainSection>
-        <div className="m-width-md">
+        <div className="m-width-md mx-auto">
+          <h1 className="font-semibold text-xl tracking-tight mb-5">Login</h1>
+
           <Auth supabaseClient={supabaseClient} providers={["github"]} />
         </div>
       </MainSection>

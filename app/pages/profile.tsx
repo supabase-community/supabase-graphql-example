@@ -8,14 +8,11 @@ import { FeedItem } from "../lib/feed-item";
 import { MainSection } from "../lib/main-section";
 import { noopUUID } from "../lib/noop-uuid";
 
-const IndexRouteQuery = gql(/* GraphQL */ `
-  query IndexRouteQuery($profileId: UUID!) {
+const ProfileRouteQuery = gql(/* GraphQL */ `
+  query ProfileRouteQuery($profileId: UUID!) {
     feed: postCollection(
-      orderBy: [
-        { voteRank: AscNullsFirst }
-        { score: DescNullsFirst }
-        { createdAt: DescNullsFirst }
-      ]
+      filter: { profileId: { eq: $profileId } }
+      orderBy: [{ createdAt: DescNullsFirst }]
       first: 15
     ) {
       pageInfo {
@@ -32,10 +29,10 @@ const IndexRouteQuery = gql(/* GraphQL */ `
   }
 `);
 
-const Home: NextPage = () => {
+const Newest: NextPage = () => {
   const { user } = Auth.useUser();
-  const [indexQuery] = useQuery({
-    query: IndexRouteQuery,
+  const [newestQuery] = useQuery({
+    query: ProfileRouteQuery,
     variables: {
       profileId: user?.id ?? noopUUID,
     },
@@ -44,7 +41,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <Head>
-        <title>supanews | Feed</title>
+        <title>supanews | Newest</title>
         <meta name="description" content="What is hot?" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -53,12 +50,12 @@ const Home: NextPage = () => {
         <section className="text-gray-600 body-font overflow-hidden">
           <div className="container px-5 py-24 mx-auto">
             <div className="-my-8">
-              {indexQuery?.data?.feed?.edges.map((edge) => (
+              {newestQuery?.data?.feed?.edges.map((edge) => (
                 <FeedItem post={edge.node!} key={edge.cursor} />
               ))}
             </div>
           </div>
-          {indexQuery.data?.feed?.pageInfo.hasNextPage ? (
+          {newestQuery.data?.feed?.pageInfo.hasNextPage ? (
             <div className="flex justify-center content-center">
               <Button>Load more.</Button>
             </div>
@@ -69,4 +66,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Newest;

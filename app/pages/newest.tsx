@@ -1,4 +1,4 @@
-import { Button } from "@supabase/ui";
+import { Auth, Button } from "@supabase/ui";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useQuery } from "urql";
@@ -6,9 +6,10 @@ import { gql } from "../gql";
 import { Container } from "../lib/container";
 import { FeedItem } from "../lib/feed-item";
 import { MainSection } from "../lib/main-section";
+import { noopUUID } from "../lib/noop-uuid";
 
 const NewestRouteQuery = gql(/* GraphQL */ `
-  query NewestRouteQuery {
+  query NewestRouteQuery($profileId: UUID!) {
     feed: postCollection(orderBy: [{ createdAt: DescNullsFirst }], first: 15) {
       pageInfo {
         hasNextPage
@@ -25,7 +26,13 @@ const NewestRouteQuery = gql(/* GraphQL */ `
 `);
 
 const Newest: NextPage = () => {
-  const [newestQuery] = useQuery({ query: NewestRouteQuery });
+  const { user } = Auth.useUser();
+  const [newestQuery] = useQuery({
+    query: NewestRouteQuery,
+    variables: {
+      profileId: user?.id ?? noopUUID,
+    },
+  });
 
   return (
     <Container>

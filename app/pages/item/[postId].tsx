@@ -9,9 +9,10 @@ import { CommentItem } from "../../lib/comment-item";
 import { Container } from "../../lib/container";
 import { FeedItem } from "../../lib/feed-item";
 import { MainSection } from "../../lib/main-section";
+import { noopUUID } from "../../lib/noop-uuid";
 
 const ItemRouteQuery = gql(/* GraphQL */ `
-  query ItemRouteQuery($postId: BigInt!) {
+  query ItemRouteQuery($postId: BigInt!, $profileId: UUID!) {
     post: postCollection(filter: { id: { eq: $postId } }, first: 1) {
       edges {
         cursor
@@ -85,12 +86,14 @@ function PostCommentForm(props: { postId: string }) {
 }
 
 const Item: NextPage = () => {
+  const { user } = Auth.useUser();
   const router = useRouter();
   const { postId } = router.query;
   const [itemRouteQuery] = useQuery({
     query: ItemRouteQuery,
     variables: {
       postId,
+      profileId: user?.id ?? noopUUID,
     },
   });
 

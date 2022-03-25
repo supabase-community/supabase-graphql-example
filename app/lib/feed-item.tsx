@@ -2,7 +2,14 @@ import Link from "next/link";
 import React from "react";
 
 import { DocumentType, gql } from "../gql";
-import { CalendarIcon, CommentIcon, PointIcon, UserIcon } from "./icons";
+import {
+  CalendarIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CommentIcon,
+  PointIcon,
+  UserIcon,
+} from "./icons";
 import { timeAgo } from "./time-ago";
 
 const FeedItem_PostFragment = gql(/* GraphQL */ `
@@ -19,6 +26,16 @@ const FeedItem_PostFragment = gql(/* GraphQL */ `
       id
       username
     }
+    upVoteByViewer: voteCollection(
+      filter: { profileId: { eq: $profileId }, direction: { eq: "UP" } }
+    ) {
+      totalCount
+    }
+    downVoteByViewer: voteCollection(
+      filter: { profileId: { eq: $profileId }, direction: { eq: "DOWN" } }
+    ) {
+      totalCount
+    }
   }
 `);
 
@@ -31,6 +48,22 @@ export function FeedItem(props: {
   );
   return (
     <div className="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
+      <div className="flex flex-col self-center mr-3 pb-8">
+        <button>
+          <ChevronUpIcon
+            strokeWidth={
+              props.post.upVoteByViewer?.totalCount !== 0 ? "4" : "2"
+            }
+          />
+        </button>
+        <button>
+          <ChevronDownIcon
+            strokeWidth={
+              props.post.downVoteByViewer?.totalCount !== 0 ? "4" : "2"
+            }
+          />
+        </button>
+      </div>
       <div className="flex-1 md:flex-grow">
         <Link href={props.post.url}>
           <a>

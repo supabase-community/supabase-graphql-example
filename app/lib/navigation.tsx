@@ -48,13 +48,15 @@ export function Navigation() {
           </Link>
         ) : (
           <>
-            <ActiveLink href="/account" activeClassName="text-black ">
-              <a className="inline-flex items-center mt-4 md:mt-0 md:mr-5">
+            <ActiveLink href="/account" activeClassName="text-black">
+              <a className="inline-flex items-center mt-4 md:mt-0 md:mr-5 text-gray-400 hover:text-gray-900">
                 account
               </a>
             </ActiveLink>
             <Link href="/logout">
-              <a className="inline-flex items-center mt-4 md:mt-0">logout</a>
+              <a className="inline-flex items-center mt-4 md:mt-0 text-gray-400 hover:text-gray-900">
+                logout
+              </a>
             </Link>
           </>
         )}

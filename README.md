@@ -1,4 +1,4 @@
-# Supabase GraphQL Example App
+# Supabase PG GraphQL Example App
 
 A basic HackerNews-like clone where posts can be submitted with url links and then up and down voted.
 

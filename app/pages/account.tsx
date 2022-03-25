@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { Auth, Button } from "@supabase/ui";
 import { CombinedError, useMutation, useQuery } from "urql";
 import { Input } from "@supabase/ui";
-import { useSupabaseClient } from "../lib/supabase";
 import { DocumentType, gql } from "../gql";
 import { Container } from "../lib/container";
 import { MainSection } from "../lib/main-section";
@@ -50,6 +49,7 @@ const ProfileFragment = gql(/* GraphQL */ `
     id
     username
     website
+    bio
   }
 `);
 
@@ -58,10 +58,11 @@ const UpdateProfileMutation = gql(/* GraphQL */ `
     $userId: UUID!
     $newUsername: String!
     $newWebsite: String!
+    $newBio: String!
   ) {
     updateProfileCollection(
       filter: { id: { eq: $userId } }
-      set: { username: $newUsername, website: $newWebsite }
+      set: { username: $newUsername, website: $newWebsite, bio: $newBio }
     ) {
       affectedCount
       records {
@@ -95,6 +96,8 @@ function extractExpectedGraphQLErrors(
 function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
   const [username, setUsername] = React.useState(props.profile.username ?? "");
   const [website, setWebsite] = React.useState(props.profile.website ?? "");
+  const [bio, setBio] = React.useState(props.profile.bio ?? "");
+
   const [updateProfileMutation, updateProfile] = useMutation(
     UpdateProfileMutation
   );
@@ -105,7 +108,7 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
     <Container>
       <MainSection>
         <section className="container px-5 py-24 mx-auto max-w-md">
-          <div>
+          <div className="mb-4">
             <label htmlFor="username" className="text-blue-600">
               Name
             </label>
@@ -116,13 +119,23 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div>
+          <div className="mb-4">
             <label htmlFor="website">Website</label>
             <Input
               id="website"
               type="website"
-              value={website || ""}
+              value={website}
               onChange={(e) => setWebsite(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="bio">Bio</label>
+            <textarea
+              id="bio"
+              className="w-full border-solid  border-2 border-gray-100 rounded-sm"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
             />
           </div>
 
@@ -133,6 +146,7 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
                   userId: props.profile.id,
                   newUsername: username,
                   newWebsite: website,
+                  newBio: bio,
                 })
               }
               disabled={updateProfileMutation.fetching}

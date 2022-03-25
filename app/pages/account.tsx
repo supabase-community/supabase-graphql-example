@@ -108,8 +108,9 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
     <Container>
       <MainSection>
         <section className="container px-5 py-24 mx-auto max-w-md">
+          <h1 className="font-semibold text-xl tracking-tight mb-5">Account</h1>
           <div className="mb-4">
-            <label htmlFor="username" className="text-blue-600">
+            <label htmlFor="username" className="block mb-2">
               Name
             </label>
             <Input
@@ -120,7 +121,9 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="website">Website</label>
+            <label htmlFor="website" className="block mb-2">
+              Website
+            </label>
             <Input
               id="website"
               type="website"
@@ -130,7 +133,9 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="bio">Bio</label>
+            <label htmlFor="bio" className="block mb-2">
+              Bio
+            </label>
             <textarea
               id="bio"
               className="w-full border-solid  border-2 border-gray-100 rounded-sm"

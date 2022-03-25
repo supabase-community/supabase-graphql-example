@@ -141,6 +141,7 @@ const FeedItem_PostFragment = gql(/* GraphQL */ `
     profile {
       id
       username
+      avatarUrl
     }
     ...VoteButtons_PostFragment
     ...DeleteButton_PostFragment
@@ -161,7 +162,7 @@ export function FeedItem(props: {
       <div className="flex-1 md:flex-grow">
         <Link href={props.post.url}>
           <a>
-            <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
+            <h2 className="text-2xl font-medium text-gray-900 hover:text-green-500 title-font mb-2">
               {props.post.title}
             </h2>
           </a>
@@ -174,7 +175,7 @@ export function FeedItem(props: {
             {props.post.voteTotal === 1 ? "point" : "points"}
           </span>
           <Link href={`/item/${props.post.id}`}>
-            <a className="text-gray-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
+            <a className="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
               <CommentIcon className="w-4 h-4 mr-1" />
               {props.post.commentCollection?.totalCount}{" "}
               {props.post.commentCollection?.totalCount === 1
@@ -183,13 +184,16 @@ export function FeedItem(props: {
             </a>
           </Link>
           <Link href={`/profile/${props.post.profile?.id}`}>
-            <a className="text-gray-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
-              <UserIcon className="w-4 h-4 mr-1" />
+            <a className="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
+              <img
+                className="inline-block h-4 w-4 rounded-full w-4 h-4 mr-1"
+                src={props.post.profile?.avatarUrl}
+              />
               {props.post.profile?.username}
             </a>
           </Link>
           <Link href={`/item/${props.post.id}`}>
-            <a className="text-gray-400 inline-flex items-center text-sm">
+            <a className="text-gray-400 hover:text-green-400 inline-flex items-center text-sm">
               <CalendarIcon className="w-4 h-4 mr-1" />
               {createdAt}
             </a>
@@ -235,7 +239,7 @@ const DeleteButton = (props: {
   return (
     <>
       <button
-        className="text-gray-400 inline-flex items-center text-sm pl-3 ml-3 border-l-2 border-gray-200"
+        className="text-gray-400 hover:text-green-400 inline-flex items-center text-sm pl-3 ml-3 border-l-2 border-gray-200"
         onClick={() => setShow(true)}
       >
         <TrashIcon className="w-4 h-4 mr-1" />

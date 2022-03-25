@@ -51,18 +51,13 @@ export function CommentIcon(props: { className?: string }) {
 
 export function PointIcon(props: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className="w-4 h-4 mr-1"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-      <circle cx="12" cy="12" r="3"></circle>
+    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" {...props}>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M13 10V3L4 14h7v7l9-11h-7z"
+      ></path>
     </svg>
   );
 }

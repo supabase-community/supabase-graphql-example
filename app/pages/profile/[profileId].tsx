@@ -16,6 +16,7 @@ const ProfileRouteQuery = gql(/* GraphQL */ `
           id
           username
           bio
+          avatarUrl
           website
           latestPosts: postCollection(
             orderBy: [{ createdAt: DescNullsFirst }]
@@ -82,11 +83,19 @@ const Profile: NextPage = () => {
                 {profile.username}
               </div>
               <div>
+                <span className="inline-block font-bold pr-2 w-20">Avatar</span>{" "}
+                <img
+                  className="inline-block h-6 w-6 rounded-full"
+                  src={profile.avatarUrl}
+                />
+              </div>
+              <div>
                 <span className="inline-block font-bold pr-2 w-20">
                   Website
                 </span>{" "}
                 {profile.website}
               </div>
+
               <div className="mb-10">
                 <span className="inline-block font-bold pr-2 w-20">Bio</span>{" "}
                 {profile.bio}

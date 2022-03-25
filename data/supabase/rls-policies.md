@@ -14,7 +14,7 @@
 - Only `POST`s where auth user is `profileId` can `UPDATE`
 - Only `POST`s where auth user is `profileId` can `DELETE`
 
-FYI: `DELETE POST` cascade to `COMMENT`s and V`OTE`s
+FYI: `DELETE POST` cascade to `COMMENT`s and `VOTE`s
 
 ## Comment
 

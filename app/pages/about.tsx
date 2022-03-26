@@ -25,6 +25,26 @@ import { noopUUID } from "../lib/noop-uuid";
 const About: NextPage = () => {
   const features = [
     {
+      name: "PG GraphQL",
+      description: "Adds GraphQL support to your PostgreSQL database.",
+      icon: DatabaseIcon,
+      href: "https://supabase.github.io/pg_graphql/",
+    },
+    {
+      name: "GraphQL Code Generator",
+      description:
+        "Generate code from your GraphQL schema and operations with a simple CLI.",
+      icon: CodeIcon,
+      href: "https://www.graphql-code-generator.com",
+    },
+    {
+      name: "GraphQL Config",
+      description:
+        "One configuration for development environment with your GraphQL Schema.",
+      icon: CogIcon,
+      href: "https://www.graphql-config.com",
+    },
+    {
       name: "Supabase",
       description:
         "Supabase has all the backend services you need to build a product with GraphQL.",
@@ -46,32 +66,6 @@ const About: NextPage = () => {
       href: "https://ui.supabase.io",
     },
     {
-      name: "Tailwind CSS",
-      description: "A utility-first CSS framework.",
-      icon: ColorSwatchIcon,
-      href: "https://tailwindcss.com",
-    },
-    {
-      name: "PG GraphQL",
-      description: "Adds GraphQL support to your PostgreSQL database.",
-      icon: DatabaseIcon,
-      href: "https://supabase.github.io/pg_graphql/",
-    },
-    {
-      name: "GraphQL Code Generator",
-      description:
-        "Generate code from your GraphQL schema and operations with a simple CLI.",
-      icon: CodeIcon,
-      href: "https://www.graphql-code-generator.com",
-    },
-    {
-      name: "GraphQL Config",
-      description:
-        "One configuration for development environment with your GraphQL Schema.",
-      icon: CogIcon,
-      href: "https://www.graphql-config.com",
-    },
-    {
       name: "GraphiQL",
       description:
         "GraphiQL is an in-browser IDE for writing, validating, and testing GraphQL queries.",
@@ -84,6 +78,13 @@ const About: NextPage = () => {
         "urql is a highly customizable and versatile GraphQL client.",
       icon: GlobeAltIcon,
       href: "https://formidable.com/open-source/urql/",
+    },
+    {
+      name: "Tailwind CSS",
+      description:
+        "A utility-first CSS framework to rapidly build modern websites.",
+      icon: ColorSwatchIcon,
+      href: "https://tailwindcss.com",
     },
   ];
 
@@ -142,7 +143,10 @@ const About: NextPage = () => {
     <Container>
       <Head>
         <title>supanews | About</title>
-        <meta name="description" content="What is hot?" />
+        <meta
+          name="description"
+          content="Everything you need to develop a GraphQL app."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="relative bg-white py-4 sm:py-8 lg:py-12">
@@ -155,7 +159,15 @@ const About: NextPage = () => {
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
             Build your next GraphQL powered application like this one ... faster
-            and easier with open source tools from Supabase, The Guild and more.
+            and easier with open source tools from{" "}
+            <a className="text-gray-800" href="https://www.supabase.com">
+              Supabase
+            </a>
+            ,{" "}
+            <a className="text-gray-800" href="https://www.the-guild.dev">
+              The Guild
+            </a>{" "}
+            and more.
           </p>
           <div className="mt-12">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

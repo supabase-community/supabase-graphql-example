@@ -6,11 +6,14 @@ import Link from "next/link";
 import { useQuery } from "urql";
 
 import {
-  LightningBoltIcon,
-  CogIcon,
-  DatabaseIcon,
-  ShieldCheckIcon,
   CodeIcon,
+  CogIcon,
+  CollectionIcon,
+  ColorSwatchIcon,
+  DatabaseIcon,
+  GlobeAltIcon,
+  LightningBoltIcon,
+  ShieldCheckIcon,
   TemplateIcon,
 } from "@heroicons/react/outline";
 
@@ -31,9 +34,22 @@ const About: NextPage = () => {
     {
       name: "Supabase Auth",
       description:
-        "Supabase Auth provides user management with row level security",
+        "Supabase Auth provides user management with row level security.",
       icon: ShieldCheckIcon,
       href: "https://supabase.com/auth",
+    },
+    {
+      name: "Supabase UI",
+      description:
+        "An open-source UI component library inspired by Tailwind and AntDesign.",
+      icon: CollectionIcon,
+      href: "https://ui.supabase.io",
+    },
+    {
+      name: "Tailwind CSS",
+      description: "A utility-first CSS framework.",
+      icon: ColorSwatchIcon,
+      href: "https://tailwindcss.com",
     },
     {
       name: "PG GraphQL",
@@ -42,11 +58,18 @@ const About: NextPage = () => {
       href: "https://supabase.github.io/pg_graphql/",
     },
     {
-      name: "GraphQL Codegen",
+      name: "GraphQL Code Generator",
       description:
         "Generate code from your GraphQL schema and operations with a simple CLI.",
       icon: CodeIcon,
       href: "https://www.graphql-code-generator.com",
+    },
+    {
+      name: "GraphQL Config",
+      description:
+        "One configuration for development environment with your GraphQL Schema.",
+      icon: CogIcon,
+      href: "https://www.graphql-config.com",
     },
     {
       name: "GraphiQL",
@@ -59,7 +82,7 @@ const About: NextPage = () => {
       name: "urql",
       description:
         "urql is a highly customizable and versatile GraphQL client.",
-      icon: CogIcon,
+      icon: GlobeAltIcon,
       href: "https://formidable.com/open-source/urql/",
     },
   ];
@@ -128,11 +151,11 @@ const About: NextPage = () => {
             GraphQL + Postgres + Tooling
           </h2>
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-            Everything you need to deploy a GraphQL app
+            Everything you need to develop a GraphQL app
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Build GraphQL powered apps faster and easier with tools from
-            Supabase and The Guild.
+            Build your next GraphQL powered application like this one ... faster
+            and easier with open source tools from Supabase, The Guild and more.
           </p>
           <div className="mt-12">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

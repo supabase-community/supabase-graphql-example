@@ -41,11 +41,10 @@ const Comments: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <section className="text-gray-600 body-font overflow-hidden">
-          <div className="container px-5 py-24 mx-auto">
+        <section className="text-gray-600 body-font overflow-hidden w-full">
+          <div className="container px-3 py-24 mx-auto">
+            {commentsQuery.fetching && <Loading />}
             <div className="-my-8 divide-y-2 divide-gray-100">
-              {commentsQuery.fetching && <Loading />}
-
               {commentsQuery?.data?.comments?.edges.map((edge) => (
                 <CommentItem comment={edge.node!} key={edge.cursor} />
               ))}

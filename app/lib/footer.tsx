@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer() {
   const navigation = {
-    main: [{ name: "About", href: "/about" }],
+    main: [{ name: "🤔 How did we build this app?", href: "/about" }],
     social: [
       {
         name: "Twitter",

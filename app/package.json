@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@graphql-yoga/render-graphiql": "0.2.0-canary-32120c3.0",
+    "@heroicons/react": "1.0.6",
     "@supabase/supabase-js": "1.31.2",
     "@supabase/ui": "0.36.4",
     "autoprefixer": "10.4.4",

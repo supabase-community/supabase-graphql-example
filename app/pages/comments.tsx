@@ -6,6 +6,7 @@ import { useQuery } from "urql";
 import { gql } from "../gql";
 import { CommentItem } from "../lib/comment-item";
 import { Container } from "../lib/container";
+import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
 
 const CommentsRouteQuery = gql(/* GraphQL */ `
@@ -43,6 +44,8 @@ const Comments: NextPage = () => {
         <section className="text-gray-600 body-font overflow-hidden">
           <div className="container px-5 py-24 mx-auto">
             <div className="-my-8 divide-y-2 divide-gray-100">
+              {commentsQuery.fetching && <Loading />}
+
               {commentsQuery?.data?.comments?.edges.map((edge) => (
                 <CommentItem comment={edge.node!} key={edge.cursor} />
               ))}

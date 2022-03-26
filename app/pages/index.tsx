@@ -5,6 +5,7 @@ import { useQuery } from "urql";
 import { gql } from "../gql";
 import { Container } from "../lib/container";
 import { FeedItem } from "../lib/feed-item";
+import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
 import { noopUUID } from "../lib/noop-uuid";
 
@@ -53,6 +54,7 @@ const Home: NextPage = () => {
         <section className="text-gray-600 body-font overflow-hidden w-full">
           <div className="container px-3 py-24 mx-auto">
             <div className="-my-8">
+              {indexQuery.fetching && <Loading />}
               {indexQuery?.data?.feed?.edges.map((edge) => (
                 <FeedItem post={edge.node!} key={edge.cursor} />
               ))}

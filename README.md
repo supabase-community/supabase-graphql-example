@@ -83,6 +83,10 @@ yarn codegen:watch
 yarn workspace app dev
 ```
 
+### Synchronize the GraphQL schema
+
+Note: You need to call `graphql.rebuild_schema()` manually to synchronize the GraphQL schema with the SQL schema after altering the SQL schema.
+
 #### Manage Schema with dbmate
 
 1. `brew install dbmate`

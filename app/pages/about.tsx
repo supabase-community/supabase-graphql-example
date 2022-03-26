@@ -24,7 +24,7 @@ const About: NextPage = () => {
     {
       name: "Supabase",
       description:
-        "Supabase is an open source Firebase alternative. It provides all the backend services you need to build a product. You can use it completely, or just the services you require.",
+        "Supabase has all the backend services you need to build a product with GraphQL.",
       icon: LightningBoltIcon,
       href: "https://www.supabase.com",
     },
@@ -44,14 +44,14 @@ const About: NextPage = () => {
     {
       name: "GraphQL Codegen",
       description:
-        "Generate code from your GraphQL schema and operations with a simple CLI. Code with type safety and autocomplete.",
+        "Generate code from your GraphQL schema and operations with a simple CLI.",
       icon: CodeIcon,
       href: "https://www.graphql-code-generator.com",
     },
     {
       name: "GraphiQL",
       description:
-        "GraphiQL from GraphQL Yoga is an in-browser IDE for writing, validating, and testing GraphQL queries.",
+        "GraphiQL is an in-browser IDE for writing, validating, and testing GraphQL queries.",
       icon: TemplateIcon,
       href: "https://www.graphql-yoga.com/docs/features/graphiql",
     },
@@ -61,6 +61,57 @@ const About: NextPage = () => {
         "urql is a highly customizable and versatile GraphQL client.",
       icon: CogIcon,
       href: "https://formidable.com/open-source/urql/",
+    },
+  ];
+
+  const faqs = [
+    {
+      id: 1,
+      question: "GraphQL Queries and Mutations",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 2,
+      question: "Pagination",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 3,
+      question: "GraphQL Code Generation",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 4,
+      question: "Supabase Postgres",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 4,
+      question: "Supabase Auth",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 4,
+      question: "Postgres Triggers",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 5,
+      question: "Postgres Functions",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 5,
+      question: "pg_graphql Postgres Extension",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
     },
   ];
 
@@ -74,14 +125,14 @@ const About: NextPage = () => {
       <div className="relative bg-white py-4 sm:py-8 lg:py-12">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
           <h2 className="text-base font-semibold tracking-wider text-green-600 uppercase">
-            Deploy faster
+            GraphQL + Postgres + Tooling
           </h2>
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
             Everything you need to deploy a GraphQL app
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Built GraphQL powered apps with tools from Supabase and The Guild
-            faster and easier.
+            Build GraphQL powered apps faster and easier with tools from
+            Supabase and The Guild.
           </p>
           <div className="mt-12">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -111,6 +162,28 @@ const About: NextPage = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white">
+          <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-extrabold text-gray-900 text-center">
+              Technologies Used
+            </h2>
+            <div className="mt-12">
+              <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-3">
+                {faqs.map((faq) => (
+                  <div key={faq.id}>
+                    <dt className="text-lg leading-6 font-medium text-gray-900">
+                      {faq.question}
+                    </dt>
+                    <dd className="mt-2 text-base text-gray-500">
+                      {faq.answer}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </div>

@@ -1,18 +1,17 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
 import { useQuery } from "urql";
 
 import {
-  CloudUploadIcon,
+  LightningBoltIcon,
   CogIcon,
-  LockClosedIcon,
-  MenuIcon,
-  RefreshIcon,
-  ServerIcon,
+  DatabaseIcon,
   ShieldCheckIcon,
-  XIcon,
+  CodeIcon,
+  TemplateIcon,
 } from "@heroicons/react/outline";
 
 import { gql } from "../gql";
@@ -23,40 +22,45 @@ import { noopUUID } from "../lib/noop-uuid";
 const About: NextPage = () => {
   const features = [
     {
-      name: "Push to Deploy",
+      name: "Supabase",
       description:
-        "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi vitae lobortis.",
-      icon: CloudUploadIcon,
+        "Supabase is an open source Firebase alternative. It provides all the backend services you need to build a product. You can use it completely, or just the services you require.",
+      icon: LightningBoltIcon,
+      href: "https://www.supabase.com",
     },
     {
-      name: "SSL Certificates",
+      name: "Supabase Auth",
       description:
-        "Qui aut temporibus nesciunt vitae dicta repellat sit dolores pariatur. Temporibus qui illum aut.",
-      icon: LockClosedIcon,
-    },
-    {
-      name: "Simple Queues",
-      description:
-        "Rerum quas incidunt deleniti quaerat suscipit mollitia. Amet repellendus ut odit dolores qui.",
-      icon: RefreshIcon,
-    },
-    {
-      name: "Advanced Security",
-      description:
-        "Ullam laboriosam est voluptatem maxime ut mollitia commodi. Et dignissimos suscipit perspiciatis.",
+        "Supabase Auth provides user management with row level security",
       icon: ShieldCheckIcon,
+      href: "https://supabase.com/auth",
     },
     {
-      name: "Powerful API",
+      name: "PG GraphQL",
+      description: "Adds GraphQL support to your PostgreSQL database.",
+      icon: DatabaseIcon,
+      href: "https://supabase.github.io/pg_graphql/",
+    },
+    {
+      name: "GraphQL Codegen",
       description:
-        "Ab a facere voluptatem in quia corrupti veritatis aliquam. Veritatis labore quaerat ipsum quaerat id.",
+        "Generate code from your GraphQL schema and operations with a simple CLI. Code with type safety and autocomplete.",
+      icon: CodeIcon,
+      href: "https://www.graphql-code-generator.com",
+    },
+    {
+      name: "GraphiQL",
+      description:
+        "GraphiQL from GraphQL Yoga is an in-browser IDE for writing, validating, and testing GraphQL queries.",
+      icon: TemplateIcon,
+      href: "https://www.graphql-yoga.com/docs/features/graphiql",
+    },
+    {
+      name: "urql",
+      description:
+        "urql is a highly customizable and versatile GraphQL client.",
       icon: CogIcon,
-    },
-    {
-      name: "Database Backups",
-      description:
-        "Quia qui et est officia cupiditate qui consectetur. Ratione similique et impedit ea ipsum et.",
-      icon: ServerIcon,
+      href: "https://formidable.com/open-source/urql/",
     },
   ];
 
@@ -73,34 +77,37 @@ const About: NextPage = () => {
             Deploy faster
           </h2>
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-            Everything you need to deploy your app
+            Everything you need to deploy a GraphQL app
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Phasellus lorem quam molestie id quisque diam aenean nulla in.
-            Accumsan in quis quis nunc, ullamcorper malesuada. Eleifend
-            condimentum id viverra nulla.
+            Built GraphQL powered apps with tools from Supabase and The Guild
+            faster and easier.
           </p>
           <div className="mt-12">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature) => (
                 <div key={feature.name} className="pt-6">
                   <div className="flow-root bg-gray-50 rounded-lg px-6 pb-8">
-                    <div className="-mt-6">
-                      <div>
-                        <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-green-600 rounded-md shadow-lg">
-                          <feature.icon
-                            className="h-6 w-6 text-white"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </div>
-                      <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
-                        {feature.name}
-                      </h3>
-                      <p className="mt-5 text-base text-gray-500">
-                        {feature.description}
-                      </p>
-                    </div>
+                    <Link href={feature.href}>
+                      <a>
+                        <div className="-mt-6">
+                          <div>
+                            <span className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-teal-500 to-green-600 rounded-md shadow-lg">
+                              <feature.icon
+                                className="h-6 w-6 text-white"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </div>
+                          <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
+                            {feature.name}
+                          </h3>
+                          <p className="mt-5 text-base text-gray-500">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </a>
+                    </Link>
                   </div>
                 </div>
               ))}

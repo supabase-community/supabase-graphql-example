@@ -1,3 +1,4 @@
+import { TrashIcon } from "@heroicons/react/outline";
 import { Auth } from "@supabase/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -59,34 +60,29 @@ export function CommentItem(props: {
       <div className="flex-1 space-y-1">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-medium">
-            {props.comment.profile?.username}
+            <Link href={`/profile/${props.comment.profile?.id}`}>
+              <a className="text-gray-800">{props.comment.profile?.username}</a>
+            </Link>
           </h3>
           <p className="text-sm text-gray-500">{createdAt}</p>
         </div>
-        <p className="text-sm text-gray-500">{props.comment.message}</p>
+        <p className="text-sm text-gray-500">
+          {props.comment.message}
+          {user?.id && user.id === props.comment.profile?.id ? (
+            <button
+              type="button"
+              className="inline-flex items-center ml-2 p-1 border border-transparent rounded-full shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              onClick={() => {
+                deleteComment({
+                  commentId: props.comment.id,
+                });
+              }}
+            >
+              <TrashIcon className="h-2 w-2" />
+            </button>
+          ) : null}
+        </p>
       </div>
     </div>
-
-    // <div className="pb-4">
-    //   <div className="text-sm">
-    //     <Link href={`/profile/${props.comment.profile?.id}`}>
-    //       <a className="font-bold">{props.comment.profile?.username} </a>
-    //     </Link>
-    //     <span>{createdAt}</span>
-    //     {user?.id && user.id === props.comment.profile?.id ? (
-    //       <button
-    //         className="ml-2 text-xs text-gray-400 hover:text-gray-900"
-    //         onClick={() => {
-    //           deleteComment({
-    //             commentId: props.comment.id,
-    //           });
-    //         }}
-    //       >
-    //         delete
-    //       </button>
-    //     ) : null}
-    //   </div>
-    //   <div className="flex-1 md:flex-grow">{props.comment.message}</div>
-    // </div>
   );
 }

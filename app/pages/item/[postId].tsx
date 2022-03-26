@@ -8,6 +8,7 @@ import { gql } from "../../gql";
 import { CommentItem } from "../../lib/comment-item";
 import { Container } from "../../lib/container";
 import { FeedItem } from "../../lib/feed-item";
+import { Loading } from "../../lib/loading";
 import { MainSection } from "../../lib/main-section";
 import { noopUUID } from "../../lib/noop-uuid";
 
@@ -99,36 +100,36 @@ const Item: NextPage = () => {
 
   const post = itemRouteQuery?.data?.post?.edges?.[0];
 
-  if (post == null) {
-    return null;
-  }
-
   return (
     <Container>
       <MainSection>
-        {post.node == null ? null : (
-          <>
-            <Head>
-              <title>supanews | {post.node?.title}</title>
-              <meta name="description" content={post.node?.url} />
-            </Head>
-            <section className="text-gray-600 body-font overflow-hidden w-full">
-              <div className="container px-5 py-24 mx-auto">
-                <FeedItem post={post.node} key={post.cursor} />
+        <div className="h-screen w-full">
+          {itemRouteQuery.fetching && <Loading />}
 
-                <div className="max-w-md">
-                  <PostCommentForm postId={post.node.id} />
+          {post?.node == null ? null : (
+            <>
+              <Head>
+                <title>supanews | {post.node?.title}</title>
+                <meta name="description" content={post.node?.url} />
+              </Head>
+              <section className="text-gray-600 body-font overflow-hidden w-full">
+                <div className="container px-5 py-24 mx-auto">
+                  <FeedItem post={post.node} key={post.cursor} />
 
-                  <div className="mt-10">
-                    {post.node?.comments?.edges.map((edge) => (
-                      <CommentItem comment={edge.node!} key={edge.cursor} />
-                    ))}
+                  <div className="max-w-md">
+                    <PostCommentForm postId={post.node.id} />
+
+                    <div className="mt-10">
+                      {post.node?.comments?.edges.map((edge) => (
+                        <CommentItem comment={edge.node!} key={edge.cursor} />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
-          </>
-        )}
+              </section>
+            </>
+          )}
+        </div>
       </MainSection>
     </Container>
   );

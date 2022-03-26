@@ -114,26 +114,32 @@ const About: NextPage = () => {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
     },
     {
-      id: 4,
+      id: 5,
       question: "Supabase Auth",
       answer:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
     },
     {
-      id: 4,
+      id: 6,
+      question: "pg_graphql Postgres Extension",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 7,
+      question: "Postgres RLS",
+      answer:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+    },
+    {
+      id: 8,
       question: "Postgres Triggers",
       answer:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
     },
     {
-      id: 5,
+      id: 9,
       question: "Postgres Functions",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-    },
-    {
-      id: 5,
-      question: "pg_graphql Postgres Extension",
       answer:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
     },

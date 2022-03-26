@@ -6,6 +6,7 @@ import { CombinedError, useMutation, useQuery } from "urql";
 import { Input } from "@supabase/ui";
 import { DocumentType, gql } from "../gql";
 import { Container } from "../lib/container";
+import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
 
 const UserProfileQuery = gql(/* GraphQL */ `
@@ -39,6 +40,14 @@ const Account: NextPage = () => {
 
   if (profile) {
     return <AccountForm profile={profile} />;
+  } else {
+    {
+      return (
+        <div className="w-full">
+          profileQuery.fetching && <Loading />
+        </div>
+      );
+    }
   }
 
   return null;

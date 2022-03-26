@@ -6,6 +6,7 @@ import { gql } from "../../gql";
 import { CommentItem } from "../../lib/comment-item";
 import { Container } from "../../lib/container";
 import { FeedItem } from "../../lib/feed-item";
+import { Loading } from "../../lib/loading";
 import { MainSection } from "../../lib/main-section";
 
 const ProfileRouteQuery = gql(/* GraphQL */ `
@@ -75,50 +76,55 @@ const Profile: NextPage = () => {
       </Head>
 
       <MainSection>
-        {profile == null ? null : (
-          <section className="text-gray-600 body-font overflow-hidden">
-            <div className="container px-5 py-24 pt-10 mx-auto">
-              <div>
-                <span className="inline-block font-bold pr-2 w-20">User</span>{" "}
-                {profile.username}
-              </div>
-              <div>
-                <span className="inline-block font-bold pr-2 w-20">Avatar</span>{" "}
-                <img
-                  className="inline-block h-6 w-6 rounded-full"
-                  src={profile.avatarUrl}
-                />
-              </div>
-              <div>
-                <span className="inline-block font-bold pr-2 w-20">
-                  Website
-                </span>{" "}
-                {profile.website}
-              </div>
-
-              <div className="mb-10">
-                <span className="inline-block font-bold pr-2 w-20">Bio</span>{" "}
-                {profile.bio}
-              </div>
-              <h1 className="font-semibold text-xl tracking-tight mb-5">
-                Latest Posts
-              </h1>
-              <div>
-                {profile.latestPosts?.edges.map((edge) => (
-                  <FeedItem post={edge.node!} key={edge.cursor} />
+        <div className="w-full">
+          {profileQuery.fetching && <Loading />}
+          {profile == null ? null : (
+            <section className="text-gray-600 body-font overflow-hidden">
+              <div className="container px-5 py-24 pt-10 mx-auto">
+                <h1 className="font-semibold text-xl tracking-tight mb-5">
+                  Profile
+                </h1>{" "}
+                <div>
+                  <span className="inline-block font-bold pr-2 w-20">User</span>{" "}
+                  {profile.username}
+                </div>
+                <div>
+                  <span className="inline-block font-bold pr-2 w-20">
+                    Avatar
+                  </span>{" "}
+                  <img
+                    className="inline-block h-6 w-6 rounded-full"
+                    src={profile.avatarUrl}
+                  />
+                </div>
+                <div>
+                  <span className="inline-block font-bold pr-2 w-20">
+                    Website
+                  </span>{" "}
+                  {profile.website}
+                </div>
+                <div className="mb-10">
+                  <span className="inline-block font-bold pr-2 w-20">Bio</span>{" "}
+                  {profile.bio}
+                </div>
+                <h1 className="font-semibold text-xl tracking-tight mb-5">
+                  Latest Posts
+                </h1>
+                <div>
+                  {profile.latestPosts?.edges.map((edge) => (
+                    <FeedItem post={edge.node!} key={edge.cursor} />
+                  ))}
+                </div>
+                <h1 className="font-semibold text-xl tracking-tight mb-5">
+                  Latest Comments
+                </h1>
+                {profile.latestComments?.edges.map((edge) => (
+                  <CommentItem comment={edge.node!} key={edge.cursor} />
                 ))}
               </div>
-
-              <h1 className="font-semibold text-xl tracking-tight mb-5">
-                Latest Comments
-              </h1>
-
-              {profile.latestComments?.edges.map((edge) => (
-                <CommentItem comment={edge.node!} key={edge.cursor} />
-              ))}
-            </div>
-          </section>
-        )}
+            </section>
+          )}
+        </div>
       </MainSection>
     </Container>
   );

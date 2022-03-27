@@ -137,8 +137,8 @@ input DatetimeFilter {
 }
 
 enum Direction {
-  UP
   DOWN
+  UP
 }
 
 """

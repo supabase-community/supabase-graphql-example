@@ -117,7 +117,7 @@ const Item: NextPage = () => {
                   <FeedItem post={post.node} key={post.cursor} />
 
                   <div className="max-w-md">
-                    <PostCommentForm postId={post.node.id} />
+                    {user && <PostCommentForm postId={post.node.id} />}
 
                     <div className="mt-10">
                       {post.node?.comments?.edges.map((edge) => (

@@ -1,9 +1,11 @@
-import { TrashIcon } from "@heroicons/react/outline";
-import { Auth } from "@supabase/ui";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+
 import { useMutation } from "urql";
+
+import { Auth } from "@supabase/ui";
+import { TrashIcon } from "@heroicons/react/outline";
 
 import { DocumentType, gql } from "../gql";
 import { timeAgo } from "./time-ago";

@@ -187,7 +187,7 @@ export function FeedItem(props: {
             <a className="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200">
               <img
                 className="inline-block h-4 w-4 rounded-full w-4 h-4 mr-1"
-                src={props.post.profile?.avatarUrl}
+                src={props.post.profile?.avatarUrl ?? ""}
               />
               {props.post.profile?.username}
             </a>

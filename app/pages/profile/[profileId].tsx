@@ -94,7 +94,7 @@ const Profile: NextPage = () => {
                   </span>{" "}
                   <img
                     className="inline-block h-6 w-6 rounded-full"
-                    src={profile.avatarUrl}
+                    src={profile.avatarUrl ?? ""}
                   />
                 </div>
                 <div>

@@ -98,6 +98,8 @@ cd data
 dbmate dump
 ```
 
+> Note: If `pgdump` fails due to row locks, a workaround is to grant the `postgres` role superuser permissions with `ALTER USER postgres WITH SUPERUSER`. After dumping the schema, you should reset the permissions using `ALTER USER postgres WITH NOSUPERUSER`. You can run these statements in the Superbase Dashboard SQL Editors.
+
 ## Schema (Public)
 
 - Profile belongs to auth.users
@@ -184,6 +186,8 @@ query {
 ```
 
 # Row Level Security Matrix (RLS)
+
+You can query all policies via: `select * from pg_policies`.
 
 See: [Row Level Security Matrix (RLS)](./data/supabase/rls-policies.md)
 

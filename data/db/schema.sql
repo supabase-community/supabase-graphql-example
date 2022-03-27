@@ -38,6 +38,20 @@ COMMENT ON EXTENSION pg_graphql IS 'GraphQL support';
 
 
 --
+-- Name: pg_net; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
+
+
+--
+-- Name: EXTENSION pg_net; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_net IS 'Async HTTP';
+
+
+--
 -- Name: pgbouncer; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -56,6 +70,13 @@ CREATE SCHEMA realtime;
 --
 
 CREATE SCHEMA storage;
+
+
+--
+-- Name: supabase_functions; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA supabase_functions;
 
 
 --
@@ -286,44 +307,35 @@ COMMENT ON FUNCTION extensions.grant_pg_cron_access() IS 'Grants access to pg_cr
 CREATE FUNCTION extensions.grant_pg_net_access() RETURNS event_trigger
     LANGUAGE plpgsql
     AS $$
-BEGIN
-  IF EXISTS (
-    SELECT 1
-    FROM pg_event_trigger_ddl_commands() AS ev
-    JOIN pg_extension AS ext
-    ON ev.objid = ext.oid
-    WHERE ext.extname = 'pg_net'
-  )
-  THEN
-    IF NOT EXISTS (
-      SELECT 1
-      FROM pg_roles
-      WHERE rolname = 'supabase_functions_admin'
-    )
-    THEN
-      CREATE USER supabase_functions_admin NOINHERIT CREATEROLE LOGIN NOREPLICATION;
-    END IF;
+    BEGIN
+      IF EXISTS (
+        SELECT 1
+        FROM pg_event_trigger_ddl_commands() AS ev
+        JOIN pg_extension AS ext
+        ON ev.objid = ext.oid
+        WHERE ext.extname = 'pg_net'
+      )
+      THEN
+        GRANT USAGE ON SCHEMA net TO supabase_functions_admin, postgres, anon, authenticated, service_role;
 
-    GRANT USAGE ON SCHEMA net TO supabase_functions_admin, postgres, anon, authenticated, service_role;
+        ALTER function net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) SECURITY DEFINER;
+        ALTER function net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) SECURITY DEFINER;
+        ALTER function net.http_collect_response(request_id bigint, async boolean) SECURITY DEFINER;
 
-    ALTER function net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) SECURITY DEFINER;
-    ALTER function net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) SECURITY DEFINER;
-    ALTER function net.http_collect_response(request_id bigint, async boolean) SECURITY DEFINER;
+        ALTER function net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) SET search_path = net;
+        ALTER function net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) SET search_path = net;
+        ALTER function net.http_collect_response(request_id bigint, async boolean) SET search_path = net;
 
-    ALTER function net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) SET search_path = net;
-    ALTER function net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) SET search_path = net;
-    ALTER function net.http_collect_response(request_id bigint, async boolean) SET search_path = net;
+        REVOKE ALL ON FUNCTION net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) FROM PUBLIC;
+        REVOKE ALL ON FUNCTION net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) FROM PUBLIC;
+        REVOKE ALL ON FUNCTION net.http_collect_response(request_id bigint, async boolean) FROM PUBLIC;
 
-    REVOKE ALL ON FUNCTION net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) FROM PUBLIC;
-    REVOKE ALL ON FUNCTION net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) FROM PUBLIC;
-    REVOKE ALL ON FUNCTION net.http_collect_response(request_id bigint, async boolean) FROM PUBLIC;
-
-    GRANT EXECUTE ON FUNCTION net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
-    GRANT EXECUTE ON FUNCTION net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
-    GRANT EXECUTE ON FUNCTION net.http_collect_response(request_id bigint, async boolean) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
-  END IF;
-END;
-$$;
+        GRANT EXECUTE ON FUNCTION net.http_get(url text, params jsonb, headers jsonb, timeout_milliseconds integer) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
+        GRANT EXECUTE ON FUNCTION net.http_post(url text, body jsonb, params jsonb, headers jsonb, timeout_milliseconds integer) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
+        GRANT EXECUTE ON FUNCTION net.http_collect_response(request_id bigint, async boolean) TO supabase_functions_admin, postgres, anon, authenticated, service_role;
+      END IF;
+    END;
+    $$;
 
 
 --
@@ -435,10 +447,10 @@ $$;
 
 
 --
--- Name: graphql(text, text, jsonb); Type: FUNCTION; Schema: public; Owner: -
+-- Name: graphql(text, text, jsonb, jsonb); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.graphql("operationName" text DEFAULT NULL::text, query text DEFAULT NULL::text, variables jsonb DEFAULT NULL::jsonb) RETURNS jsonb
+CREATE FUNCTION public.graphql("operationName" text DEFAULT NULL::text, query text DEFAULT NULL::text, variables jsonb DEFAULT NULL::jsonb, extensions jsonb DEFAULT NULL::jsonb) RETURNS jsonb
     LANGUAGE sql
     AS $$
     select graphql.resolve(query, coalesce(variables, '{}'));
@@ -454,7 +466,7 @@ CREATE FUNCTION public.handle_new_user() RETURNS trigger
     AS $$
 begin
   insert into public."Profile" (id, "avatarUrl", username)
-  values (new.id, new.raw_user_meta_data->>'avatar_url', new.email);
+  values (new.id, 'https://www.gravatar.com/avatar/' || md5(new.email) || '?d=mp', split_part(new.email, '@', 1) || '-' || floor(random() * 10000));
   return new;
 end;
 $$;
@@ -471,7 +483,7 @@ BEGIN
 
 WITH r AS (
 SELECT
-	"postId",
+	coalesce("Vote"."postId", "Post".id) AS "postId",
 	count(1) "voteTotal",
 	count(1) FILTER (WHERE direction = 'UP') "upVoteTotal",
 	count(1) FILTER (WHERE direction = 'DOWN') "downVoteTotal",
@@ -483,25 +495,30 @@ SELECT
 			ELSE
 				0
 			END), 0) "voteDelta",
-	abs(sum(
+	sum(
 		CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
 			- 1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8) AS "score",
-	dense_rank() OVER (ORDER BY sum( CASE WHEN direction = 'UP' THEN
+		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 AS "score",
+	rank() OVER (ORDER BY coalesce(sum( CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
 			- 1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("createdAt")) + 2) ^ 1.8 DESC) "voteRank"
+		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8, '-infinity')
+		DESC,
+		"Post"."createdAt" DESC,
+		"Post".title ASC) "voteRank"
 FROM
 	"Vote"
+	RIGHT JOIN "Post" ON "Vote"."postId" = "Post".id
 GROUP BY
-	"postId"
+	"Post".id,
+	"Vote"."postId"
 )
 
 UPDATE
@@ -1075,6 +1092,87 @@ END
 $$;
 
 
+--
+-- Name: http_request(); Type: FUNCTION; Schema: supabase_functions; Owner: -
+--
+
+CREATE FUNCTION supabase_functions.http_request() RETURNS trigger
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'supabase_functions'
+    AS $$
+      DECLARE
+        request_id bigint;
+        payload jsonb;
+        url text := TG_ARGV[0]::text;
+        method text := TG_ARGV[1]::text;
+        headers jsonb DEFAULT '{}'::jsonb;
+        params jsonb DEFAULT '{}'::jsonb;
+        timeout_ms integer DEFAULT 1000;
+      BEGIN
+        IF url IS NULL OR url = 'null' THEN
+          RAISE EXCEPTION 'url argument is missing';
+        END IF;
+
+        IF method IS NULL OR method = 'null' THEN
+          RAISE EXCEPTION 'method argument is missing';
+        END IF;
+
+        IF TG_ARGV[2] IS NULL OR TG_ARGV[2] = 'null' THEN
+          headers = '{"Content-Type": "application/json"}'::jsonb;
+        ELSE
+          headers = TG_ARGV[2]::jsonb;
+        END IF;
+
+        IF TG_ARGV[3] IS NULL OR TG_ARGV[3] = 'null' THEN
+          params = '{}'::jsonb;
+        ELSE
+          params = TG_ARGV[3]::jsonb;
+        END IF;
+
+        IF TG_ARGV[4] IS NULL OR TG_ARGV[4] = 'null' THEN
+          timeout_ms = 1000;
+        ELSE
+          timeout_ms = TG_ARGV[4]::integer;
+        END IF;
+
+        CASE
+          WHEN method = 'GET' THEN
+            SELECT http_get INTO request_id FROM net.http_get(
+              url,
+              params,
+              headers,
+              timeout_ms
+            );
+          WHEN method = 'POST' THEN
+            payload = jsonb_build_object(
+              'old_record', OLD,
+              'record', NEW,
+              'type', TG_OP,
+              'table', TG_TABLE_NAME,
+              'schema', TG_TABLE_SCHEMA
+            );
+
+            SELECT http_post INTO request_id FROM net.http_post(
+              url,
+              payload,
+              params,
+              headers,
+              timeout_ms
+            );
+          ELSE
+            RAISE EXCEPTION 'method argument % is invalid', method;
+        END CASE;
+
+        INSERT INTO supabase_functions.hooks
+          (hook_table_id, hook_name, request_id)
+        VALUES
+          (TG_RELID, TG_NAME, request_id);
+
+        RETURN NEW;
+      END
+    $$;
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -1329,8 +1427,10 @@ CREATE TABLE public."Post" (
     "downVoteTotal" integer DEFAULT 0 NOT NULL,
     "voteTotal" integer DEFAULT 0 NOT NULL,
     "voteRank" integer DEFAULT 1 NOT NULL,
-    score real NOT NULL,
-    "voteDelta" integer DEFAULT 0 NOT NULL
+    score real DEFAULT '0'::real,
+    "voteDelta" integer DEFAULT 0 NOT NULL,
+    CONSTRAINT post_title_length CHECK ((char_length(title) > 0)),
+    CONSTRAINT post_url_length CHECK ((char_length(url) > 0))
 );
 
 
@@ -1365,6 +1465,7 @@ CREATE TABLE public."Profile" (
     username text,
     "avatarUrl" text,
     website text,
+    bio text,
     CONSTRAINT usernamelength CHECK ((char_length(username) >= 3))
 );
 
@@ -1467,10 +1568,66 @@ CREATE TABLE storage.objects (
 
 
 --
+-- Name: hooks; Type: TABLE; Schema: supabase_functions; Owner: -
+--
+
+CREATE TABLE supabase_functions.hooks (
+    id bigint NOT NULL,
+    hook_table_id integer NOT NULL,
+    hook_name text NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    request_id bigint
+);
+
+
+--
+-- Name: TABLE hooks; Type: COMMENT; Schema: supabase_functions; Owner: -
+--
+
+COMMENT ON TABLE supabase_functions.hooks IS 'Supabase Functions Hooks: Audit trail for triggered hooks.';
+
+
+--
+-- Name: hooks_id_seq; Type: SEQUENCE; Schema: supabase_functions; Owner: -
+--
+
+CREATE SEQUENCE supabase_functions.hooks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hooks_id_seq; Type: SEQUENCE OWNED BY; Schema: supabase_functions; Owner: -
+--
+
+ALTER SEQUENCE supabase_functions.hooks_id_seq OWNED BY supabase_functions.hooks.id;
+
+
+--
+-- Name: migrations; Type: TABLE; Schema: supabase_functions; Owner: -
+--
+
+CREATE TABLE supabase_functions.migrations (
+    version text NOT NULL,
+    inserted_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: refresh_tokens id; Type: DEFAULT; Schema: auth; Owner: -
 --
 
 ALTER TABLE ONLY auth.refresh_tokens ALTER COLUMN id SET DEFAULT nextval('auth.refresh_tokens_id_seq'::regclass);
+
+
+--
+-- Name: hooks id; Type: DEFAULT; Schema: supabase_functions; Owner: -
+--
+
+ALTER TABLE ONLY supabase_functions.hooks ALTER COLUMN id SET DEFAULT nextval('supabase_functions.hooks_id_seq'::regclass);
 
 
 --
@@ -1650,6 +1807,22 @@ ALTER TABLE ONLY storage.objects
 
 
 --
+-- Name: hooks hooks_pkey; Type: CONSTRAINT; Schema: supabase_functions; Owner: -
+--
+
+ALTER TABLE ONLY supabase_functions.hooks
+    ADD CONSTRAINT hooks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: supabase_functions; Owner: -
+--
+
+ALTER TABLE ONLY supabase_functions.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: audit_logs_instance_id_idx; Type: INDEX; Schema: auth; Owner: -
 --
 
@@ -1755,6 +1928,20 @@ CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_patter
 
 
 --
+-- Name: supabase_functions_hooks_h_table_id_h_name_idx; Type: INDEX; Schema: supabase_functions; Owner: -
+--
+
+CREATE INDEX supabase_functions_hooks_h_table_id_h_name_idx ON supabase_functions.hooks USING btree (hook_table_id, hook_name);
+
+
+--
+-- Name: supabase_functions_hooks_request_id_idx; Type: INDEX; Schema: supabase_functions; Owner: -
+--
+
+CREATE INDEX supabase_functions_hooks_request_id_idx ON supabase_functions.hooks USING btree (request_id);
+
+
+--
 -- Name: users on_auth_user_created; Type: TRIGGER; Schema: auth; Owner: -
 --
 
@@ -1803,7 +1990,7 @@ ALTER TABLE ONLY auth.refresh_tokens
 --
 
 ALTER TABLE ONLY public."Comment"
-    ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES public."Post"(id);
+    ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES public."Post"(id) ON DELETE CASCADE;
 
 
 --
@@ -1812,14 +1999,6 @@ ALTER TABLE ONLY public."Comment"
 
 ALTER TABLE ONLY public."Comment"
     ADD CONSTRAINT "Comment_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES public."Profile"(id);
-
-
---
--- Name: Vote DownVote_postId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Vote"
-    ADD CONSTRAINT "DownVote_postId_fkey" FOREIGN KEY ("postId") REFERENCES public."Post"(id);
 
 
 --
@@ -1847,6 +2026,14 @@ ALTER TABLE ONLY public."Profile"
 
 
 --
+-- Name: Vote Vote_postId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."Vote"
+    ADD CONSTRAINT "Vote_postId_fkey" FOREIGN KEY ("postId") REFERENCES public."Post"(id) ON DELETE CASCADE;
+
+
+--
 -- Name: buckets buckets_owner_fkey; Type: FK CONSTRAINT; Schema: storage; Owner: -
 --
 
@@ -1871,10 +2058,120 @@ ALTER TABLE ONLY storage.objects
 
 
 --
+-- Name: hooks hooks_request_id_fkey; Type: FK CONSTRAINT; Schema: supabase_functions; Owner: -
+--
+
+ALTER TABLE ONLY supabase_functions.hooks
+    ADD CONSTRAINT hooks_request_id_fkey FOREIGN KEY (request_id) REFERENCES net.http_request_queue(id) ON DELETE CASCADE;
+
+
+--
+-- Name: Post All users can view posts; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "All users can view posts" ON public."Post" FOR SELECT USING (true);
+
+
+--
+-- Name: Comment; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public."Comment" ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: Comment Everyone can view comments; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Everyone can view comments" ON public."Comment" FOR SELECT USING (true);
+
+
+--
+-- Name: Vote Everyone can view votes; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Everyone can view votes" ON public."Vote" FOR SELECT USING (true);
+
+
+--
+-- Name: Comment Only authenticated users can comment; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Only authenticated users can comment" ON public."Comment" FOR INSERT WITH CHECK ((auth.role() = 'authenticated'::text));
+
+
+--
+-- Name: Post Only authenticated users can create posts; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Only authenticated users can create posts" ON public."Post" FOR INSERT WITH CHECK ((auth.role() = 'authenticated'::text));
+
+
+--
+-- Name: Vote Only authenticated users can vote; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Only authenticated users can vote" ON public."Vote" FOR INSERT WITH CHECK ((auth.role() = 'authenticated'::text));
+
+
+--
+-- Name: Post; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public."Post" ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: Profile; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public."Profile" ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: Profile Public profiles are viewable by everyone.; Type: POLICY; Schema: public; Owner: -
 --
 
 CREATE POLICY "Public profiles are viewable by everyone." ON public."Profile" FOR SELECT USING (true);
+
+
+--
+-- Name: Comment User can edit their own comments; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "User can edit their own comments" ON public."Comment" FOR UPDATE USING ((auth.uid() = "profileId")) WITH CHECK ((auth.uid() = "profileId"));
+
+
+--
+-- Name: Vote Users can change their vote; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Users can change their vote" ON public."Vote" FOR UPDATE USING ((auth.uid() = "profileId")) WITH CHECK ((auth.uid() = "profileId"));
+
+
+--
+-- Name: Comment Users can delete their own comments; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Users can delete their own comments" ON public."Comment" FOR DELETE USING ((auth.uid() = "profileId"));
+
+
+--
+-- Name: Post Users can delete their own posts; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Users can delete their own posts" ON public."Post" FOR DELETE USING ((auth.uid() = "profileId"));
+
+
+--
+-- Name: Vote Users can delete their own votes; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Users can delete their own votes" ON public."Vote" FOR DELETE USING ((auth.uid() = "profileId"));
+
+
+--
+-- Name: Post Users can edit their own posts; Type: POLICY; Schema: public; Owner: -
+--
+
+CREATE POLICY "Users can edit their own posts" ON public."Post" FOR UPDATE USING ((auth.uid() = "profileId")) WITH CHECK ((auth.uid() = "profileId"));
 
 
 --
@@ -1890,6 +2187,18 @@ CREATE POLICY "Users can insert their own profile." ON public."Profile" FOR INSE
 
 CREATE POLICY "Users can update own profile." ON public."Profile" FOR UPDATE USING ((auth.uid() = id));
 
+
+--
+-- Name: Vote; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public."Vote" ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: schema_migrations; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public.schema_migrations ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: objects Anyone can update an avatar.; Type: POLICY; Schema: storage; Owner: -

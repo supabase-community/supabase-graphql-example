@@ -34,6 +34,8 @@ Note: Does this mean I can see how people voted?
 
 ## Export of Policies
 
+You can query all policies via: `select * from pg_policies`.
+
 See: [row_level_security_polices.csv](../db/row_level_security_polices.csv)
 
 | schemaname | tablename | policyname                                | permissive | roles    | cmd    | qual                          | with_check                            |

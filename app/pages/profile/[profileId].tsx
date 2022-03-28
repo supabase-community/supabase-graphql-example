@@ -77,7 +77,7 @@ const Profile: NextPage = () => {
 
       <MainSection>
         <div className="w-full">
-          {profileQuery.fetching && <Loading />}
+          {profileQuery.fetching ? <Loading /> : null}
           {profile == null ? null : (
             <section className="text-gray-600 body-font overflow-hidden">
               <div className="container px-5 py-24 pt-10 mx-auto">

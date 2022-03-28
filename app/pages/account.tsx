@@ -40,15 +40,11 @@ const Account: NextPage = () => {
 
   if (profile) {
     return <AccountForm profile={profile} />;
-  } else {
-    {
-      return (
-        <div className="w-full">
-          profileQuery.fetching && <Loading />
-        </div>
-      );
-    }
   }
+
+  return (
+    <div className="w-full">{profileQuery.fetching ? <Loading /> : null}</div>
+  );
 
   return null;
 };

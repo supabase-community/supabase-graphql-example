@@ -104,7 +104,7 @@ const Item: NextPage = () => {
     <Container>
       <MainSection>
         <div className="h-screen w-full">
-          {itemRouteQuery.fetching && <Loading />}
+          {itemRouteQuery.fetching ? <Loading /> : null}
 
           {post?.node == null ? null : (
             <>

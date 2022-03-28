@@ -56,7 +56,7 @@ export function CommentItem(props: {
     <div className="flex space-x-3 py-4">
       <img
         className="h-6 w-6 rounded-full"
-        src={props.comment.profile?.avatarUrl}
+        src={props.comment.profile?.avatarUrl ?? undefined}
         alt=""
       />
       <div className="flex-1 space-y-1">

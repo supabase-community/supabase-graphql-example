@@ -6,7 +6,7 @@ import { useMutation } from "urql";
 
 import { Auth } from "@supabase/ui";
 import { TrashIcon } from "@heroicons/react/outline";
-
+import { CalendarIcon, UserIcon } from "./icons";
 import { DocumentType, gql } from "../gql";
 import { timeAgo } from "./time-ago";
 
@@ -16,6 +16,7 @@ const CommentItem_CommentFragment = gql(/* GraphQL */ `
     message
     createdAt
     post {
+      id
       title
     }
     profile {
@@ -63,10 +64,19 @@ export function CommentItem(props: {
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-medium">
             <Link href={`/profile/${props.comment.profile?.id}`}>
-              <a className="text-gray-800">{props.comment.profile?.username}</a>
+              <a className="text-gray-800 hover:text-green-500">
+                {props.comment.profile?.username}
+              </a>
             </Link>
           </h3>
-          <p className="text-sm text-gray-500">{createdAt}</p>
+          <p className="text-sm text-gray-500">
+            <Link href={`/item/${props.comment.post?.id}`}>
+              <a className="text-gray-800 hover:text-green-500 inline-flex items-center text-sm">
+                <CalendarIcon className="w-4 h-4 mr-1" />
+                {createdAt}
+              </a>
+            </Link>
+          </p>
         </div>
         <p className="text-sm text-gray-500">
           {props.comment.message}

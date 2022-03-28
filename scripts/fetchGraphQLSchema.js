@@ -58,7 +58,7 @@ console.log(
   )
 );
 
-fetchGraphQLSchema(`${process.env.SUPABASE_URL}/rest/v1/rpc/graphql`, {
+fetchGraphQLSchema(`${process.env.SUPABASE_URL}/graphql/v1`, {
   readable: true,
 }).then((schema) => {
   fs.writeFileSync(filePath, schema, "utf-8");

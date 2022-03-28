@@ -85,7 +85,7 @@ yarn workspace app dev
 
 ### Synchronize the GraphQL schema
 
-Note: You need to call `graphql.rebuild_schema()` manually to synchronize the GraphQL schema with the SQL schema after altering the SQL schema.
+Note: You need to call `select graphql.rebuild_schema()` manually to synchronize the GraphQL schema with the SQL schema after altering the SQL schema.
 
 #### Manage Schema with dbmate
 
@@ -132,14 +132,36 @@ See: [`./graphql/schema/schema.graphql`](./graphql/schema/schema.graphql)
 
 See: [`./graphql/queries/`](./graphql/queries/)
 
-Use: `https://mvrfvzcivgabojxddwtk.supabase.co/rest/v1/rpc/graphql`
+Use: `https://mvrfvzcivgabojxddwtk.supabase.co/graphql/v1`
 
-Note: Needs headers
+> Note: Needs headers
 
 ```
 
 Content-Type: application/json
 apiKey: <supabase_anon_key>
+
+```
+
+## GraphiQL
+
+GraphiQL is an in-browser IDE for writing, validating, and testing GraphQL queries.
+
+Visit `http://localhost:3000/api/graphiql` for the [Yoga GraphiQL Playground](https://www.graphql-yoga.com/docs/features/graphiql) where you can experiment with queries and mutations.
+
+> Note: Needs headers
+
+```
+
+Content-Type: application/json
+apiKey: <supabase_anon_key>
+
+```
+
+> Note: In order for the RLS policies authenticate you. you've have to pass an authorization header:
+
+```
+authorization: Bearker <access_token>
 
 ```
 

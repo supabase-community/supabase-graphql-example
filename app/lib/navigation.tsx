@@ -28,6 +28,9 @@ export function Navigation() {
           <ActiveLink href="/submit" activeClassName="text-black">
             <a className="mr-5 hover:text-gray-900 text-gray-400">submit</a>
           </ActiveLink>
+          <ActiveLink href="/about" activeClassName="text-black">
+            <a className="mr-5 hover:text-gray-900 text-gray-400">about</a>
+          </ActiveLink>
         </nav>
         {user.user === null ? (
           <Link href="/login">

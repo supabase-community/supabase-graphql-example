@@ -1,5 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Auth, Input, Button } from "@supabase/ui";
 import { gql } from "../gql";
@@ -63,6 +64,11 @@ const Submit: NextPage = () => {
 
   return (
     <Container>
+      <Head>
+        <title>supanews | Submit New Item</title>
+        <meta name="description" content="What is hot?" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <MainSection>
         <form className="container px-5 py-24 mx-auto max-w-md">
           <h1 className="font-semibold text-xl tracking-tight mb-5">Submit</h1>

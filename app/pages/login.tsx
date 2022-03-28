@@ -1,5 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
+import Head from "next/head";
 import { Auth } from "@supabase/ui";
 import { useSupabaseClient } from "../lib/supabase";
 import { useRouter } from "next/router";
@@ -23,6 +24,11 @@ const LogIn: NextPage = () => {
 
   return (
     <Container>
+      <Head>
+        <title>supanews | Login</title>
+        <meta name="description" content="Sign in to submit posts and vote." />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <MainSection>
         <div className="m-width-md mx-auto">
           <h1 className="font-semibold text-xl tracking-tight mb-5">Login</h1>

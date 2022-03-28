@@ -3,8 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { useQuery } from "urql";
-
 import {
   CodeIcon,
   CogIcon,
@@ -17,10 +15,7 @@ import {
   TemplateIcon,
 } from "@heroicons/react/outline";
 
-import { gql } from "../gql";
 import { Container } from "../lib/container";
-import { FeedItem } from "../lib/feed-item";
-import { noopUUID } from "../lib/noop-uuid";
 
 const About: NextPage = () => {
   const features = [
@@ -91,21 +86,21 @@ const About: NextPage = () => {
   const faqs = [
     {
       id: 1,
-      question: "GraphQL Queries and Mutations",
+      question: "GraphQL Query and Mutation Operations",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "The data on this page is fetched from the GraphQL layer auto-generated via pg_graphql.",
     },
     {
       id: 2,
       question: "Pagination",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "pg_graphql generates standardized pagination types and fields as defined by the GraphQL Cursor Connections Specification.",
     },
     {
       id: 3,
       question: "GraphQL Code Generation",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "GraphQL Code Generator introspects your GraphQL schema and operations and generates the types for full backend to frontend type-safety.",
     },
     {
       id: 4,
@@ -116,20 +111,19 @@ const About: NextPage = () => {
     {
       id: 5,
       question: "Supabase Auth",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      answer: "Authorization cannot get any easier.",
     },
     {
       id: 6,
       question: "pg_graphql Postgres Extension",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "pg_graphql generates a GraphQL API based on the Postgres schema.",
     },
     {
       id: 7,
       question: "Postgres RLS",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "Row level security on the Postgres layer ensures that viewers can only access what they are allowed to access and can only create records when authenticated.",
     },
     {
       id: 8,

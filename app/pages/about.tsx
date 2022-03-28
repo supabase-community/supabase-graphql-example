@@ -104,38 +104,57 @@ const About: NextPage = () => {
     },
     {
       id: 4,
-      question: "Supabase Postgres",
+      question: "GraphQL Fragments",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "Components use GraphQL fragments to share logic between multiple queries and mutations.",
     },
     {
       id: 5,
-      question: "Supabase Auth",
-      answer: "Authorization cannot get any easier.",
-    },
-    {
-      id: 6,
       question: "pg_graphql Postgres Extension",
       answer:
         "pg_graphql generates a GraphQL API based on the Postgres schema.",
     },
     {
+      id: 6,
+      question: "Total Counts",
+      answer:
+        "Use pg_graphql's totalCount comment-based GraphQL Directive to count of the rows that match the query's filters.",
+    },
+    {
       id: 7,
+      question: "Schema Inflection",
+      answer:
+        "Use pg_graphql's inflect_names comment-based GraphQL Directive to convert from snake_case to PascalCase for type names, and snake_case to camelCase for field names to match Javascript conventions when generating your GraphQL schema.",
+    },
+    {
+      id: 8,
+      question: "Supabase Postgres",
+      answer:
+        "Every Supabase project is a dedicated PostgreSQL database, trusted by millions of developers. It provide some of the most common extensions with a one-click install.",
+    },
+    {
+      id: 9,
+      question: "Supabase Auth",
+      answer:
+        "Authorization cannot get any easier. Every Supabase project comes with a complete User Management system that works without any additional tools.",
+    },
+    {
+      id: 10,
       question: "Postgres RLS",
       answer:
         "Row level security on the Postgres layer ensures that viewers can only access what they are allowed to access and can only create records when authenticated.",
     },
     {
-      id: 8,
-      question: "Postgres Triggers",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-    },
-    {
-      id: 9,
+      id: 11,
       question: "Postgres Functions",
       answer:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        "Built-in support for SQL functions. These functions live inside your database, and they can be used with the Supabase API or invoked by a Postgres Trigger.",
+    },
+    {
+      id: 12,
+      question: "Postgres Triggers",
+      answer:
+        "Execute any SQL code after inserting, updating, or deleting data. We recalculate the feed scores by invoking a function each time someone votes (or change their vote).",
     },
   ];
 

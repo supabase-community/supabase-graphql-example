@@ -11,7 +11,7 @@ export const config = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).end(
     renderGraphiQL({
-      endpoint: process.env.NEXT_PUBLIC_SUPABASE_URL + "/rest/v1/rpc/graphql",
+      endpoint: process.env.NEXT_PUBLIC_SUPABASE_URL + "/graphql/v1",
       headers: JSON.stringify({
         apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       }),

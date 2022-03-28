@@ -18,13 +18,13 @@ export function UrqlProvider(props: { children: React.ReactNode }) {
     return headers;
   }
 
-  const [client] = React.useState(() =>
-    createClient({
+  const [client] = React.useState(function createUrqlClient() {
+    return createClient({
       url: `${process.env.NEXT_PUBLIC_SUPABASE_URL!}/rest/v1/rpc/graphql`,
-      fetchOptions: {
-        headers: getHeaders(),
+      fetchOptions: function createFetchOptions() {
+        return { headers: getHeaders() };
       },
-    })
-  );
+    });
+  });
   return <Provider value={client}>{props.children}</Provider>;
 }

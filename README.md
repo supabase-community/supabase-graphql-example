@@ -2,6 +2,8 @@
 
 A basic HackerNews-like clone where posts can be submitted with url links and then up and down voted.
 
+<img width="1000" alt="graphql-hn" src="https://user-images.githubusercontent.com/10214025/160611420-29705df8-3e0a-471e-baef-04a3e2ac5618.png">
+
 ## Showcase
 
 ### Backend

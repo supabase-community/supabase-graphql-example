@@ -1,14 +1,23 @@
-# Supabase PG GraphQL Example App
+# Supabase GraphQL Example
 
 A basic HackerNews-like clone where posts can be submitted with url links and then up and down voted.
 
+<img width="1000" alt="graphql-hn" src="https://user-images.githubusercontent.com/10214025/160611420-29705df8-3e0a-471e-baef-04a3e2ac5618.png">
+- Example: [supabase-graphql-example.vercel.app](https://supabase-graphql-example.vercel.app/)
+- Features: [supabase-graphql-example.vercel.app/about](https://supabase-graphql-example.vercel.app/about)
+
 ## Showcase
 
-### Backend pg_graphql / supabase
+### Backend
 
 - CRUD (Query + Mutation Operations)
 - Cursor Based Pagination
-- Authorization / RLS
+- Authorization / Postgres Row Level Security
+- [Supabase](https://supabase.com) - Create a backend in less than 2 minutes. Start your project with a Postgres Database, Authentication, instant APIs, Realtime subscriptions and Storage.
+- [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org). The extension keeps schema generation, query parsing, and resolvers all neatly contained on your database server requiring no external services.
+- [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
+- [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
+
 
 ### Frontend
 
@@ -18,13 +27,6 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset) - This code gen preset generates typings for your inline gql function usages, without having to manually specify import statements for the documents
 - [urql](https://formidable.com/open-source/urql/) - A highly customizable and versatile GraphQL client
 - [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
-
-### Backend
-
-- [Supabase](https://supabase.com) - Create a backend in less than 2 minutes. Start your project with a Postgres Database, Authentication, instant APIs, Realtime subscriptions and Storage.
-- [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org). The extension keeps schema generation, query parsing, and resolvers all neatly contained on your database server requiring no external services.
-- [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
-- [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
 
 ### Functionality
 

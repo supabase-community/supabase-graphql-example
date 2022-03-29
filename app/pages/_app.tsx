@@ -1,20 +1,36 @@
-import "../styles/globals.css";
+import { AuthChangeEvent } from "@supabase/supabase-js";
+import { withUrqlClient, WithUrqlProps } from "next-urql";
 import type { AppProps } from "next/app";
-import { UrqlProvider } from "../lib/urql";
-import { SupabaseProvider } from "../lib/supabase";
-import { Navigation } from "../lib/navigation";
+import { FC, useEffect, useState } from "react";
 import { Footer } from "../lib/footer";
+import { Navigation } from "../lib/navigation";
+import { createSupabaseClient, SupabaseProvider } from "../lib/supabase";
+import { getUrqlConfig } from "../lib/urql";
+import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: FC<AppProps & WithUrqlProps> = (props) => {
+  const { Component, pageProps, resetUrqlClient } = props;
+  const [client] = useState(createSupabaseClient);
+
+  useEffect(() => {
+    if (!resetUrqlClient) return;
+
+    const { data } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        resetUrqlClient?.();
+      }
+    });
+
+    return data?.unsubscribe;
+  }, [client, resetUrqlClient]);
+
   return (
-    <SupabaseProvider>
-      <UrqlProvider>
-        <Navigation />
-        <Component {...pageProps} />
-        <Footer />
-      </UrqlProvider>
+    <SupabaseProvider client={client}>
+      <Navigation />
+      <Component {...pageProps} />
+      <Footer />
     </SupabaseProvider>
   );
-}
+};
 
-export default MyApp;
+export default withUrqlClient(getUrqlConfig(), { ssr: true })(MyApp);

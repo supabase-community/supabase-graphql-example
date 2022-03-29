@@ -14,14 +14,16 @@
     "@supabase/supabase-js": "1.31.2",
     "@supabase/ui": "0.36.4",
     "autoprefixer": "10.4.4",
-    "graphql": "16.3.0",
+    "graphql": "^16.3.0",
     "javascript-time-ago": "2.3.13",
     "next": "12.1.0",
+    "next-urql": "^3.3.2",
     "postcss": "8.4.12",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-is": "^18.0.0",
     "tailwindcss": "3.0.23",
-    "urql": "2.2.0"
+    "urql": "^2.2.0"
   },
   "devDependencies": {
     "@types/javascript-time-ago": "2.0.3",

@@ -1,8 +1,8 @@
-import { NextUrqlClientConfig } from "next-urql";
+import { withUrqlClient } from "next-urql";
 import { createSupabaseClient } from "./supabase";
 
-export function getUrqlConfig(): NextUrqlClientConfig {
-  return (_ssrExchange, ctx) => {
+export const withConfiguredUrql = withUrqlClient(
+  (_ssrExchange, ctx) => {
     const supabaseClient = createSupabaseClient();
 
     function getHeaders(): Record<string, string> {
@@ -22,5 +22,6 @@ export function getUrqlConfig(): NextUrqlClientConfig {
       url: `${process.env.NEXT_PUBLIC_SUPABASE_URL!}/graphql/v1`,
       fetchOptions: { headers: getHeaders() },
     };
-  };
-}
+  },
+  { ssr: true }
+);

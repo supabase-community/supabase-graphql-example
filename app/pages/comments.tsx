@@ -9,6 +9,7 @@ import { CommentItem } from "../lib/comment-item";
 import { Container } from "../lib/container";
 import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
+import { withConfiguredUrql } from "../lib/urql";
 import { usePaginatedQuery } from "../lib/use-paginated-query";
 
 const CommentsRouteQuery = gql(/* GraphQL */ `
@@ -93,4 +94,4 @@ const Comments: NextPage = () => {
   );
 };
 
-export default Comments;
+export default withConfiguredUrql(Comments);

@@ -12,25 +12,25 @@ SELECT
 			CASE WHEN direction = 'UP' THEN
 				1
 			WHEN direction = 'DOWN' THEN
-				- 1
+				-1
 			ELSE
 				0
 			END), 0) "voteDelta",
-	round(coalesce(sum(
+	round(coalesce((sum(
 		CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
-			- 1
+			-1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0) AS "score",
-	rank() OVER (ORDER BY round(coalesce(sum( CASE WHEN direction = 'UP' THEN
+		END ) - 1) / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0) AS "score",
+	rank() OVER (ORDER BY round(coalesce((sum( CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
-			- 1
+			-1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0)
+		END) - 1) / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0)
 		DESC,
 		"Post"."createdAt" DESC,
 		"Post".title ASC) "voteRank"

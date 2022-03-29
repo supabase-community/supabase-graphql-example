@@ -169,13 +169,7 @@ authorization: Bearker <access_token>
 
 ```gql
 query {
-  rankedFeed: postCollection(
-    orderBy: [
-      { voteRank: AscNullsFirst }
-      { score: DescNullsFirst }
-      { createdAt: DescNullsFirst }
-    ]
-  ) {
+  rankedFeed: postCollection(orderBy: [{ voteRank: AscNullsFirst }]) {
     edges {
       post: node {
         id

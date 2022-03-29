@@ -13,11 +13,7 @@ import { usePaginatedQuery } from "../lib/use-paginated-query";
 const IndexRouteQuery = gql(/* GraphQL */ `
   query IndexRouteQuery($profileId: UUID!, $after: Cursor) {
     feed: postCollection(
-      orderBy: [
-        { voteRank: AscNullsFirst }
-        { score: DescNullsFirst }
-        { createdAt: DescNullsFirst }
-      ]
+      orderBy: [{ voteRank: AscNullsFirst }]
       first: 15
       after: $after
     ) {

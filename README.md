@@ -3,6 +3,7 @@
 A basic HackerNews-like clone where posts can be submitted with url links and then up and down voted.
 
 <img width="1000" alt="graphql-hn" src="https://user-images.githubusercontent.com/10214025/160611420-29705df8-3e0a-471e-baef-04a3e2ac5618.png">
+
 - Example: [supabase-graphql-example.vercel.app](https://supabase-graphql-example.vercel.app/)
 - Features: [supabase-graphql-example.vercel.app/about](https://supabase-graphql-example.vercel.app/about)
 
@@ -17,7 +18,6 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - [pg_graphql](https://supabase.com/blog/2021/12/03/pg-graphql) - A native [PostgreSQL extension](https://supabase.github.io/pg_graphql/) adding [GraphQL support](https://graphql.org). The extension keeps schema generation, query parsing, and resolvers all neatly contained on your database server requiring no external services.
 - [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
 - [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
-
 
 ### Frontend
 

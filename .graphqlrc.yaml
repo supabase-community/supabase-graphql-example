@@ -1,16 +1,37 @@
 # File for extension: vscode-graphql & CodeGen!
 projects:
-  default:
+  nextjs:
     overwrite: true
     schema: "./graphql/schema/schema.graphql"
     documents:
-      - "examples/react/**/*.tsx"
-      - "!examples/react/gql/**/*"
+      - "examples/nextjs/**/*.tsx"
+      - "!examples/nextjs/gql/**/*"
     extensions:
       codegen:
         generates:
-          ./examples/react/gql/:
+          ./examples/nextjs/gql/:
             preset: gql-tag-operations-preset
         hooks:
           afterOneFileWrite:
             - prettier --write
+
+  sveltekit:
+    schema: "./graphql/schema/schema.graphql"
+    documents:
+      - "examples/sveltekit/**/*.gql"
+    extensions:
+      codegen:
+        generates:
+          ./examples/sveltekit/src/lib/graphql/_kitql/graphqlTypes.ts:
+            plugins:
+              - typescript
+              - typescript-operations
+              - typed-document-node
+              - typescript-document-nodes
+          ./examples/sveltekit/src/lib/graphql/_kitql/graphqlStores.ts:
+            plugins:
+              - "@kitql/graphql-codegen"
+            config:
+              importBaseTypesFrom: $lib/graphql/_kitql/graphqlTypes
+        config:
+          useTypeImports: true

@@ -19,10 +19,10 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "codegen:nextjs": "graphql-codegen --config .graphqlrc.yaml --project nextjs",
-    "codegen:sveltekit": "graphql-codegen --config .graphqlrc.yaml --project sveltekit",
     "codegen": "yarn codegen:nextjs && yarn codegen:sveltekit",
     "codegen:fetch": "node --no-warnings scripts/fetchGraphQLSchema ",
-    "codegen:watch": "yarn run codegen -- --watch"
+    "codegen:nextjs": "graphql-codegen --config .graphqlrc.yaml --project nextjs",
+    "codegen:sveltekit": "graphql-codegen --config .graphqlrc.yaml --project sveltekit",
+    "codegen:watch": "yarn codegen:nextjs -- --watch"
   }
 }

@@ -45,25 +45,31 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ### Setup env vars
 
-- `cp app/.env.example app/.env`
+- nextjs or sveltekit
+  - `cp examples/nextjs/.env.example examples/nextjs/.env`
+  - `cp examples/sveltekit/.env.example examples/sveltekit/.env`
 - Fill in your url and anon key from the Supabase Dashboard: https://app.supabase.io/project/_/settings/api
 
-### Install dependencies, GraphQL codegen, run app
+### Install dependencies, GraphQL codegen, run
 
 ```bash
 yarn
 yarn codegen
-yarn workspace react dev
+
+# For nextjs
+yarn workspace nextjs dev
+# For sveltekit
+yarn workspace sveltekit dev
 ```
 
 ### Deploy to Vercel
 
 Provide the following settings to deploy a production build to Vercel:
 
-- BUILD COMMAND: `yarn codegen && yarn workspace app build`
-- OUTPUT DIRECTORY: `./app/.next`
+- BUILD COMMAND: `yarn codegen && yarn workspace nextjs build`
+- OUTPUT DIRECTORY: `./examples/nextjs/.next`
 - INSTALL COMMAND: `yarn`
-- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace app dev --port $PORT`
+- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace nextjs dev --port $PORT`
 
 ## Development
 
@@ -82,7 +88,7 @@ yarn codegen:watch
 3. Run server
 
 ```bash
-yarn workspace app dev
+yarn workspace nextjs dev
 ```
 
 ### Synchronize the GraphQL schema

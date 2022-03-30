@@ -1,7 +1,7 @@
 {
   "name": "pg-graphql-example",
   "workspaces": [
-    "app"
+    "examples/*"
   ],
   "private": true,
   "devDependencies": {
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen": "graphql-codegen --config .graphqlrc.yaml",
     "codegen:fetch": "node --no-warnings scripts/fetchGraphQLSchema ",
     "codegen:watch": "yarn run codegen -- --watch"
   }

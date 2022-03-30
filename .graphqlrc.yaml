@@ -1,0 +1,16 @@
+# File for extension: vscode-graphql & CodeGen!
+projects:
+  default:
+    overwrite: true
+    schema: "./graphql/schema/schema.graphql"
+    documents:
+      - "examples/react/**/*.tsx"
+      - "!examples/react/gql/**/*"
+    extensions:
+      codegen:
+        generates:
+          ./examples/react/gql/:
+            preset: gql-tag-operations-preset
+        hooks:
+          afterOneFileWrite:
+            - prettier --write

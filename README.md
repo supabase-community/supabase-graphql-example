@@ -53,7 +53,7 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 ```bash
 yarn
 yarn codegen
-yarn workspace app dev
+yarn workspace react dev
 ```
 
 ### Deploy to Vercel

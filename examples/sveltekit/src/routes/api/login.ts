@@ -7,7 +7,7 @@ export async function post({ request }) {
 	const result = await supaConnect(data.email, data.password);
 
 	if (result.user) {
-		var token = jwt.sign(result.user, 'HELLO_YOU');
+		var token = jwt.sign(result, 'HELLO_YOU');
 		return {
 			status: result.status,
 			headers: {

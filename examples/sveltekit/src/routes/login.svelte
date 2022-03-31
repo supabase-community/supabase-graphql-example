@@ -17,13 +17,13 @@
 			})
 		});
 		const resultData = await result.json();
-		isLoading = false;
 
 		if (resultData.error) {
 			errorMessage = resultData.error_description;
 		} else {
 			window.location.replace('/');
 		}
+		isLoading = false;
 	}
 </script>
 

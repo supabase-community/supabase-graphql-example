@@ -9,7 +9,8 @@
 
 		return {
 			props: {
-				user: session.user
+				user: session.user,
+				access_token: session.access_token
 			}
 		};
 	}
@@ -19,12 +20,19 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import MainSection from '$lib/components/layout/MainSection.svelte';
 	import Navigation from '$lib/components/layout/Navigation.svelte';
+	import { kitQLClient } from '$lib/graphql/kitQLClient';
 	import { KQL__Init } from '$lib/graphql/_kitql/graphqlStores';
 	import '../app.css';
 
 	export let user;
+	export let access_token;
 
 	KQL__Init();
+	if (access_token) {
+		let headers = kitQLClient.getHeaders();
+		headers.authorization = `Bearer ${access_token}`;
+		kitQLClient.setHeaders(headers);
+	}
 </script>
 
 <svelte:head>

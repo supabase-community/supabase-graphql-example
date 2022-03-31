@@ -1,6 +1,11 @@
 import { KitQLClient } from '@kitql/client';
 
-export const kitQLClient = new KitQLClient({
+export type AppHeaders = {
+	authorization?: `Bearer ${string}`;
+	apikey?: string;
+};
+
+export const kitQLClient = new KitQLClient<AppHeaders>({
 	url: `${import.meta.env.VITE_PUBLIC_SUPABASE_URL}/graphql/v1`,
 	credentials: 'omit',
 	headersContentType: 'application/json',

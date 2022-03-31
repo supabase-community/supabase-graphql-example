@@ -1,23 +1,27 @@
 <script context="module" lang="ts">
-	import FeedItem from '$lib/FeedItem.svelte';
+	import { browser } from '$app/env';
+	import CommentItem from '$lib/components/hackernews/comment/CommentItem.svelte';
+	import FeedItem from '$lib/components/hackernews/post/FeedItem.svelte';
+	import Loading from '$lib/components/layout/Loading.svelte';
 	import { KQL_IndexRouteQuery, KQL_ItemRouteQuery } from '$lib/graphql/_kitql/graphqlStores';
 	import type { ItemRouteQueryQuery } from '$lib/graphql/_kitql/graphqlTypes';
-	import Loading from '$lib/Loading.svelte';
 	import { noopUUID } from '$lib/utils/noop-uuid';
 	import { get } from 'svelte/store';
 
 	export async function load({ fetch, url, params, session, stuff }) {
 		const { postId } = params;
 
-		const postFound = get(KQL_IndexRouteQuery).data.feed.edges.find((c) => c.node.id === postId);
-		if (postFound) {
-			const newItem: ItemRouteQueryQuery = {
-				__typename: 'Query',
-				post: {
-					edges: [postFound]
-				}
-			};
-			KQL_ItemRouteQuery.patch(newItem, { postId, profileId: noopUUID }, 'store-only');
+		if (browser) {
+			const postFound = get(KQL_IndexRouteQuery).data?.feed.edges.find((c) => c.node.id === postId);
+			if (postFound) {
+				const newItem: ItemRouteQueryQuery = {
+					__typename: 'Query',
+					post: {
+						edges: [postFound]
+					}
+				};
+				KQL_ItemRouteQuery.patch(newItem, { postId, profileId: noopUUID }, 'store-only');
+			}
 		}
 
 		await KQL_ItemRouteQuery.queryLoad({ fetch, variables: { postId, profileId: noopUUID } });
@@ -43,28 +47,16 @@
 				<!-- {user && <PostCommentForm postId={post.node.id} />} -->
 
 				<div class="mt-10">
-					<!-- {post.node?.comments?.edges.map((edge) => (
-                <CommentItem comment={edge.node!} key={edge.cursor} />
-              ))} -->
+					{#each $KQL_ItemRouteQuery.data?.post.edges[0].node.comments?.edges ?? [] as edge}
+						<CommentItem comment={edge.node} />
+					{/each}
 				</div>
 			</div>
 		</div>
 	</section>
 </div>
 
-<!-- import { Auth, Button } from "@supabase/ui";
-import React from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useMutation, useQuery } from "urql";
-import { gql } from "../../gql";
-import { CommentItem } from "../../lib/comment-item";
-import { Container } from "../../lib/container";
-import { FeedItem } from "../../lib/feed-item";
-import { Loading } from "../../lib/loading";
-import { MainSection } from "../../lib/main-section";
-import { noopUUID } from "../../lib/noop-uuid";
+<!--
 
 const PostCommentMutation = gql(/* GraphQL */ `
   mutation postComment($profileId: UUID!, $message: String!, $postId: BigInt) {
@@ -110,28 +102,4 @@ function PostCommentForm(props: { postId: string }) {
     </form>
   );
 }
-
-const Item: NextPage = () => {
-  const { user } = Auth.useUser();
-  const router = useRouter();
-  const { postId } = router.query;
-  const [itemRouteQuery] = useQuery({
-    query: ItemRouteQuery,
-    variables: {
-      postId,
-      profileId: user?.id ?? noopUUID,
-    },
-  });
-
-  const post = itemRouteQuery?.data?.post?.edges?.[0];
-
-  return (
-    <Container>
-      <MainSection>
-        JYCJYC
-      </MainSection>
-    </Container>
-  );
-};
-
-export default Item; -->
+-->

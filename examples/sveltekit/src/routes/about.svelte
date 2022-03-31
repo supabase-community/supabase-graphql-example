@@ -40,9 +40,9 @@
 			href: 'https://ui.supabase.io'
 		},
 		{
-			name: 'GraphiQL',
+			name: 'Yoga GraphiQL',
 			description:
-				'GraphiQL is an in-browser IDE for writing, validating, and testing GraphQL queries.',
+				'Yoga GraphiQL is an in-browser IDE for writing, validating, and testing GraphQL queries.',
 			icon: 'TemplateIcon',
 			href: 'https://www.graphql-yoga.com/docs/features/graphiql'
 		},

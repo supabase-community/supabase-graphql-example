@@ -36,10 +36,13 @@
 	"dependencies": {
 		"@graphql-yoga/common": "2.0.0",
 		"@iconify/json": "2.1.22",
-		"@kitql/all-in": "0.6.2",
+		"@kitql/all-in": "0.6.3",
 		"@svitejs/svelte-preprocess-svg": "1.0.2",
+		"@tailwindcss/forms": "0.5.0",
+		"cookie": "0.4.2",
 		"env-cmd": "10.1.0",
 		"javascript-time-ago": "2.3.13",
+		"jsonwebtoken": "8.5.1",
 		"unplugin-icons": "0.14.1"
 	}
 }

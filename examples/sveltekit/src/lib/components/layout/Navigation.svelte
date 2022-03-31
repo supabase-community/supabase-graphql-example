@@ -51,7 +51,7 @@
 				account
 			</a>
 			<a
-				href="/logout"
+				href="/api/logout"
 				class="inline-flex items-center mt-4 md:mt-0 text-gray-400 hover:text-gray-900"
 			>
 				logout

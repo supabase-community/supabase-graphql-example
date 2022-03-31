@@ -1,4 +1,5 @@
 <script lang="ts">
+	// https://icones.js.org/
 	import CodeIcon from '~icons/heroicons-outline/code';
 	import CogIcon from '~icons/heroicons-outline/cog';
 	import CollectionIcon from '~icons/heroicons-outline/collection';
@@ -10,6 +11,8 @@
 	import TemplateIcon from '~icons/heroicons-outline/template';
 	import GitHub from '~icons/mdi/github';
 	import Twitter from '~icons/mdi/twitter';
+	import MailIcon from '~icons/heroicons-outline/mail';
+	import PasswordIcon from '~icons/wpf/password1';
 
 	export let name;
 
@@ -181,6 +184,10 @@
 	<svelte:component this={GitHub} class={extraClass} />
 {:else if name === 'Twitter'}
 	<svelte:component this={Twitter} class={extraClass} />
+{:else if name === 'MailIcon'}
+	<svelte:component this={MailIcon} class={extraClass} />
+{:else if name === 'PasswordIcon'}
+	<svelte:component this={PasswordIcon} class={extraClass} />
 {:else}
 	NOT FOUND
 {/if}

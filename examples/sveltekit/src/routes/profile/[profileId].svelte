@@ -48,7 +48,9 @@
 				</div>
 				<div>
 					<span class="inline-block font-bold pr-2 w-20"> Website </span>{' '}
-					{profile.website}
+					<a href={profile.website} class="text-primary hover:text-green-500" target="_blanck"
+						>{profile.website}</a
+					>
 				</div>
 				<div class="mb-10">
 					<span class="inline-block font-bold pr-2 w-20">Bio</span>{' '}
@@ -58,11 +60,15 @@
 				<div>
 					{#each profile.latestPosts?.edges ?? [] as edge}
 						<FeedItem post={edge.node} />
+					{:else}
+						<p class="mb-4">No post yet!</p>
 					{/each}
 				</div>
 				<h1 class="font-semibold text-xl tracking-tight mb-5">Latest Comments</h1>
 				{#each profile.latestComments?.edges ?? [] as edge}
 					<CommentItem comment={edge.node} />
+				{:else}
+					<p class="mb-4">No comment yet!</p>
 				{/each}
 			</div>
 		</section>

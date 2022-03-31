@@ -1,5 +1,12 @@
 <script context="module" lang="ts">
 	export async function load({ fetch, url, params, session, stuff }) {
+		if (session.user && url.pathname === '/login') {
+			return {
+				status: 302,
+				redirect: '/'
+			};
+		}
+
 		return {
 			props: {
 				user: session.user

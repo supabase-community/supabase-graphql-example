@@ -1,11 +1,32 @@
 <script lang="ts">
 	import Icons from '$lib/components/layout/Icons.svelte';
 	import LoadingInPlace from '$lib/components/layout/LoadingInPlace.svelte';
+	import { gql } from '$lib/graphql/_kitql/gql';
 	import type { FeedItem_PostFragmentFragment } from '$lib/graphql/_kitql/graphqlTypes';
 	import { addS } from '$lib/utils/formatString';
 	import { timeAgo } from '$lib/utils/time-ago';
 
 	export let post: FeedItem_PostFragmentFragment | null;
+
+	gql(/* GraphQL */ `
+		fragment FeedItem_PostFragment on Post {
+			id
+			title
+			url
+			voteTotal
+			createdAt
+			commentCollection {
+				totalCount
+			}
+			profile {
+				id
+				username
+				avatarUrl
+			}
+			...VoteButtons_PostFragment
+			...DeleteButton_PostFragment
+		}
+	`);
 </script>
 
 {#if post}

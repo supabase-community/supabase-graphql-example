@@ -801,18 +801,7 @@
     tslib "~2.3.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/code-file-loader@^7.0.6":
-  version "7.2.8"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/code-file-loader/-/code-file-loader-7.2.8.tgz#94fb666ed540915fc067b6b99373242ae330eb7c"
-  integrity sha512-e8Z3O3AHBxCfCgd3RB/IOoObHWLzwEZ2HBmKgOEmm+WFjDTAvGHbEs+Qr/HUzgz7DIhyMXZTw2m2od1/YkGlIA==
-  dependencies:
-    "@graphql-tools/graphql-tag-pluck" "7.2.0"
-    "@graphql-tools/utils" "8.6.5"
-    globby "^11.0.3"
-    tslib "~2.3.0"
-    unixify "^1.0.0"
-
-"@graphql-tools/code-file-loader@^7.2.8":
+"@graphql-tools/code-file-loader@7.2.10", "@graphql-tools/code-file-loader@^7.0.6", "@graphql-tools/code-file-loader@^7.2.8":
   version "7.2.10"
   resolved "https://registry.yarnpkg.com/@graphql-tools/code-file-loader/-/code-file-loader-7.2.10.tgz#cdae206399061b198652964213b32309e5980af1"
   integrity sha512-41QkLztHhoDXBp2EtbKwQNQHv4HEDzpEmbOD0y3OVOXf8TBVUnFUMlnGn77a6f4zVi3rHWxHgJJ79iyJ0MYQ5w==
@@ -2609,6 +2598,11 @@ decompress-response@^3.3.0:
   integrity sha1-gKTdMjdIOEv6JICDYirt7Jgq3/M=
   dependencies:
     mimic-response "^1.0.0"
+
+dedent-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dedent-js/-/dedent-js-1.0.1.tgz#bee5fb7c9e727d85dffa24590d10ec1ab1255305"
+  integrity sha1-vuX7fJ5yfYXf+iRZDRDsGrElUwU=
 
 deep-extend@^0.6.0:
   version "0.6.0"
@@ -5107,7 +5101,7 @@ parse-json@^5.0.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-pascal-case@^3.1.2:
+pascal-case@^3.1.1, pascal-case@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/pascal-case/-/pascal-case-3.1.2.tgz#b48e0ef2b98e205e7c1dae747d0b1508237660eb"
   integrity sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==
@@ -5999,7 +5993,15 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.1:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
-svelte@^3.44.0:
+svelte2tsx@0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.5.6.tgz#d8705dabec9cc5ed6be677fce80fd455d11423cf"
+  integrity sha512-B4WZUtoTdVD+F73H1RQEH3Hrv7m2/ahThmAUkjT5CTWRigQaJqYQpSjisCH1Pzfi9B37YikDnAi4u4uxwYM+iw==
+  dependencies:
+    dedent-js "^1.0.1"
+    pascal-case "^3.1.1"
+
+svelte@3.46.5, svelte@^3.44.0:
   version "3.46.5"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.46.5.tgz#808daad6f3cbbeff550c3f7511f2667971eb080a"
   integrity sha512-T4txpIgYEGTkpFY2KQoqvtDmapu/suHMx0GN2zAImdJ7liEdG29P0XpjcNHnOEU1a4lLJn1WXxreobBSIGdcbQ==

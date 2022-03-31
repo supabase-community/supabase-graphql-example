@@ -19,15 +19,19 @@ projects:
     schema: "./graphql/schema/schema.graphql"
     documents:
       - "examples/sveltekit/**/*.gql"
+      - "examples/sveltekit/src/**/*.svelte"
+      - "!examples/sveltekit/src/lib/graphql/_kitql/gql/**/*"
     extensions:
       codegen:
         generates:
-          ./examples/sveltekit/src/lib/graphql/_kitql/graphqlTypes.ts:
-            plugins:
-              - typescript
-              - typescript-operations
-              - typed-document-node
-              - typescript-document-nodes
+          # ./examples/sveltekit/src/lib/graphql/_kitql/graphqlTypes.ts:
+          #   plugins:
+          #     - typescript
+          #     - typescript-operations
+          #     - typed-document-node
+          #     - typescript-document-nodes
+          ./examples/sveltekit/src/lib/graphql/_kitql/gql/:
+            preset: gql-tag-operations-preset
           ./examples/sveltekit/src/lib/graphql/_kitql/graphqlStores.ts:
             plugins:
               - "@kitql/graphql-codegen"

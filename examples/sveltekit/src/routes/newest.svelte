@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	// import { KitQLInfo } from '@kitql/all-in';
-	import FeedItem from '$lib/components/FeedItem.svelte';
+	import FeedItem from '$lib/components/hackernews/post/FeedItem.svelte';
 	import Loading from '$lib/components/layout/Loading.svelte';
 	import Button from '$lib/components/supabase/ui/Button.svelte';
 	import { KQL_NewestRouteQuery } from '$lib/graphql/_kitql/graphqlStores';
@@ -17,7 +17,7 @@
 	let infiniteList = [];
 
 	onMount(async () => {
-		await KQL_NewestRouteQuery.query({ fetch, variables: { profileId: noopUUID } });
+		await KQL_NewestRouteQuery.query({ variables: { profileId: noopUUID } });
 		infiniteList = $KQL_NewestRouteQuery.data?.feed?.edges ?? [];
 	});
 
@@ -42,7 +42,7 @@
 			{#each infiniteList as edge}
 				<FeedItem post={edge.node} />
 			{:else}
-				{#if $KQL_NewestRouteQuery.status === 'LOADING'}
+				{#if $KQL_NewestRouteQuery.status !== 'NEVER'}
 					<Loading />
 					{#each new Array(10) as item}
 						<FeedItem post={null} />

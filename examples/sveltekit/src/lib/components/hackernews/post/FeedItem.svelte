@@ -1,9 +1,9 @@
 <script lang="ts">
+	import Icons from '$lib/components/layout/Icons.svelte';
+	import LoadingInPlace from '$lib/components/layout/LoadingInPlace.svelte';
 	import type { FeedItem_PostFragmentFragment } from '$lib/graphql/_kitql/graphqlTypes';
 	import { addS } from '$lib/utils/formatString';
 	import { timeAgo } from '$lib/utils/time-ago';
-	import Icons from './layout/Icons.svelte';
-	import LoadingInPlace from './layout/LoadingInPlace.svelte';
 
 	export let post: FeedItem_PostFragmentFragment | null;
 </script>

@@ -1,0 +1,15 @@
+query CommentsRouteQuery($after: Cursor) {
+	comments: commentCollection(orderBy: [{ createdAt: DescNullsFirst }], first: 15, after: $after) {
+		pageInfo {
+			hasNextPage
+			endCursor
+		}
+		edges {
+			cursor
+			node {
+				id
+				...CommentItem_CommentFragment
+			}
+		}
+	}
+}

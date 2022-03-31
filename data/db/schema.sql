@@ -491,25 +491,25 @@ SELECT
 			CASE WHEN direction = 'UP' THEN
 				1
 			WHEN direction = 'DOWN' THEN
-				- 1
+				-1
 			ELSE
 				0
 			END), 0) "voteDelta",
-	sum(
+	round(coalesce((sum(
 		CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
-			- 1
+			-1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 AS "score",
-	rank() OVER (ORDER BY coalesce(sum( CASE WHEN direction = 'UP' THEN
+		END ) - 1) / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0) AS "score",
+	rank() OVER (ORDER BY round(coalesce((sum( CASE WHEN direction = 'UP' THEN
 			1
 		WHEN direction = 'DOWN' THEN
-			- 1
+			-1
 		ELSE
 			0
-		END) - 1 / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8, '-infinity')
+		END) - 1) / (DATE_PART('hour', now() - max("Vote"."createdAt")) + 2) ^ 1.8 * 100000, -2147483648)::numeric, 0)
 		DESC,
 		"Post"."createdAt" DESC,
 		"Post".title ASC) "voteRank"
@@ -1331,6 +1331,8 @@ CREATE TABLE auth.users (
     email_change_token_current character varying(255) DEFAULT ''::character varying,
     email_change_confirm_status smallint DEFAULT 0,
     banned_until timestamp with time zone,
+    reauthentication_token character varying(255) DEFAULT ''::character varying,
+    reauthentication_sent_at timestamp with time zone,
     CONSTRAINT users_email_change_confirm_status_check CHECK (((email_change_confirm_status >= 0) AND (email_change_confirm_status <= 2)))
 );
 
@@ -1427,7 +1429,7 @@ CREATE TABLE public."Post" (
     "downVoteTotal" integer DEFAULT 0 NOT NULL,
     "voteTotal" integer DEFAULT 0 NOT NULL,
     "voteRank" integer DEFAULT 1 NOT NULL,
-    score real DEFAULT '0'::real,
+    score integer DEFAULT 0,
     "voteDelta" integer DEFAULT 0 NOT NULL,
     CONSTRAINT post_title_length CHECK ((char_length(title) > 0)),
     CONSTRAINT post_url_length CHECK ((char_length(url) > 0))

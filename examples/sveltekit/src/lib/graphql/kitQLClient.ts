@@ -8,4 +8,5 @@ export const kitQLClient = new KitQLClient({
 		apikey: `${import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY}`
 	},
 	logType: ['server', 'client', 'operationAndvariables']
+	// endpointNetworkDelayMs: 2000 // Simulation slow network
 });

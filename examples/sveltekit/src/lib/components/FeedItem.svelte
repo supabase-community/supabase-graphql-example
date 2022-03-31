@@ -1,64 +1,96 @@
 <script lang="ts">
-	import type { FeedItem_PostFragmentFragment } from './graphql/_kitql/graphqlTypes';
-	import Icons from './Icons.svelte';
-	import { timeAgo } from './time-ago';
+	import type { FeedItem_PostFragmentFragment } from '$lib/graphql/_kitql/graphqlTypes';
+	import { addS } from '$lib/utils/formatString';
+	import { timeAgo } from '$lib/utils/time-ago';
+	import Icons from './layout/Icons.svelte';
+	import LoadingInPlace from './layout/LoadingInPlace.svelte';
 
-	export let post: FeedItem_PostFragmentFragment;
+	export let post: FeedItem_PostFragmentFragment | null;
 </script>
 
-<div class="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
-	<!-- <VoteButtons post={post} /> -->
-	<div class="flex-1 md:flex-grow">
-		<a href={post.url}>
-			<h2 class="text-2xl font-medium text-gray-900 hover:text-green-500 title-font mb-2">
+{#if post}
+	<div class="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
+		<!-- <VoteButtons post={post} /> -->
+		<div class="flex-1 md:flex-grow">
+			<a
+				href={post?.url}
+				class="text-2xl font-medium text-gray-900 hover:text-green-500 title-font mb-2"
+			>
 				{post.title}
-			</h2>
-		</a>
+			</a>
 
-		<div class="flex items-center flex-wrap pb-4 border-gray-100 mt-auto w-full">
-			<span
-				class="text-gray-400 mr-3 inline-flex items-center  text-sm pr-3 py-1 border-r-2 border-gray-200"
-			>
-				<!-- <PointIcon class="w-4 h-4 mr-1" /> -->
-				<Icons name="PointIcon" class="w-4 h-4 mr-1" />
-				{post.voteTotal}{' '}
-				{post.voteTotal === 1 ? 'point' : 'points'}
-			</span>
-			<a
-				href={`/item/${post.id}`}
-				class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
-			>
-				<!-- <CommentIcon class="w-4 h-4 mr-1" /> -->
-				<Icons name="CommentIcon" class="w-4 h-4 mr-1" />
-				{post.commentCollection?.totalCount}{' '}
-				{post.commentCollection?.totalCount === 1 ? 'comment' : 'comments'}
-			</a>
-			<a
-				href={`/profile/${post.profile?.id}`}
-				class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
-			>
-				<img
-					class="inline-block h-4 w-4 rounded-full w-4 h-4 mr-1"
-					src={post.profile?.avatarUrl ?? ''}
-					alt="avatar"
-				/>
-				{post.profile?.username}
-			</a>
-			<a
-				href={`/item/${post.id}`}
-				class="text-gray-400 hover:text-green-400 inline-flex items-center text-sm"
-			>
-				<!-- <CalendarIcon class="w-4 h-4 mr-1" /> -->
-				<Icons name="CalendarIcon" class="w-4 h-4 mr-1" />
-				{timeAgo.format(new Date(post.createdAt))}
-			</a>
-			<!-- {user?.id && post.profile?.id === user?.id ? (
+			<div class="flex items-center flex-wrap pb-4 border-gray-100 mt-auto w-full">
+				<span
+					class="text-gray-400 mr-3 inline-flex items-center  text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<Icons name="PointIcon" class="w-4 h-4 mr-1" />
+					{addS(post.voteTotal, 'point')}
+				</span>
+				<a
+					href={`/item/${post.id}`}
+					class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<Icons name="CommentIcon" class="w-4 h-4 mr-1" />
+					{addS(post.commentCollection?.totalCount, 'comment')}
+				</a>
+				<a
+					href={`/profile/${post.profile?.id}`}
+					class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<img
+						class="inline-block h-4 w-4 rounded-full mr-1"
+						src={post.profile?.avatarUrl ?? ''}
+						alt="avatar"
+					/>
+					{post.profile?.username}
+				</a>
+				<a
+					href={`/item/${post.id}`}
+					class="text-gray-400 hover:text-green-400 inline-flex items-center text-sm"
+				>
+					<Icons name="CalendarIcon" class="w-4 h-4 mr-1" />
+					{timeAgo.format(new Date(post.createdAt))}
+				</a>
+				<!-- {user?.id && post.profile?.id === user?.id ? (
         <DeleteButton post={post} />
       ) : null} -->
+			</div>
 		</div>
 	</div>
-</div>
+{:else}
+	<div class="py-1 flex flex-wrap md:flex-nowrap mb-8 border-gray-100 border-b-2">
+		<div class="flex-1 md:flex-grow">
+			<span class="text-2xl font-medium text-gray-900 hover:text-green-500 title-font mb-2">
+				<LoadingInPlace class="h-8 mb-1" />
+			</span>
 
+			<div class="flex items-center flex-wrap pb-4 border-gray-100 mt-auto w-full">
+				<span
+					class="text-gray-400 mr-3 inline-flex items-center  text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<Icons name="PointIcon" class="w-4 h-4 mr-1" />
+					{addS(0, 'point')}
+				</span>
+				<span
+					class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<Icons name="CommentIcon" class="w-4 h-4 mr-1" />
+					{addS(0, 'comment')}
+				</span>
+				<span
+					class="text-gray-400 hover:text-green-400 mr-3 inline-flex items-center text-sm pr-3 py-1 border-r-2 border-gray-200"
+				>
+					<span class="inline-block h-4 w-4 rounded-full mr-1 bg-slate-400" />
+					{addS(0, 'user')}
+				</span>
+				<span class="text-gray-400 hover:text-green-400 inline-flex items-center text-sm">
+					<Icons name="CalendarIcon" class="w-4 h-4 mr-1" />
+					{addS(0, 'days ago')}
+				</span>
+			</div>
+		</div>
+	</div>
+{/if}
 <!-- import { Auth } from "@supabase/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";

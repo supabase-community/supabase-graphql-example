@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icons from '$lib/Icons.svelte';
+	import Icons from '$lib/components/layout/Icons.svelte';
 
 	const features = [
 		{

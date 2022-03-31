@@ -1,6 +1,7 @@
 import { serialize } from 'cookie';
 
 export async function get() {
+	console.log(`bye!`);
 	return {
 		status: 302,
 		headers: {

@@ -1,4 +1,4 @@
-mutation updateProfile(
+mutation UpdateProfile(
 	$userId: UUID!
 	$newUsername: String!
 	$newWebsite: String!

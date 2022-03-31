@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { userStore } from '$lib/utils/userStore';
 	// import { Auth } from "@supabase/ui";
 
 	import Icons from './Icons.svelte';
-
-	export let user = null;
 
 	let routes = [
 		{ name: 'feed', href: '/' },
@@ -35,7 +34,7 @@
 			{/each}
 		</nav>
 
-		{#if user === null}
+		{#if $userStore === null}
 			<a
 				href="/login"
 				class="inline-flex items-center mt-4 md:mt-0 md:mr-5 text-gray-400 hover:text-gray-900"

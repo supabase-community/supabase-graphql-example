@@ -35,11 +35,11 @@ const config = {
 					{
 						watch: '**/*.(gql|graphql)',
 						run: 'cd ../.. && yarn codegen:sveltekit'
-					},
-					{
-						watch: '**/*.(svelte)',
-						run: 'cd ../.. && yarn codegen:sveltekit'
 					}
+					// {
+					// 	watch: '**/*.(svelte)',
+					// 	run: 'cd ../.. && yarn codegen:sveltekit'
+					// }
 				]),
 				Icons({
 					compiler: 'svelte',

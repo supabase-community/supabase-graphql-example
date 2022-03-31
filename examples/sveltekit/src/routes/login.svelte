@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Icons from '$lib/components/layout/Icons.svelte';
 	import Button from '$lib/components/supabase/ui/Button.svelte';
 
@@ -21,7 +22,8 @@
 		if (resultData.error) {
 			errorMessage = resultData.error_description;
 		} else {
-			window.location.replace('/');
+			const from = $page.url.searchParams.get('from') || '/';
+			window.location.replace(from);
 		}
 		isLoading = false;
 	}

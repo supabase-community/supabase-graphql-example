@@ -16,6 +16,7 @@
 
 	export let name;
 
+	export let strokeWidth = 2;
 	export let height = 24;
 	export { extraClass as class };
 
@@ -142,7 +143,7 @@
 	<svg
 		viewBox="0 0 24 24"
 		stroke="currentColor"
-		stroke-width="2"
+		stroke-width={strokeWidth}
 		fill="none"
 		stroke-linecap="round"
 		stroke-linejoin="round"
@@ -154,7 +155,7 @@
 	<svg
 		viewBox="0 0 24 24"
 		stroke="currentColor"
-		stroke-width="2"
+		stroke-width={strokeWidth}
 		fill="none"
 		stroke-linecap="round"
 		stroke-linejoin="round"

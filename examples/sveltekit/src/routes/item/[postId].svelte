@@ -10,6 +10,7 @@
 
 	export async function load({ fetch, url, params, session, stuff }) {
 		const { postId } = params;
+		const profileId = session.user ? session.user.id : noopUUID;
 
 		if (browser) {
 			const postFound = get(KQL_IndexRouteQuery).data?.feed.edges.find((c) => c.node.id === postId);
@@ -20,11 +21,11 @@
 						edges: [postFound]
 					}
 				};
-				KQL_ItemRouteQuery.patch(newItem, { postId, profileId: noopUUID }, 'store-only');
+				KQL_ItemRouteQuery.patch(newItem, { postId, profileId }, 'store-only');
 			}
 		}
 
-		await KQL_ItemRouteQuery.queryLoad({ fetch, variables: { postId, profileId: noopUUID } });
+		await KQL_ItemRouteQuery.queryLoad({ fetch, variables: { postId, profileId } });
 		return {};
 	}
 </script>

@@ -3,6 +3,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "explorer.experimental.fileNesting.enabled": true,
   "explorer.experimental.fileNesting.patterns": {
-    "*.svelte": "${capture}.gql"
+    "*.svelte": "${capture}*.gql"
   }
 }

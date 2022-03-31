@@ -19,13 +19,23 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
 - [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
 
-### Frontend
+### Frontends
+
+#### Next.js
 
 - [Next.js](https://nextjs.org) - React Framework
 - [TypeScript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
 - [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
 - [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset) - This code gen preset generates typings for your inline gql function usages, without having to manually specify import statements for the documents
 - [urql](https://formidable.com/open-source/urql/) - A highly customizable and versatile GraphQL client
+- [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
+
+#### SvelteKit
+
+- [SvelteKit](https://kit.svelte.dev/) - THE FASTEST WAY TO BUILD SVELTE APPS
+- [TypeScript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
+- [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
+- [KitQL](https://github.com/jycouet/kitql) - A set of tools, helping you building efficient apps in a fast way. >> SvelteKit & GraphQL <<
 - [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
 
 ### Functionality

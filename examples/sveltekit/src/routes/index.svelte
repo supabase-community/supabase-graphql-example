@@ -7,23 +7,27 @@
 	import { noopUUID } from '$lib/utils/noop-uuid';
 	import { onMount } from 'svelte';
 
-	export async function load({ fetch }) {
-		await KQL_IndexRouteQuery.queryLoad({ fetch, variables: { profileId: noopUUID } });
-		return {};
+	export async function load({ fetch, session }) {
+		const profileId = session.user ? session.user.id : noopUUID;
+		await KQL_IndexRouteQuery.queryLoad({ fetch, variables: { profileId } });
+		return {
+			props: { profileId }
+		};
 	}
 </script>
 
 <script lang="ts">
-	let infiniteList = [];
+	export let profileId: string;
+
+	$: infiniteList = $KQL_IndexRouteQuery.data?.feed?.edges ?? [];
 
 	onMount(async () => {
-		await KQL_IndexRouteQuery.query({ variables: { profileId: noopUUID } });
-		infiniteList = $KQL_IndexRouteQuery.data?.feed?.edges ?? [];
+		await KQL_IndexRouteQuery.query({ variables: { profileId } });
 	});
 
 	async function loadMore(cursor: string) {
 		const newData = await KQL_IndexRouteQuery.query({
-			variables: { profileId: noopUUID, after: cursor }
+			variables: { profileId, after: cursor }
 		});
 		infiniteList = [...infiniteList, ...newData.data?.feed?.edges];
 	}

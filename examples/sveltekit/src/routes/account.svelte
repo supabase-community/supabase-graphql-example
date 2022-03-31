@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
+	import Loading from '$lib/components/layout/Loading.svelte';
 	import Button from '$lib/components/supabase/ui/Button.svelte';
-	import { gql } from '$lib/graphql/_kitql/gql';
 	import { KQL_ProfileRouteQuery, KQL_UpdateProfile } from '$lib/graphql/_kitql/graphqlStores';
 
 	export async function load({ fetch, url, params, session, stuff }) {
@@ -17,9 +17,25 @@
 </script>
 
 <script lang="ts">
-	import Loading from '$lib/components/layout/Loading.svelte';
-
 	$: profile = $KQL_ProfileRouteQuery.data?.profileCollection?.edges?.[0].node;
+
+	$: errorState = extractExpectedGraphQLErrors($KQL_UpdateProfile.errors);
+	function extractExpectedGraphQLErrors(errors: any[]): null | string {
+		if (!errors || errors.length === 0) {
+			return null;
+		}
+
+		for (const error of errors) {
+			if (error.includes('usernamelength')) {
+				return 'Username must have a minimum length of 3 characters.';
+			}
+			if (error.includes('Profile_username_key')) {
+				return 'The name is already taken.';
+			}
+		}
+
+		return null;
+	}
 
 	async function submit(e) {
 		const formData: any = new FormData(e.target);
@@ -80,46 +96,11 @@
 				<Button type="submit" isLoading={$KQL_UpdateProfile.isFetching}>Update</Button>
 			</div>
 		</form>
-		<!-- <div>{errorState}</div> -->
+
+		{#if errorState}
+			<p class="mt-2 text-sm text-red-600">{errorState}</p>
+		{/if}
 	</section>
 {:else}
 	<Loading />
 {/if}
-<!-- 
-
-function extractExpectedGraphQLErrors(
-  error: CombinedError | undefined
-): null | string {
-  if (error === undefined) {
-    return null;
-  }
-
-  for (const graphQLError of error.graphQLErrors) {
-    if (graphQLError.message.includes("usernamelength")) {
-      return "Username must have a minimum length of 3 characters.";
-    }
-    if (graphQLError.message.includes("Profile_username_key")) {
-      return "The name is already taken.";
-    }
-  }
-
-  return null;
-}
-
-function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
-  const [username, setUsername] = React.useState(props.profile.username ?? "");
-  const [website, setWebsite] = React.useState(props.profile.website ?? "");
-  const [bio, setBio] = React.useState(props.profile.bio ?? "");
-
-  const [updateProfileMutation, updateProfile] = useMutation(
-    UpdateProfileMutation
-  );
-
-  const errorState = extractExpectedGraphQLErrors(updateProfileMutation.error);
-
-  return (
-  
-  );
-}
-
-export default Account; -->

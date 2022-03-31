@@ -22,10 +22,13 @@
 	import Navigation from '$lib/components/layout/Navigation.svelte';
 	import { kitQLClient } from '$lib/graphql/kitQLClient';
 	import { KQL__Init } from '$lib/graphql/_kitql/graphqlStores';
+	import { userStore } from '$lib/utils/userStore';
 	import '../app.css';
 
 	export let user;
 	export let access_token;
+
+	$userStore = user;
 
 	KQL__Init();
 	if (access_token) {
@@ -35,11 +38,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>supanews</title>
-</svelte:head>
-
-<Navigation {user} />
+<Navigation />
 <MainSection>
 	<slot />
 </MainSection>

@@ -688,11 +688,6 @@ type Query {
   ): VoteConnection
 }
 
-type SchemaMigrationsInsertResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-}
-
 """
 Boolean expression comparing fields on type "String"
 """

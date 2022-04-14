@@ -38,6 +38,13 @@ COMMENT ON EXTENSION pg_graphql IS 'GraphQL support';
 
 
 --
+-- Name: graphql_public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA graphql_public;
+
+
+--
 -- Name: pg_net; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -301,6 +308,59 @@ COMMENT ON FUNCTION extensions.grant_pg_cron_access() IS 'Grants access to pg_cr
 
 
 --
+-- Name: grant_pg_graphql_access(); Type: FUNCTION; Schema: extensions; Owner: -
+--
+
+CREATE FUNCTION extensions.grant_pg_graphql_access() RETURNS event_trigger
+    LANGUAGE plpgsql
+    AS $_$
+    DECLARE
+    func_is_graphql_resolve bool;
+    BEGIN
+    func_is_graphql_resolve = (
+        SELECT n.proname = 'resolve'
+        FROM pg_event_trigger_ddl_commands() AS ev
+        LEFT JOIN pg_catalog.pg_proc AS n
+        ON ev.objid = n.oid
+    );
+
+    IF func_is_graphql_resolve
+    THEN
+        grant usage on schema graphql to postgres, anon, authenticated, service_role;
+        grant all on function graphql.resolve to postgres, anon, authenticated, service_role;
+
+        alter default privileges in schema graphql grant all on tables to postgres, anon, authenticated, service_role;
+        alter default privileges in schema graphql grant all on functions to postgres, anon, authenticated, service_role;
+        alter default privileges in schema graphql grant all on sequences to postgres, anon, authenticated, service_role;
+
+        create or replace function graphql_public.graphql(
+            "operationName" text default null,
+            query text default null,
+            variables jsonb default null,
+            extensions jsonb default null
+        )
+            returns jsonb
+            language sql
+        as $$
+            SELECT graphql.resolve(query, coalesce(variables, '{}'));
+        $$;
+
+        grant select on graphql.field, graphql.type, graphql.enum_value to postgres, anon, authenticated, service_role;
+        grant execute on function graphql.resolve to postgres, anon, authenticated, service_role;
+    END IF;
+
+    END;
+$_$;
+
+
+--
+-- Name: FUNCTION grant_pg_graphql_access(); Type: COMMENT; Schema: extensions; Owner: -
+--
+
+COMMENT ON FUNCTION extensions.grant_pg_graphql_access() IS 'Grants access to pg_graphql';
+
+
+--
 -- Name: grant_pg_net_access(); Type: FUNCTION; Schema: extensions; Owner: -
 --
 
@@ -427,6 +487,64 @@ BEGIN
     END IF;
   END LOOP;
 END; $$;
+
+
+--
+-- Name: set_graphql_placeholder(); Type: FUNCTION; Schema: extensions; Owner: -
+--
+
+CREATE FUNCTION extensions.set_graphql_placeholder() RETURNS event_trigger
+    LANGUAGE plpgsql
+    AS $_$
+    DECLARE
+    graphql_is_dropped bool;
+    BEGIN
+    graphql_is_dropped = (
+        SELECT ev.schema_name = 'graphql_public'
+        FROM pg_event_trigger_dropped_objects() AS ev
+        WHERE ev.schema_name = 'graphql_public'
+    );
+
+    IF graphql_is_dropped
+    THEN
+        create or replace function graphql_public.graphql(
+            "operationName" text default null,
+            query text default null,
+            variables jsonb default null,
+            extensions jsonb default null
+        )
+            returns jsonb
+            language plpgsql
+        as $$
+            DECLARE
+                server_version float;
+            BEGIN
+                server_version = (SELECT (SPLIT_PART((select version()), ' ', 2))::float);
+
+                IF server_version >= 14 THEN
+                    RETURN jsonb_build_object(
+                        'data', null::jsonb,
+                        'errors', array['pg_graphql extension is not enabled.']
+                    );
+                ELSE
+                    RETURN jsonb_build_object(
+                        'data', null::jsonb,
+                        'errors', array['pg_graphql is only available on projects running Postgres 14 onwards.']
+                    );
+                END IF;
+            END;
+        $$;
+    END IF;
+
+    END;
+$_$;
+
+
+--
+-- Name: FUNCTION set_graphql_placeholder(); Type: COMMENT; Schema: extensions; Owner: -
+--
+
+COMMENT ON FUNCTION extensions.set_graphql_placeholder() IS 'Reintroduces placeholder function for graphql_public.graphql';
 
 
 --
@@ -1068,28 +1186,72 @@ $$;
 
 
 --
--- Name: search(text, text, integer, integer, integer); Type: FUNCTION; Schema: storage; Owner: -
+-- Name: search(text, text, integer, integer, integer, text, text, text); Type: FUNCTION; Schema: storage; Owner: -
 --
 
-CREATE FUNCTION storage.search(prefix text, bucketname text, limits integer DEFAULT 100, levels integer DEFAULT 1, offsets integer DEFAULT 0) RETURNS TABLE(name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, last_accessed_at timestamp with time zone, metadata jsonb)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-	return query
-		with files_folders as (
-			select path_tokens[levels] as folder
-			from storage.objects
-			where objects.name ilike prefix || '%'
-			and bucket_id = bucketname
-			GROUP by folder
-			limit limits
-			offset offsets
-		)
-		select files_folders.folder as name, objects.id, objects.updated_at, objects.created_at, objects.last_accessed_at, objects.metadata from files_folders
-		left join storage.objects
-		on prefix || files_folders.folder = objects.name and objects.bucket_id=bucketname;
-END
-$$;
+CREATE FUNCTION storage.search(prefix text, bucketname text, limits integer DEFAULT 100, levels integer DEFAULT 1, offsets integer DEFAULT 0, search text DEFAULT ''::text, sortcolumn text DEFAULT 'name'::text, sortorder text DEFAULT 'asc'::text) RETURNS TABLE(name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, last_accessed_at timestamp with time zone, metadata jsonb)
+    LANGUAGE plpgsql STABLE
+    AS $_$
+declare
+  v_order_by text;
+  v_sort_order text;
+begin
+  case
+    when sortcolumn = 'name' then
+      v_order_by = 'name';
+    when sortcolumn = 'updated_at' then
+      v_order_by = 'updated_at';
+    when sortcolumn = 'created_at' then
+      v_order_by = 'created_at';
+    when sortcolumn = 'last_accessed_at' then
+      v_order_by = 'last_accessed_at';
+    else
+      v_order_by = 'name';
+  end case;
+
+  case
+    when sortorder = 'asc' then
+      v_sort_order = 'asc';
+    when sortorder = 'desc' then
+      v_sort_order = 'desc';
+    else
+      v_sort_order = 'asc';
+  end case;
+
+  v_order_by = v_order_by || ' ' || v_sort_order;
+
+  return query execute
+    'with folders as (
+       select path_tokens[$1] as folder
+       from storage.objects
+         where objects.name ilike $2 || $3 || ''%''
+           and bucket_id = $4
+           and array_length(regexp_split_to_array(objects.name, ''/''), 1) <> $1
+       group by folder
+       order by folder ' || v_sort_order || '
+     )
+     (select folder as "name",
+            null as id,
+            null as updated_at,
+            null as created_at,
+            null as last_accessed_at,
+            null as metadata from folders)
+     union all
+     (select path_tokens[$1] as "name",
+            id,
+            updated_at,
+            created_at,
+            last_accessed_at,
+            metadata
+     from storage.objects
+     where objects.name ilike $2 || $3 || ''%''
+       and bucket_id = $4
+       and array_length(regexp_split_to_array(objects.name, ''/''), 1) = $1
+     order by ' || v_order_by || ')
+     limit $5
+     offset $6' using levels, prefix, search, bucketname, limits, offsets;
+end;
+$_$;
 
 
 --
@@ -2256,12 +2418,30 @@ ALTER PUBLICATION supabase_realtime ADD TABLE ONLY public."Profile";
 
 
 --
+-- Name: issue_graphql_placeholder; Type: EVENT TRIGGER; Schema: -; Owner: -
+--
+
+CREATE EVENT TRIGGER issue_graphql_placeholder ON sql_drop
+         WHEN TAG IN ('DROP EXTENSION')
+   EXECUTE FUNCTION extensions.set_graphql_placeholder();
+
+
+--
 -- Name: issue_pg_cron_access; Type: EVENT TRIGGER; Schema: -; Owner: -
 --
 
 CREATE EVENT TRIGGER issue_pg_cron_access ON ddl_command_end
          WHEN TAG IN ('CREATE SCHEMA')
    EXECUTE FUNCTION extensions.grant_pg_cron_access();
+
+
+--
+-- Name: issue_pg_graphql_access; Type: EVENT TRIGGER; Schema: -; Owner: -
+--
+
+CREATE EVENT TRIGGER issue_pg_graphql_access ON ddl_command_end
+         WHEN TAG IN ('CREATE FUNCTION')
+   EXECUTE FUNCTION extensions.grant_pg_graphql_access();
 
 
 --

@@ -8,6 +8,7 @@ import { Container } from "../../lib/container";
 import { FeedItem } from "../../lib/feed-item";
 import { Loading } from "../../lib/loading";
 import { MainSection } from "../../lib/main-section";
+import { withConfiguredUrql } from "../../lib/urql";
 
 const ProfileRouteQuery = gql(/* GraphQL */ `
   query ProfileRouteQuery($profileId: UUID!) {
@@ -130,4 +131,4 @@ const Profile: NextPage = () => {
   );
 };
 
-export default Profile;
+export default withConfiguredUrql(Profile);

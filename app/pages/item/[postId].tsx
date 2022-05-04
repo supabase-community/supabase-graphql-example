@@ -11,6 +11,7 @@ import { FeedItem } from "../../lib/feed-item";
 import { Loading } from "../../lib/loading";
 import { MainSection } from "../../lib/main-section";
 import { noopUUID } from "../../lib/noop-uuid";
+import { withConfiguredUrql } from "../../lib/urql";
 
 const ItemRouteQuery = gql(/* GraphQL */ `
   query ItemRouteQuery($postId: BigInt!, $profileId: UUID!) {
@@ -135,4 +136,4 @@ const Item: NextPage = () => {
   );
 };
 
-export default Item;
+export default withConfiguredUrql(Item);

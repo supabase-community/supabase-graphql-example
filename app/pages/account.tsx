@@ -8,6 +8,7 @@ import { DocumentType, gql } from "../gql";
 import { Container } from "../lib/container";
 import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
+import { withConfiguredUrql } from "../lib/urql";
 
 const UserProfileQuery = gql(/* GraphQL */ `
   query UserProfileQuery($profileId: UUID!) {
@@ -172,4 +173,4 @@ function AccountForm(props: { profile: DocumentType<typeof ProfileFragment> }) {
   );
 }
 
-export default Account;
+export default withConfiguredUrql(Account);

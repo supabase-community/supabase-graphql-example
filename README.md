@@ -160,7 +160,7 @@ apiKey: <supabase_anon_key>
 
 ```
 
-> Note: In order for the RLS policies authenticate you. you've have to pass an authorization header:
+> Note: In order for the RLS policies authenticate you, you have to pass an authorization header:
 
 ```
 authorization: Bearker <access_token>

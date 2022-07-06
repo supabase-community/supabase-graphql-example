@@ -19,13 +19,23 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 - [Postgres Triggers](https://supabase.com/blog/2021/07/30/supabase-functions-updates) and [Postgres Functions](https://supabase.com/docs/guides/database/functions) - When votes are in, use triggers to invoke a Postgres function that calculates a post score to rank the feed
 - [Postgres Enumerated Types](https://www.postgresql.org/docs/14/datatype-enum.html) - Enums help defined the direction of a vote: UP or DOWN.
 
-### Frontend
+### Frontends
+
+#### Next.js
 
 - [Next.js](https://nextjs.org) - React Framework
 - [TypeScript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
 - [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
 - [gql-tag-operations-preset](https://www.graphql-code-generator.com/plugins/gql-tag-operations-preset) - This code gen preset generates typings for your inline gql function usages, without having to manually specify import statements for the documents
 - [urql](https://formidable.com/open-source/urql/) - A highly customizable and versatile GraphQL client
+- [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
+
+#### SvelteKit
+
+- [SvelteKit](https://kit.svelte.dev/) - THE FASTEST WAY TO BUILD SVELTE APPS
+- [TypeScript](https://www.typescriptlang.org) - TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
+- [graphql-code-generator](https://www.graphql-code-generator.com) - Generate code from your GraphQL schema and operations with a simple CLI
+- [KitQL](https://github.com/jycouet/kitql) - A set of tools, helping you building efficient apps in a fast way. >> SvelteKit & GraphQL <<
 - [Gravatar](https://en.gravatar.com) - Default avatar profile images from Gravatar
 
 ### Functionality
@@ -45,25 +55,31 @@ A basic HackerNews-like clone where posts can be submitted with url links and th
 
 ### Setup env vars
 
-- `cp app/.env.example app/.env`
+- nextjs or sveltekit
+  - `cp examples/nextjs/.env.example examples/nextjs/.env`
+  - `cp examples/sveltekit/.env.example examples/sveltekit/.env`
 - Fill in your url and anon key from the Supabase Dashboard: https://app.supabase.io/project/_/settings/api
 
-### Install dependencies, GraphQL codegen, run app
+### Install dependencies, GraphQL codegen, run
 
 ```bash
 yarn
 yarn codegen
-yarn workspace app dev
+
+# For nextjs
+yarn workspace nextjs dev
+# For sveltekit
+yarn workspace sveltekit dev
 ```
 
 ### Deploy to Vercel
 
 Provide the following settings to deploy a production build to Vercel:
 
-- BUILD COMMAND: `yarn codegen && yarn workspace app build`
-- OUTPUT DIRECTORY: `./app/.next`
+- BUILD COMMAND: `yarn codegen && yarn workspace nextjs build`
+- OUTPUT DIRECTORY: `./examples/nextjs/.next`
 - INSTALL COMMAND: `yarn`
-- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace app dev --port $PORT`
+- DEVELOPMENT COMMAND: `yarn codegen && yarn workspace nextjs dev --port $PORT`
 
 ## Development
 
@@ -82,7 +98,7 @@ yarn codegen:watch
 3. Run server
 
 ```bash
-yarn workspace app dev
+yarn workspace nextjs dev
 ```
 
 ### Synchronize the GraphQL schema

@@ -1,0 +1,23 @@
+query ItemRouteQuery($postId: BigInt!, $profileId: UUID!) {
+	post: postCollection(filter: { id: { eq: $postId } }, first: 1) {
+		edges {
+			cursor
+			node {
+				id
+				...FeedItem_PostFragment
+				comments: commentCollection(first: 15, orderBy: [{ createdAt: DescNullsLast }]) {
+					edges {
+						cursor
+						node {
+							id
+							...CommentItem_CommentFragment
+						}
+					}
+					pageInfo {
+						hasNextPage
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,8 @@
+mutation CreatePostMutation($input: PostInsertInput!) {
+	insertIntoPostCollection(objects: [$input]) {
+		affectedCount
+		records {
+			id
+		}
+	}
+}

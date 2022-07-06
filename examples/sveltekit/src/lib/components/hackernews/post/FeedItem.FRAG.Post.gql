@@ -1,0 +1,17 @@
+fragment FeedItem_PostFragment on Post {
+	id
+	title
+	url
+	voteTotal
+	createdAt
+	commentCollection {
+		totalCount
+	}
+	profile {
+		id
+		username
+		avatarUrl
+	}
+	...VoteButtons_PostFragment
+	...DeleteButton_PostFragment
+}

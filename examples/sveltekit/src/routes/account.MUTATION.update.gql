@@ -1,0 +1,18 @@
+mutation UpdateProfile(
+	$userId: UUID!
+	$newUsername: String!
+	$newWebsite: String!
+	$newBio: String!
+) {
+	updateProfileCollection(
+		filter: { id: { eq: $userId } }
+		set: { username: $newUsername, website: $newWebsite, bio: $newBio }
+	) {
+		affectedCount
+		records {
+			id
+			username
+			website
+		}
+	}
+}

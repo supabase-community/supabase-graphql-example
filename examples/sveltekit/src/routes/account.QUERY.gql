@@ -1,0 +1,9 @@
+query UserProfileQuery($profileId: UUID!) {
+	profileCollection(filter: { id: { eq: $profileId } }) {
+		edges {
+			node {
+				...AccountProfileFragment
+			}
+		}
+	}
+}

@@ -1,0 +1,5 @@
+mutation VoteButtonsDeleteVoteMutation($postId: BigInt!, $profileId: UUID!) {
+	deleteFromVoteCollection(filter: { postId: { eq: $postId }, profileId: { eq: $profileId } }) {
+		__typename
+	}
+}

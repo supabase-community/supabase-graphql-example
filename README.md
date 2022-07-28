@@ -227,3 +227,34 @@ revoke select on table public.schema_migrations from anon, authenticated;
 ```sql
 comment on schema public is e'@graphql({"inflect_names": true})';
 ```
+
+3. Try the heartbeat to see if pg_graphql can access requests
+
+```
+select graphql_public.graphql(
+	null,
+	$$ { heartbeat }$$
+)
+```
+
+Returns:
+
+```json
+{ "data": { "heartbeat": "2022-07-28T17:07:07.90513" } }
+```
+
+4. Is the `public_graphql` schema not exposed properly?
+
+Getting an 406 status or error message like:
+
+```
+{
+    "message": "The schema must be one of the following: public, storage"
+}
+```
+
+Then be sure to expose the `graphql_public` in `Settings` > `Project settings` > `API`.
+
+> The schema to expose in your API. Tables, views and stored procedures in this schema will get API endpoints.
+
+![image](https://user-images.githubusercontent.com/1051633/181597157-f9a47a5b-bc6a-49d4-b41e-9c1324b5e2a7.png)

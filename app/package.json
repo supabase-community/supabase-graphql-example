@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@graphql-yoga/render-graphiql": "2.0.0",
+    "@graphql-yoga/render-graphiql": "2.13.12",
     "@heroicons/react": "1.0.6",
     "@supabase/supabase-js": "1.31.2",
     "@supabase/ui": "0.36.4",

@@ -882,10 +882,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
-"@graphql-yoga/render-graphiql@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-yoga/render-graphiql/-/render-graphiql-2.0.0.tgz#662df90bd4af0a996be6d9a743fabed6b0497e9d"
-  integrity sha512-GZuZPCVBpYI0MwaE6nBtrzMoSFyBtiWOUm7i9jbRxu5Sqxuj3Zc0zTaD7V0UQzuPZKzytmMWq2+nbWPIu5FWtg==
+"@graphql-yoga/render-graphiql@2.13.12":
+  version "2.13.12"
+  resolved "https://registry.yarnpkg.com/@graphql-yoga/render-graphiql/-/render-graphiql-2.13.12.tgz#7cee57624a854739e866c8c1364fa1840fcfe6b0"
+  integrity sha512-l1H8/kwW3FlifeMXI59o+LOSkKHXoxPP5q3H/F5oUKtxMp8Dqfd0CQq2qdW6/ef7q3watrPOggkv4dn5MsPN5g==
 
 "@heroicons/react@1.0.6":
   version "1.0.6"

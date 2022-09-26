@@ -8,6 +8,7 @@ import { FeedItem } from "../lib/feed-item";
 import { Loading } from "../lib/loading";
 import { MainSection } from "../lib/main-section";
 import { noopUUID } from "../lib/noop-uuid";
+import { withConfiguredUrql } from "../lib/urql";
 import { usePaginatedQuery } from "../lib/use-paginated-query";
 
 const IndexRouteQuery = gql(/* GraphQL */ `
@@ -93,4 +94,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withConfiguredUrql(Home);

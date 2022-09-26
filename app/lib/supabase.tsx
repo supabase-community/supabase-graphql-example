@@ -7,8 +7,8 @@ const SupabaseClientContext = React.createContext<SupabaseClient | null>(null);
 export function SupabaseProvider(props: { children: React.ReactNode }) {
   const [client] = React.useState(() =>
     createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:6969",
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "noop"
     )
   );
 

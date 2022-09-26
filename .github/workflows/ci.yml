@@ -1,0 +1,23 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: the-guild-org/shared-config/setup@main
+        with:
+          nodeVersion: 16
+      - run: yarn codegen
+      - run: yarn workspace app run build
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: the-guild-org/shared-config/setup@main
+        with:
+          nodeVersion: 16
+      - run: yarn workspace app run lint

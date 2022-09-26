@@ -21,6 +21,8 @@
     "prepare": "husky install",
     "codegen": "graphql-codegen",
     "codegen:fetch": "node --no-warnings scripts/fetchGraphQLSchema ",
-    "codegen:watch": "yarn run codegen -- --watch"
+    "codegen:watch": "yarn run codegen -- --watch",
+    "prebuild": "yarn run codegen",
+    "build": "yarn workspaces run build"
   }
 }

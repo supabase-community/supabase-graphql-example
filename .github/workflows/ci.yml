@@ -1,6 +1,5 @@
 name: ci
 on:
-  push:
   pull_request:
 
 jobs:
@@ -13,6 +12,7 @@ jobs:
           nodeVersion: 16
       - run: yarn codegen
       - run: yarn workspace app run build
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -21,3 +21,12 @@ jobs:
         with:
           nodeVersion: 16
       - run: yarn workspace app run lint
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
+      - run: supabase start

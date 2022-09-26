@@ -1,0 +1,14 @@
+fragment CommentItem_CommentFragment on Comment {
+	id
+	message
+	createdAt
+	post {
+		id
+		title
+	}
+	profile {
+		id
+		username
+		avatarUrl
+	}
+}

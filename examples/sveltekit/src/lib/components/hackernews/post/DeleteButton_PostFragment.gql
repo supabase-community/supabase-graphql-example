@@ -1,0 +1,3 @@
+fragment DeleteButton_PostFragment on Post {
+	id
+}

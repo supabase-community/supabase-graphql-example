@@ -1,0 +1,13 @@
+fragment VoteButtons_PostFragment on Post {
+	id
+	upVoteByViewer: voteCollection(
+		filter: { profileId: { eq: $profileId }, direction: { eq: "UP" } }
+	) {
+		totalCount
+	}
+	downVoteByViewer: voteCollection(
+		filter: { profileId: { eq: $profileId }, direction: { eq: "DOWN" } }
+	) {
+		totalCount
+	}
+}

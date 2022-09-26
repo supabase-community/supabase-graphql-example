@@ -1,0 +1,6 @@
+fragment AccountProfileFragment on Profile {
+	id
+	username
+	website
+	bio
+}

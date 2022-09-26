@@ -1,0 +1,15 @@
+query NewestRouteQuery($profileId: UUID!, $after: Cursor) {
+	feed: postCollection(orderBy: [{ createdAt: DescNullsFirst }], first: 15, after: $after) {
+		pageInfo {
+			hasNextPage
+			endCursor
+		}
+		edges {
+			cursor
+			node {
+				id
+				...FeedItem_PostFragment
+			}
+		}
+	}
+}

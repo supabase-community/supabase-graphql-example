@@ -1,0 +1,5 @@
+mutation CommentItem_DeleteComment($commentId: BigInt!) {
+	deleteFromCommentCollection(atMost: 1, filter: { id: { eq: $commentId } }) {
+		affectedCount
+	}
+}

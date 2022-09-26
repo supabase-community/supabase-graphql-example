@@ -1,0 +1,12 @@
+mutation VoteButtonsVoteMutation($postId: BigInt!, $profileId: UUID!, $voteDirection: String!) {
+	insertIntoVoteCollection(
+		objects: [{ postId: $postId, profileId: $profileId, direction: $voteDirection }]
+	) {
+		__typename
+		affectedCount
+		records {
+			id
+			direction
+		}
+	}
+}

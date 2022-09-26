@@ -1,0 +1,37 @@
+query ProfileRouteQuery($profileId: UUID!) {
+	profileCollection(filter: { id: { eq: $profileId } }) {
+		edges {
+			node {
+				id
+				username
+				bio
+				avatarUrl
+				website
+				latestPosts: postCollection(orderBy: [{ createdAt: DescNullsFirst }], first: 15) {
+					pageInfo {
+						hasNextPage
+					}
+					edges {
+						cursor
+						node {
+							id
+							...FeedItem_PostFragment
+						}
+					}
+				}
+				latestComments: commentCollection(orderBy: [{ createdAt: DescNullsFirst }], first: 15) {
+					pageInfo {
+						hasNextPage
+					}
+					edges {
+						cursor
+						node {
+							id
+							...CommentItem_CommentFragment
+						}
+					}
+				}
+			}
+		}
+	}
+}

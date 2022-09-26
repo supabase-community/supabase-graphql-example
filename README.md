@@ -160,10 +160,10 @@ apiKey: <supabase_anon_key>
 
 ```
 
-> Note: In order for the RLS policies authenticate you, you have to pass an authorization header:
+> Note: In order for the RLS policies authenticate you, you have to pass an authorization header ([see example](https://github.com/supabase-community/supabase-graphql-example/blob/main/app/lib/urql.tsx#L15)):
 
 ```
-authorization: Bearker <access_token>
+authorization: Bearer <access_token>
 
 ```
 

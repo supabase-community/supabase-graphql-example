@@ -5,8 +5,8 @@
   ],
   "private": true,
   "devDependencies": {
-    "@graphql-codegen/cli": "2.13.1",
-    "@graphql-codegen/gql-tag-operations-preset": "1.6.0",
+    "@graphql-codegen/cli": "2.16.4",
+    "@graphql-codegen/gql-tag-operations-preset": "1.7.4",
     "gradient-string": "2.0.2",
     "graphql": "16.6.0",
     "husky": "7.0.4",

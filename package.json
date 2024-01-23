@@ -8,7 +8,7 @@
     "@graphql-codegen/cli": "2.13.1",
     "@graphql-codegen/gql-tag-operations-preset": "1.6.0",
     "gradient-string": "2.0.2",
-    "graphql": "16.6.0",
+    "graphql": "16.8.1",
     "husky": "7.0.4",
     "lint-staged": "12.5.0",
     "prettier": "2.7.1",

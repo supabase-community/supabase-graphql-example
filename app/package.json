@@ -13,7 +13,7 @@
     "@heroicons/react": "1.0.6",
     "@supabase/supabase-js": "1.35.7",
     "@supabase/ui": "0.36.5",
-    "autoprefixer": "10.4.12",
+    "autoprefixer": "10.4.20",
     "graphql": "16.6.0",
     "javascript-time-ago": "2.5.7",
     "next": "12.3.1",

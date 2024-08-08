@@ -50,8 +50,6 @@ function fetchGraphQLSchema(url, options) {
 
 const filePath = path.join(__dirname, "../graphql/schema/", "schema.graphql");
 
-console.log();
-
 console.log(
   supagradient(
     `🗞   Fetching GraphQL Schema from ${process.env.SUPABASE_URL} ...`

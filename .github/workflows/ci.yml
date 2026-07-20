@@ -7,8 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: the-guild-org/shared-config/setup@main
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+      - uses: the-guild-org/shared-config/setup@1c4632ccc198d4c9b34d9e6b3d556c6f245b4e69 # main
         with:
           nodeVersion: 16
       - run: yarn codegen
@@ -16,8 +16,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: the-guild-org/shared-config/setup@main
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+      - uses: the-guild-org/shared-config/setup@1c4632ccc198d4c9b34d9e6b3d556c6f245b4e69 # main
         with:
           nodeVersion: 16
       - run: yarn workspace app run lint
